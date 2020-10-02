@@ -6,7 +6,8 @@ The website will contain a CMS for dynamically maintaining the content.
 
 ## Infrastructure
 
-
+### Infrastructure - Diagram
+![infrastructure-diagram](doku/infrastructure-diagram.jpeg)
 
 
 ## Database
