@@ -15,3 +15,28 @@ I chose to use MariaDB (a relational open-source database) because I want to hav
 
 ### ER - Diagram
 ![er-diagram](doku/er-diagram.png)
+
+## Use cases
+In order to ensure a working project by the end of the module I started with defining the use cases for a MVP (minimum viable product).
+
+1. Show a list of paintings with all their information.
+2. User is able to add paintings to the shopping basket.
+3. User is able to place an order, fill out the needed information and pay.
+4. User gets confirmation mail.
+5. Employees get order mail.
+
+Since the database model is designed to be capable of much more, following features will be added after the MVP is implemented and working.
+
+6. Employees are able to sign in.
+7. Employees can add paintings.
+8. Employees can see open orders.
+9. Employees can change order state.
+10. Users get a mail notification on an order change.
+11. Users can register.
+12. Users can sign in.
+13. Users can reset password.
+14. Users can see their orders.
+15. Users can modify their data.
+
+
+
