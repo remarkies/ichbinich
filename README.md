@@ -38,5 +38,3 @@ Since the database model is designed to be capable of much more, following featu
 14. Users can see their orders.
 15. Users can modify their data.
 
-
-
