@@ -20,7 +20,7 @@ I chose to use MariaDB (a relational open-source database) because I want to hav
 In order to ensure a working project by the end of the module I started with defining the use cases for a MVP (minimum viable product).
 
 1. Show a list of paintings with all their information.
-2. User is able to add paintings to the shopping basket.
+2. User is able to add paintings to the shopping basket (Cookie).
 3. User is able to place an order, fill out the needed information and pay.
 4. User gets a confirmation mail.
 5. Employees get an order mail.
