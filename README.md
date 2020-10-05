@@ -22,20 +22,20 @@ In order to ensure a working project by the end of the module I started with def
 1. Show a list of paintings with all their information.
 2. User is able to add paintings to the shopping basket.
 3. User is able to place an order, fill out the needed information and pay.
-4. User gets confirmation mail.
-5. Employees get order mail.
+4. User gets a confirmation mail.
+5. Employees get an order mail.
 
 Since the database model is designed to be capable of much more, following features will be added after the MVP is implemented and working.
 
 6. Employees are able to sign in.
 7. Employees can add paintings.
 8. Employees can see open orders.
-9. Employees can change order state.
+9. Employees can change the order state.
 10. Users get a mail notification on an order change.
 11. Users can register.
 12. Users can sign in.
 13. Users can reset password.
 14. Users can see their orders.
-15. Users can modify their data.
+15. Users can modify their personal data.
 
 The database is able to handle multiple languagues which will not be implemented in the front end during this module.
