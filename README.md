@@ -8,7 +8,7 @@ The website contains a CMS for dynamically maintaining the content.
 https://docs.google.com/spreadsheets/d/1VxBda2RsCYcu5nPVJz7ooNNhFUHOWbch1ScIpDf1E5A/edit#gid=0
 
 ## Infrastructure
-I'm hosting my applications on a DigitalOcean droplet accessible with SSL on port 443. Signature made by "Let's encrypt". Front end is an AngularJS application because I wanted try out another front end framework than VueJS. In the back end I will stick with an express.js server behind a nginx reverse proxy for security reasons. As a database I use MariaDB. The reason I use MariaDB is explained below in the database section. Express server and the database are running in docker containers for improved maintainability.
+I'm hosting my applications on a DigitalOcean droplet accessible with SSL on port 443. Signature made by "Let's encrypt". Front end is an AngularJS application because I wanted try out another front end framework than VueJS. In the back end I will stick with an express.js server behind a nginx reverse proxy because of its compability with "Let's encrypt" and the possibility to scale in the future. As a database I use MariaDB. The reason I use MariaDB is explained below in the database section. Express server and the database are running in docker containers for improved maintainability.
 
 ### Infrastructure - Diagram
 ![infrastructure-diagram](doku/infrastructure-diagram.jpeg)
