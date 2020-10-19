@@ -3,6 +3,9 @@ require('dotenv').config()
 const app = express()
 const port = 3000
 
+let cors = require('cors');
+app.use(cors());
+
 let database = require('./services/database');
 database.connect().then(function () {
     console.log('connected');

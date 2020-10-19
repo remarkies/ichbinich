@@ -1,0 +1,32 @@
+.painting-info {
+  display: flex;
+  flex-direction: column;
+  margin: 8px 8px;
+
+  .vertical-spacer {
+    flex-grow: 1;
+  }
+
+  .det1 {
+    flex-grow: 0;
+  }
+  .det2 {
+    flex-grow: 0;
+  }
+  .det3 {
+    flex-grow: 0;
+  }
+
+  .buy-button {
+    margin-top: 8px;
+    background: black;
+    border: solid 1px black;
+    border-radius: 2px;
+    color: white;
+    padding: 6px 10px;
+    font-family: arvo, serif;
+    text-transform: uppercase;
+    outline: none !important;
+    box-shadow: none !important;
+  }
+}

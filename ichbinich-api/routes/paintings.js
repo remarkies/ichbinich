@@ -9,19 +9,19 @@ router.get('/',function(request,response){
     database.query("SELECT P.ID,\n" +
         "       P.name,\n" +
         "       P.style_id,\n" +
-        "       S.description 'STYLE',\n" +
+        "       S.description 'style',\n" +
         "       p.technique_id,\n" +
-        "       t.description 'TECHNIQUE',\n" +
+        "       t.description 'technique',\n" +
         "       P.underground_id,\n" +
-        "       U.description 'UNDERGROUND',\n" +
+        "       U.description 'underground',\n" +
         "       P.height,\n" +
         "       P.width,\n" +
         "       P.depth,\n" +
         "       P.price,\n" +
         "       P.collection_id,\n" +
-        "       C.name        'COLLECTION',\n" +
+        "       C.name        'collection',\n" +
         "       P.series_id,\n" +
-        "       SE.name       'SERIES'\n" +
+        "       SE.name       'series'\n" +
         "FROM PAINTING P\n" +
         "         JOIN style S ON P.style_id = S.id\n" +
         "         JOIN technique t on P.technique_id = t.id\n" +

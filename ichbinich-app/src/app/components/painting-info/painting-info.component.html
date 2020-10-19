@@ -1,0 +1,18 @@
+<div class="painting-info">
+  <div class="det1">
+    <app-info-item [title]="'Name'" [description]="painting.name"></app-info-item>
+    <app-info-item [title]="'Kollektion'" [description]="painting.collection"></app-info-item>
+  </div>
+  <div class="vertical-spacer"></div>
+  <div class="det2">
+    <app-info-item [title]="'Art'" [description]="painting.style"></app-info-item>
+    <app-info-item [title]="'Technik'" [description]="painting.technique"></app-info-item>
+    <app-info-item [title]="'Malgrund'" [description]="painting.underground"></app-info-item>
+    <app-info-item [title]="'H x B x T (cm)'" [description]="dimensions"></app-info-item>
+  </div>
+  <div class="vertical-spacer"></div>
+  <div class="det3">
+    <app-info-item [title]="'Preis'" [description]="price"></app-info-item>
+    <button class="buy-button">Kaufen</button>
+  </div>
+</div>
