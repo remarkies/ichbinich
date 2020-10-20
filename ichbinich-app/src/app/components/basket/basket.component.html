@@ -1,0 +1,12 @@
+<div class="basket">
+  <div class="basket-title"><a>{{basketInfo}}</a></div>
+  <div class="basket-items">
+    <div class="basket-item" *ngFor="let item of basketList">
+      <div class="basket-item-image"><img src="{{getImage(item)}}"/></div>
+      <div class="basket-item-name">{{item.name}}</div>
+      <div class="basket-item-price">{{this.uiService.formatValueToCurrency(item.price)}}</div>
+      <div class="basket-item-remove"><button (click)="cookieHandlerService.removeFromBasket(item)">x</button></div>
+    </div>
+  </div>
+</div>
+

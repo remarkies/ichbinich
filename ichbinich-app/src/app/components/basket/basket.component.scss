@@ -1,0 +1,30 @@
+.basket-item {
+  padding: 4px 4px;
+  display: flex;
+  flex-direction: row;
+  background: #f8f8f8;
+}
+
+.basket-item-image {
+  padding: 4px 8px 2px 8px;
+  margin: auto;
+}
+
+.basket-item-image img {
+  height: 16px;
+}
+
+.basket-item-name {
+  padding: 4px 16px 4px 4px;
+  margin: auto;
+}
+
+.basket-item-price {
+  padding: 4px;
+  margin: auto;
+}
+
+.basket-item-remove {
+  padding: 4px;
+  margin: auto;
+}
