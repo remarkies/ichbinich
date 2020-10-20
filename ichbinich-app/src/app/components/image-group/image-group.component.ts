@@ -25,4 +25,8 @@ export class ImageGroupComponent implements OnInit {
 
   }
 
+  public selectImage(selectedPath) {
+    this.selectedPath = selectedPath;
+  }
+
 }

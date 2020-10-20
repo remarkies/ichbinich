@@ -1,3 +1,19 @@
 .image-group {
   height: 50vh;
 }
+
+.image-nav {
+  display: flex;
+  justify-content: center;
+}
+
+.image-nav-item {
+  width: 8px;
+  height: 8px;
+  border: solid 2px black;
+  border-radius: 10px;
+}
+
+.selected-image {
+  background: black;
+}

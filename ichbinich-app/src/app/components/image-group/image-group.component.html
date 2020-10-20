@@ -1,3 +1,6 @@
 <div class="image-group">
   <app-image [model]="selectedPath"></app-image>
+  <div class="image-nav">
+    <div (click)="selectImage(path)" [ngClass]="selectedPath == path? 'selected-image' : ''" *ngFor="let path of paths" class="image-nav-item"></div>
+  </div>
 </div>
