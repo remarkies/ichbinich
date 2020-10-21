@@ -3,25 +3,13 @@ let connection = null;
 
 module.exports.connect = function() {
     return new Promise(function (resolve, reject) {
-        let config;
-
-        if(process.env.NODE_ENV == "prod") {
-            config = {
-                host: process.env.DB_HOST_PROD,
-                user: process.env.DB_USER_PROD,
-                password: process.env.DB_PASS_PROD,
-                database: "ichbinich",
-                connectionLimit: 5
-            };
-        } else {
-            config = {
-                host: process.env.DB_HOST_TEST,
-                user: process.env.DB_USER_TEST,
-                password: process.env.DB_PASS_TEST,
-                database: "ichbinich",
-                connectionLimit: 5
-            };
-        }
+        let config  = {
+            host: process.env.DB_HOST,
+            user: process.env.DB_USER,
+            password: process.env.DB_PASS,
+            database: "ichbinich",
+            connectionLimit: 5
+        };
 
         const pool = mariadb.createPool(config);
         pool.getConnection().then(conn => {
