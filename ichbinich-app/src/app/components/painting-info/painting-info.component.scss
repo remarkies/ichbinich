@@ -17,21 +17,5 @@
     flex-grow: 0;
   }
 
-  .basket-button {
-    margin-top: 8px;
-    background: black;
-    border: solid 1px black;
-    border-radius: 2px;
-    color: white;
-    padding: 6px 10px;
-    text-transform: uppercase;
-    outline: none !important;
-    box-shadow: none !important;
-  }
-  .basket-button:disabled,
-  .basket-button[disabled]{
-    border: 1px solid #cccccc;
-    background-color: #cccccc;
-    color: #666666;
-  }
+
 }

@@ -13,21 +13,23 @@ export class CookieHandlerService {
   public getBasket() {
     let cookie = this.cookieService.get('basket');
 
-    if(cookie === '1') {
+    if(cookie === undefined) {
       return [];
     } else {
       return JSON.parse(cookie);
     }
   }
 
-  public putBasket(basket: PaintingModel[]) {
+  public putBasket(basket: number[]) {
+    console.log('put basket:' + basket);
+
     this.cookieService.put('basket', JSON.stringify(basket), { expires: this.getDateInAdvance(30) });
   }
 
-  public removeFromBasket(painting: PaintingModel) {
+  public removeFromBasket(item: number) {
     let basket = this.getBasket()
 
-    const index = basket.findIndex(a => a.id === painting.id);
+    const index = basket.findIndex(a => a === item);
 
     if (index > -1) {
       basket.splice(index, 1);

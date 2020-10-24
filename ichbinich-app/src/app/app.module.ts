@@ -11,8 +11,11 @@ import { PaintingListComponent } from './components/painting-list/painting-list.
 import { ImageComponent } from './components/image/image.component';
 import { ImageGroupComponent } from './components/image-group/image-group.component';
 import { PaintingInfoComponent } from './components/painting-info/painting-info.component';
-import { InfoItemComponent } from './components/info-item/info-item.component';
+import { PaintingInfoItemComponent } from './components/painting-info-item/painting-info-item.component';
 import { BasketComponent } from './components/basket/basket.component';
+import { CurrencyComponent } from './components/currency/currency.component';
+import { ButtonComponent } from './components/button/button.component';
+import { PaintingInfoPriceItemComponent } from './components/painting-info-price-item/painting-info-price-item.component';
 
 @NgModule({
   declarations: [
@@ -23,8 +26,11 @@ import { BasketComponent } from './components/basket/basket.component';
     ImageComponent,
     ImageGroupComponent,
     PaintingInfoComponent,
-    InfoItemComponent,
-    BasketComponent
+    PaintingInfoItemComponent,
+    BasketComponent,
+    CurrencyComponent,
+    ButtonComponent,
+    PaintingInfoPriceItemComponent
   ],
   imports: [
     BrowserModule,

@@ -2,10 +2,10 @@ import {Component, Input, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-info-item',
-  templateUrl: './info-item.component.html',
-  styleUrls: ['./info-item.component.scss']
+  templateUrl: './painting-info-item.component.html',
+  styleUrls: ['./painting-info-item.component.scss']
 })
-export class InfoItemComponent implements OnInit {
+export class PaintingInfoItemComponent implements OnInit {
 
   constructor() { }
 

@@ -15,4 +15,9 @@ export class ApiService {
   public getPaintings() {
     return this.http.get<PaintingModel[]>(environment.apiUrl + "/paintings");
   }
+
+  public getPaintingsForCookieBasket(basket: number[]) {
+    return this.http.post<PaintingModel[]>(environment.apiUrl + "/paintings/:ids", { ids: basket });
+  }
+
 }

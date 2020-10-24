@@ -3,7 +3,7 @@ import {CookieHandlerService} from "../../services/cookie-handler.service";
 import {ImageService} from "../../services/image.service";
 import {PathModel} from "../../models/path.model";
 import {PaintingModel} from "../../models/painting.model";
-import {UiService} from "../../services/ui.service";
+import {ApiService} from "../../services/api.service";
 
 @Component({
   selector: 'app-basket',
@@ -12,13 +12,18 @@ import {UiService} from "../../services/ui.service";
 })
 export class BasketComponent implements OnInit {
 
-  constructor(private cookieHandlerService: CookieHandlerService, private imageService: ImageService, public uiService: UiService) { }
+  public basketItems: PaintingModel[] = [];
+
+  constructor(private apiService: ApiService, private cookieHandlerService: CookieHandlerService, private imageService: ImageService) { }
 
   ngOnInit(): void {
+    this.updateBasket();
   }
 
-  public get basketList() {
-    return this.cookieHandlerService.getBasket();
+  public updateBasket() {
+    this.apiService.getPaintingsForCookieBasket(this.cookieHandlerService.getBasket()).subscribe(items => {
+      this.basketItems = items;
+    });
   }
 
   public get basketInfo() {

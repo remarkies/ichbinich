@@ -12,7 +12,7 @@
   </div>
   <div class="vertical-spacer"></div>
   <div class="det3">
-    <app-info-item [title]="'Preis'" [description]="uiService.formatValueToCurrency(painting.price)"></app-info-item>
-    <button (click)="addToCookieBasket(painting)" class="basket-button" [disabled]="isAlreadyInBasket(painting)">in den warenkorb</button>
+    <app-painting-info-price-item [title]="'Preis'" [price]="painting.price"></app-painting-info-price-item>
+    <app-button [label]="'in den warenkorb'" (onClick)="addToCookieBasket(painting)" class="btn" [isDisabled]="isAlreadyInBasket(painting)"></app-button>
   </div>
 </div>

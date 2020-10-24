@@ -6,6 +6,11 @@ const port = 3000
 let cors = require('cors');
 app.use(cors());
 
+let bodyParser = require('body-parser')
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(bodyParser.raw());
+
 let database = require('./services/database');
 database.connect().then(function () {
     console.log('connected');

@@ -1,11 +1,19 @@
-import { Injectable } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 
-@Injectable({
-  providedIn: 'root'
+@Component({
+  selector: 'app-currency',
+  templateUrl: './currency.component.html',
+  styleUrls: ['./currency.component.scss']
 })
-export class UiService {
+export class CurrencyComponent implements OnInit {
+
+  @Input()
+  private value: number;
 
   constructor() { }
+
+  ngOnInit(): void {
+  }
 
   public formatValueToCurrency(value: number) {
     let formatter = new Intl.NumberFormat('de-CH', {
@@ -19,6 +27,7 @@ export class UiService {
     return formatter.format(value);
   }
 
-
-
+  public get getValue() {
+    return this.formatValueToCurrency(this.value)
+  }
 }
