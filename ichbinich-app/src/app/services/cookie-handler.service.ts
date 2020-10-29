@@ -1,40 +1,53 @@
 import { Injectable } from '@angular/core';
 import {CookieService} from "ngx-cookie";
-import {PaintingModel} from "../models/painting.model";
-import {PaintingComponent} from "../components/painting/painting.component";
+import {BehaviorSubject, Observable} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
 })
 export class CookieHandlerService {
 
-  constructor(private cookieService: CookieService) { }
+  private _basket: BehaviorSubject<number[]> = new BehaviorSubject<number[]>([]);
 
-  public getBasket() {
+  public get basket$() : Observable<number[]>{
+    return this._basket.asObservable();
+  }
+  public get basket() : number[] {
+    return this._basket.value;
+  }
+  constructor(private cookieService: CookieService) {
+    this.loadBasket();
+  }
+
+  private loadBasket() {
     let cookie = this.cookieService.get('basket');
-
-    if(cookie === undefined) {
-      return [];
-    } else {
-      return JSON.parse(cookie);
+    let basket = [];
+    if(cookie !== undefined) {
+      basket = JSON.parse(cookie);
     }
+    this._basket.next(basket);
+  }
+  private saveBasket() {
+    this.cookieService.put('basket', JSON.stringify(this.basket), { expires: this.getDateInAdvance(30) });
   }
 
-  public putBasket(basket: number[]) {
-    console.log('put basket:' + basket);
-
-    this.cookieService.put('basket', JSON.stringify(basket), { expires: this.getDateInAdvance(30) });
+  public addToBasket(painting_id: number) {
+    this._basket.value.push(painting_id);
+    this._basket.next(this._basket.value);
+    this.saveBasket();
   }
-
   public removeFromBasket(item: number) {
-    let basket = this.getBasket()
+    const index = this._basket.value.findIndex(a => a === item);
 
-    const index = basket.findIndex(a => a === item);
-
-    if (index > -1) {
-      basket.splice(index, 1);
+    if (index >= 0) {
+      this._basket.value.splice(index, 1);
+      this._basket.next(this._basket.value);
     }
-    this.putBasket(basket);
+    this.saveBasket();
+  }
+  public clear(): void {
+    this._basket.next([]);
+    this.saveBasket();
   }
 
   private getDateInAdvance(days: number) : Date {

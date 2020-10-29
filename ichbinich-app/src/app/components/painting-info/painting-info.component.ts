@@ -27,16 +27,13 @@ export class PaintingInfoComponent implements OnInit {
   }
 
   public addToCookieBasket(painting: PaintingModel) {
-    let basket = this.cookieHandlerService.getBasket();
-
-    if(painting.id !== null &&!this.isAlreadyInBasket(basket)) {
-      basket.push(painting.id);
-      this.cookieHandlerService.putBasket(basket);
+    if(painting.id !== null &&!this.isAlreadyInBasket(painting)) {
+      this.cookieHandlerService.addToBasket(painting.id);
     }
   }
 
   public isAlreadyInBasket(painting: PaintingModel) : boolean {
-    let basket = this.cookieHandlerService.getBasket();
+    let basket = this.cookieHandlerService.basket;
     let found = false;
     basket.forEach((o) => {
       if(o === painting.id) {

@@ -51,6 +51,7 @@ router.post('/:ids', function(request,response) {
     let ids = request.body.ids;
 
     if(ids === undefined || ids.length === 0) {
+        response.send([]);
         return;
     }
 
@@ -86,7 +87,7 @@ router.post('/:ids', function(request,response) {
         // execute promises
         // then send response with json
         Promise.all(promises).then(() => {
-            response.send(output)
+            response.send(output);
         });
 
     }).catch((err) => {

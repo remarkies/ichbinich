@@ -4,6 +4,7 @@ import {ImageService} from "../../services/image.service";
 import {PathModel} from "../../models/path.model";
 import {PaintingModel} from "../../models/painting.model";
 import {ApiService} from "../../services/api.service";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-basket',
@@ -14,21 +15,27 @@ export class BasketComponent implements OnInit {
 
   public basketItems: PaintingModel[] = [];
 
+  private basketSubscription: Subscription;
+
   constructor(private apiService: ApiService, private cookieHandlerService: CookieHandlerService, private imageService: ImageService) { }
 
   ngOnInit(): void {
-    this.updateBasket();
+    this.basketSubscription = this.cookieHandlerService.basket$.subscribe((basket) => {
+      this.updateBasket();
+    });
   }
 
+
+
   public updateBasket() {
-    this.apiService.getPaintingsForCookieBasket(this.cookieHandlerService.getBasket()).subscribe(items => {
+    this.apiService.getPaintingsForCookieBasket(this.cookieHandlerService.basket).subscribe(items => {
       this.basketItems = items;
     });
   }
 
   public get basketInfo() {
-    let count = this.cookieHandlerService.getBasket().length;
-    if(count === 0) {
+    let count = this.cookieHandlerService.basket?.length;
+    if(count === 0 || count === undefined) {
       return "warenkorb";
     } else {
       return "warenkorb(" + count + ")";
@@ -41,5 +48,9 @@ export class BasketComponent implements OnInit {
     } else {
       return "";
     }
+  }
+
+  public removeFromBasket(id: number) {
+    this.cookieHandlerService.removeFromBasket(id)
   }
 }
