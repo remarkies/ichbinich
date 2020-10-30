@@ -14,6 +14,7 @@ import {Subscription} from "rxjs";
 export class BasketComponent implements OnInit {
 
   public basketItems: PaintingModel[] = [];
+  public basketTotal: number = 0;
 
   private basketSubscription: Subscription;
 
@@ -30,6 +31,7 @@ export class BasketComponent implements OnInit {
   public updateBasket() {
     this.apiService.getPaintingsForCookieBasket(this.cookieHandlerService.basket).subscribe(items => {
       this.basketItems = items;
+      this.basketTotal = this.calcBasketTotal(this.basketItems);
     });
   }
 
@@ -52,5 +54,17 @@ export class BasketComponent implements OnInit {
 
   public removeFromBasket(id: number) {
     this.cookieHandlerService.removeFromBasket(id)
+  }
+
+  private calcBasketTotal(basketItems: PaintingModel[]) : number {
+    let total = 0;
+    basketItems.forEach((item) => {
+      total += item.price;
+    });
+    return total;
+  }
+
+  public checkOut() {
+
   }
 }

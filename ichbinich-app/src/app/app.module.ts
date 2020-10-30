@@ -12,10 +12,14 @@ import { ImageComponent } from './components/image/image.component';
 import { ImageGroupComponent } from './components/image-group/image-group.component';
 import { PaintingInfoComponent } from './components/painting-info/painting-info.component';
 import { PaintingInfoItemComponent } from './components/painting-info-item/painting-info-item.component';
-import { BasketComponent } from './components/basket/basket.component';
 import { CurrencyComponent } from './components/currency/currency.component';
 import { ButtonComponent } from './components/button/button.component';
 import { PaintingInfoPriceItemComponent } from './components/painting-info-price-item/painting-info-price-item.component';
+import { IconComponent } from './components/icon/icon.component';
+import { PaintingsComponent } from './views/paintings/paintings.component';
+import { UserComponent } from './views/user/user.component';
+import { BasketComponent } from './views/basket/basket.component';
+import { InfoCircleComponent } from './components/info-circle/info-circle.component';
 
 @NgModule({
   declarations: [
@@ -27,10 +31,14 @@ import { PaintingInfoPriceItemComponent } from './components/painting-info-price
     ImageGroupComponent,
     PaintingInfoComponent,
     PaintingInfoItemComponent,
-    BasketComponent,
     CurrencyComponent,
     ButtonComponent,
-    PaintingInfoPriceItemComponent
+    PaintingInfoPriceItemComponent,
+    IconComponent,
+    PaintingsComponent,
+    UserComponent,
+    BasketComponent,
+    InfoCircleComponent
   ],
   imports: [
     BrowserModule,

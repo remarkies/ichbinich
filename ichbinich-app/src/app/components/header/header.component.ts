@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import {CookieHandlerService} from "../../services/cookie-handler.service";
+import {Subscription} from "rxjs";
+import {ApiService} from "../../services/api.service";
 
 @Component({
   selector: 'app-header',
@@ -7,9 +10,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor() { }
+  constructor(private cookieHandlerService: CookieHandlerService, private apiService: ApiService) { }
+
+  private basketSubscription: Subscription;
+  public basketCount: number;
 
   ngOnInit(): void {
+    this.basketSubscription = this.cookieHandlerService.basket$.subscribe((basket) => {
+      this.updateBasket();
+    });
+  }
+
+  public updateBasket() {
+    this.apiService.getPaintingsForCookieBasket(this.cookieHandlerService.basket).subscribe(items => {
+      this.basketCount = items.length;
+    });
   }
 
 

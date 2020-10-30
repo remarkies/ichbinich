@@ -1,12 +1,15 @@
 <div class="header">
   <div class="inner-header">
-    <h1><a routerLink="/">ichbinich</a></h1>
+    <h1><a routerLink="/paintings">ich bin ich</a></h1>
     <div class="horizontal-spacer"></div>
     <ul class="header-item-list">
       <li class="header-item">
-        <app-basket></app-basket>
+        <a routerLink="/basket" routerLinkActive="active"><app-icon routerLinkActive="active" [name]="'basket'"></app-icon></a>
+        <app-info-circle [count]="basketCount" *ngIf="basketCount > 0"></app-info-circle>
       </li>
-      <li class="header-item"><a>login</a></li>
+      <li class="header-item">
+        <a routerLink="/user" routerLinkActive="active"><app-icon [name]="'user'"></app-icon></a>
+      </li>
     </ul>
   </div>
 </div>
