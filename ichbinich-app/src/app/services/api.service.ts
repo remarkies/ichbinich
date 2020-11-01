@@ -4,6 +4,8 @@ import { Observable, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 import {environment} from "../../environments/environment";
 import {PaintingModel} from "../models/painting.model";
+import {TitleModel} from "../models/title.model";
+import {CountryModel} from "../models/country.model";
 
 @Injectable({
   providedIn: 'root'
@@ -20,4 +22,11 @@ export class ApiService {
     return this.http.post<PaintingModel[]>(environment.apiUrl + "/paintings/:ids", { ids: basket });
   }
 
+  public getTitles() {
+    return this.http.get<TitleModel[]>(environment.apiUrl + "/infos/titles");
+  }
+
+  public getCountries() {
+    return this.http.get<CountryModel[]>(environment.apiUrl + "/infos/countries");
+  }
 }

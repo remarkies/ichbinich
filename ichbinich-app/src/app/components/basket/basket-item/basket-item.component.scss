@@ -1,0 +1,41 @@
+@import "../../../../styles";
+
+:host {
+  display: grid;
+  grid-template-columns: 15% 35% 40% 10%;
+  background: $hightlight1;
+  padding: 16px;
+  margin-bottom: 8px;
+}
+
+.basket-item-image {
+  display: flex;
+  align-items: center;
+}
+
+.basket-item-image img {
+  height: 40px;
+}
+
+.icon {
+  height: 21px;
+}
+
+
+
+
+
+.basket-item-name {
+  padding: 4px 16px 4px 4px;
+  margin: auto;
+}
+
+.basket-item-price {
+  padding: 4px;
+  margin: auto;
+}
+
+.basket-item-remove {
+  padding: 4px;
+  margin: auto;
+}

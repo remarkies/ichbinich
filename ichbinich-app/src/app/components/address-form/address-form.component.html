@@ -1,0 +1,34 @@
+<form [formGroup]="checkoutFormAddress" (ngSubmit)="next(checkoutFormAddress.value)">
+  <app-form-header [description]="'Wohin sollen wir die Kunst schicken?'"></app-form-header>
+  <div class="text-input">
+    <app-form-select [list]="titles" [required]="'true'" [label]="'Anrede'" [id]="'title'" [formName]="'title'" [formGroup]="checkoutFormAddress"></app-form-select>
+  </div>
+  <div class="text-input">
+    <app-form-input [required]="'true'" [label]="'Vorname'" [id]="'firstName'" [type]="'text'" [formName]="'firstName'" [formGroup]="checkoutFormAddress"></app-form-input>
+  </div>
+  <div class="text-input">
+    <app-form-input [required]="'true'" [label]="'Nachname'" [id]="'lastName'" [type]="'text'" [formName]="'lastName'" [formGroup]="checkoutFormAddress"></app-form-input>
+  </div>
+  <div class="text-input street-info">
+    <app-form-input [required]="'true'" [label]="'Strasse'" [id]="'street'" [type]="'text'" [formName]="'street'" [formGroup]="checkoutFormAddress"></app-form-input>
+    <app-form-input [required]="'true'" [label]="'Hausnummer'" [id]="'streetNo'" [type]="'text'" [formName]="'streetNo'" [formGroup]="checkoutFormAddress"></app-form-input>
+  </div>
+  <div class="text-input city-info">
+    <app-form-input [required]="'true'" [label]="'PLZ'" [id]="'postcode'" [type]="'text'" [formName]="'postCode'" [formGroup]="checkoutFormAddress"></app-form-input>
+    <app-form-input [required]="'true'" [label]="'Stadt'" [id]="'city'" [type]="'text'" [formName]="'city'" [formGroup]="checkoutFormAddress"></app-form-input>
+  </div>
+  <div class="text-input country-info">
+    <app-form-select [list]="countries" [required]="'true'" [label]="'Land'" [id]="'country'" [formName]="'country'" [formGroup]="checkoutFormAddress"></app-form-select>
+  </div>
+
+  <app-form-header [description]="'Wie können wir dich erreichen?'"></app-form-header>
+  <div class="text-input">
+    <app-form-input [required]="'true'" [label]="'Email'" [id]="'email'" [type]="'text'" [formName]="'email'" [formGroup]="checkoutFormAddress"></app-form-input>
+  </div>
+  <div class="text-input">
+    <app-form-input [required]="'true'" [label]="'Telefon'" [id]="'phone'" [type]="'text'" [formName]="'phone'" [formGroup]="checkoutFormAddress"></app-form-input>
+  </div>
+  <div class="actions">
+    <div class="next-button"><app-button [type]="'submit'" [label]="'Zu den Zahlungsoptionen'"></app-button></div>
+  </div>
+</form>

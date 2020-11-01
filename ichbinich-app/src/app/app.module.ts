@@ -20,6 +20,20 @@ import { PaintingsComponent } from './views/paintings/paintings.component';
 import { UserComponent } from './views/user/user.component';
 import { BasketComponent } from './views/basket/basket.component';
 import { InfoCircleComponent } from './components/info-circle/info-circle.component';
+import { BasketItemComponent } from './components/basket/basket-item/basket-item.component';
+import { IconButtonComponent } from './components/icon-button/icon-button.component';
+import { CheckOutComponent } from './views/check-out/check-out.component';
+import { ViewTitleComponent } from './components/view-title/view-title.component';
+import {ReactiveFormsModule} from "@angular/forms";
+import { ActionLinkComponent } from './components/action-link/action-link.component';
+import { ValidatorInfoComponent } from './components/validator-info/validator-info.component';
+import {ValidationService} from "./services/validation.service";
+import { HoverMessageComponent } from './components/hover-message/hover-message.component';
+import { AddressFormComponent } from './components/address-form/address-form.component';
+import { LoginFormComponent } from './components/login-form/login-form.component';
+import { FormHeaderComponent } from './components/form-header/form-header.component';
+import { FormInputComponent } from './components/form-input/form-input.component';
+import { FormSelectComponent } from './components/form-select/form-select.component';
 
 @NgModule({
   declarations: [
@@ -38,15 +52,28 @@ import { InfoCircleComponent } from './components/info-circle/info-circle.compon
     PaintingsComponent,
     UserComponent,
     BasketComponent,
-    InfoCircleComponent
+    InfoCircleComponent,
+    BasketItemComponent,
+    IconButtonComponent,
+    CheckOutComponent,
+    ViewTitleComponent,
+    ActionLinkComponent,
+    ValidatorInfoComponent,
+    HoverMessageComponent,
+    AddressFormComponent,
+    LoginFormComponent,
+    FormHeaderComponent,
+    FormInputComponent,
+    FormSelectComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    CookieModule.forRoot()
+    CookieModule.forRoot(),
+    ReactiveFormsModule
   ],
-  providers: [],
+  providers: [ValidationService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

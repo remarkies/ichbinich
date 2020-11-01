@@ -1,0 +1,16 @@
+<app-form-header [description]="'Login'"></app-form-header>
+<form [formGroup]="checkoutFormLogin" (ngSubmit)="onLogin(checkoutFormLogin.value)">
+  <div class="text-input">
+    <app-form-input [required]="'true'" [label]="'Email'" [id]="'email'" [type]="'text'" [formName]="'email'" [formGroup]="checkoutFormLogin"></app-form-input>
+  </div>
+  <div class="text-input">
+    <app-form-input [required]="'true'" [label]="'Passwort'" [id]="'password'" [type]="'password'" [formName]="'password'" [formGroup]="checkoutFormLogin"></app-form-input>
+  </div>
+  <div class="login-actions">
+    <div class="login-button"><app-button [type]="'submit'" [label]="'Login'"></app-button></div>
+    <div class="action-options">
+      <app-action-link [link]="''" [text]="'Registrieren'"></app-action-link>
+      <app-action-link [link]="''" [text]="'Password vergessen'"></app-action-link>
+    </div>
+  </div>
+</form>

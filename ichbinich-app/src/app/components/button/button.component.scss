@@ -1,15 +1,47 @@
-.btn {
-  margin-top: 8px;
-  background: black;
-  border: solid 1px black;
-  border-radius: 2px;
-  color: white;
-  padding: 6px 10px;
-  text-transform: uppercase;
+@import "../../../styles";
+
+:host {
+  display: block;
+  margin: -4px;
+}
+
+button {
+  border: none;
   outline: none !important;
   box-shadow: none !important;
+
+  text-transform: uppercase;
+  background: $accent1;
+  color: $background;
+
+  padding: 10px 20px;
+  font-size: 12px;
+  font-weight: bold;
+
+  -webkit-user-select: none;
+  user-select: none;
+  cursor: pointer;
+
+  opacity: 0.8;
+  transition: opacity .25s;
 }
-.btn:disabled {
+
+button:hover {
+  opacity: 1;
+}
+
+.button-border {
+  border: solid 2px transparent;
+  padding: 2px;
+  transition: opacity .25s;
+}
+
+.enabled:hover {
+  border: solid 2px $accent1;
+  padding: 2px;
+}
+
+button:disabled {
   border: 1px solid #cccccc;
   background-color: #cccccc;
   color: #666666;

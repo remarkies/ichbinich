@@ -1,0 +1,25 @@
+@import "../../../styles";
+
+:host {
+  display: block;
+  cursor: pointer !important;
+}
+
+button {
+  border: none !important;
+  padding: 4px;
+  background: $hightlight1;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+button:hover {
+  background: $hightlight2;
+}
+
+.btn:disabled {
+  border: 1px solid #cccccc;
+  background-color: #cccccc;
+  color: #666666;
+}
+

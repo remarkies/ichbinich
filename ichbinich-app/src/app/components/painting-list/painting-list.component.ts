@@ -19,7 +19,6 @@ export class PaintingListComponent implements OnInit {
   ngOnInit(): void {
     this.paintingSubscription = this.api.getPaintings().subscribe(paintings => {
       this.paintings = paintings;
-      console.log(paintings);
     });
   }
 

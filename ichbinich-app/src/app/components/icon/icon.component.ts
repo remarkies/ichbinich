@@ -8,7 +8,10 @@ import {Component, Input, OnInit} from '@angular/core';
 export class IconComponent implements OnInit {
 
   @Input()
-  public name: String;
+  public name: string;
+
+  @Input()
+  public size: string = "x";
 
   constructor() { }
 
@@ -17,6 +20,17 @@ export class IconComponent implements OnInit {
 
   public get path() : String {
     return "assets/icons/" + this.name + ".svg";
+  }
+
+  public getSizeClass() {
+    switch (this.size) {
+      case "x":
+        return "sizeX";
+      case "xs":
+        return "sizeXS";
+      default:
+        return "sizeX";
+    }
   }
 
 }

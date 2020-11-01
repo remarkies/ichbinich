@@ -44,17 +44,6 @@ export class BasketComponent implements OnInit {
     }
   }
 
-  public getImage(painting: PaintingModel) {
-    if(painting.paths.length > 0) {
-      return this.imageService.getFullPath(painting.paths[0])
-    } else {
-      return "";
-    }
-  }
-
-  public removeFromBasket(id: number) {
-    this.cookieHandlerService.removeFromBasket(id)
-  }
 
   private calcBasketTotal(basketItems: PaintingModel[]) : number {
     let total = 0;

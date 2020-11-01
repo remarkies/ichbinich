@@ -1,0 +1,33 @@
+@import "../../../styles";
+
+:host {
+  display: block;
+  background: $hightlight1;
+  padding: 20px;
+}
+
+.text-input {
+  display: flex;
+  flex-direction: column;
+  margin: 6px 0px;
+}
+
+.street-info {
+  display: grid;
+  grid-template-columns: 69% 29%;
+  grid-gap: 2%;
+}
+
+.city-info {
+  display: grid;
+  grid-template-columns: 39% 59%;
+  grid-gap: 2%;
+}
+
+.country-info {
+  margin-bottom: 20px;
+}
+
+.actions {
+  display: flex;
+}

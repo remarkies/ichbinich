@@ -1,5 +1,5 @@
-<div id="button">
-  <button type="button" class="btn" (click)="onClickButton($event)" [disabled]="isDisabled">
+<div class="button-border" [ngClass]="isDisabled? '': 'enabled'">
+  <button type="{{type}}" class="btn" (click)="onClickButton($event)" [disabled]="isDisabled">
     {{ label }}
   </button>
 </div>

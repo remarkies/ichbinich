@@ -1,0 +1,6 @@
+<div class="basket-item-image"><img src="{{getImage(item)}}"/></div>
+<div class="basket-item-name">{{item.name}}</div>
+<div class="basket-item-price"><app-currency [value]="item.price"></app-currency></div>
+<div class="basket-item-remove">
+  <app-icon-button [isDisabled]="false" [iconName]="'trash'" (onClick)="removeFromBasket(item.id)"></app-icon-button>
+</div>

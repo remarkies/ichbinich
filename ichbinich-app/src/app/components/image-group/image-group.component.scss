@@ -1,3 +1,5 @@
+@import "../../../styles";
+
 .image-group {
   height: 50vh;
 }
@@ -10,10 +12,10 @@
 .image-nav-item {
   width: 8px;
   height: 8px;
-  border: solid 2px black;
+  border: solid 2px $hightlight2;
   border-radius: 10px;
 }
 
 .selected-image {
-  background: black;
+  background: $accent1;
 }

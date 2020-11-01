@@ -1,0 +1,7 @@
+<form [formGroup]="formGroup">
+  <label [for]="id">{{label}}</label>
+
+  <select [id]="id" [required]="required"  [formControlName]="formName">
+    <option [ngValue]="item" *ngFor="let item of list">{{item.value}}</option>
+  </select>
+</form>

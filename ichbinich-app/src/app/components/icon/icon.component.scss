@@ -1,11 +1,21 @@
 :host {
   display: block;
+
   height: 28px;
   width: 28px;
 }
 
+
 .icon {
-  height: 20px;
-  width: 20px;
   padding: 4px;
+}
+
+.sizeX {
+  height: 20px !important;
+  width: 20px !important;
+}
+
+.sizeXS {
+  height: 10px !important;
+  width: 10px !important;
 }
