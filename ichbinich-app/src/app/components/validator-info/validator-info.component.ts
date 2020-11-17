@@ -10,15 +10,9 @@ export class ValidatorInfoComponent implements OnInit {
   @Input()
   public validationMessage: string;
 
-  public isOk: boolean = false;
-
   constructor() { }
 
   ngOnInit(): void {
-  }
-
-  public get iconName() {
-    return this.isOk? 'ok' : 'cross';
   }
 
 }

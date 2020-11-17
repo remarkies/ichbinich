@@ -8,13 +8,13 @@
 button {
   border: none !important;
   padding: 4px;
-  background: $hightlight1;
+  background: inherit;
   outline: none !important;
   box-shadow: none !important;
 }
 
 button:hover {
-  background: $hightlight2;
+  cursor: pointer;
 }
 
 .btn:disabled {

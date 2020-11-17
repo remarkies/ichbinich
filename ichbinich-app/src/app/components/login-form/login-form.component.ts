@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 @Component({
@@ -8,21 +8,28 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 })
 export class LoginFormComponent implements OnInit {
 
-  public checkoutFormLogin: FormGroup;
+  loginForm: FormGroup;
+  submitted: boolean =  false;
 
-  constructor(private formBuilder: FormBuilder) {
-    this.checkoutFormLogin = this.formBuilder.group({
+  constructor(private formBuilder: FormBuilder) { }
+
+  ngOnInit(): void {
+    this.loginForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(8)]]
+      password: ['', [Validators.required]]
     });
   }
 
-  ngOnInit(): void {
-  }
+  // convenience getter for easy access to form fields
+  get f() { return this.loginForm.controls; }
 
-  public onLogin(data) {
-    this.checkoutFormLogin.reset();
-    console.log('Login as: ');
-    console.log(data);
+  onLogin() {
+    this.submitted = true;
+
+    if (this.loginForm.invalid) {
+      return;
+    }
+
+    console.log('Login as: ' + JSON.stringify(this.loginForm.value, null, 4));
   }
 }

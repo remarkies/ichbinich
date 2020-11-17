@@ -1,17 +1,36 @@
-@import "../../../styles.scss";
+@import "../../../styles";
+
+@media screen and (min-width: 800px) {
+  .big {
+    display: block;
+  }
+  .small {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 799px) {
+  .big {
+    display: none;
+  }
+  .small {
+    display: block;
+  }
+}
 
 .header {
-  padding: 16px;
   position: fixed;
+  padding: 16px 16px 8px 16px;
   top: 0;
-  width: calc(100vw - 32px);
-
+  width: calc(100% - 32px);
   background: $hightlight1;
+  border-bottom: solid 2px $hightlight2;
 }
 
 .inner-header {
+
   display: flex;
-  max-width: 800px;
+  max-width: calc(800px);
   margin: auto;
 }
 
@@ -29,7 +48,7 @@ a {
   display: flex;
   align-items: center;
   margin: 4px;
-  padding: 8px;
+  border-radius: 4px;
 }
 
 .horizontal-spacer {
@@ -47,15 +66,15 @@ a {
   justify-items: center;
   list-style-type: none;
 }
-.header-item {
-
+.header-item a {
+  padding: 8px;
 }
 
-a:hover {
+.header-item a:hover {
   background: $hightlight2;
 }
 
-.active {
+.header-item .active {
   background: $hightlight2;
 }
 

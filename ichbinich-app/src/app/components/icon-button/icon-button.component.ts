@@ -13,6 +13,9 @@ export class IconButtonComponent implements OnInit {
   @Input()
   public iconName: string;
 
+  @Input()
+  public iconSize: string = "x";
+
   @Output()
   public onClick = new EventEmitter<any>();
 

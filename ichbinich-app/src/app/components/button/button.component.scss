@@ -2,7 +2,6 @@
 
 :host {
   display: block;
-  margin: -4px;
 }
 
 button {
@@ -24,22 +23,16 @@ button {
 
   opacity: 0.8;
   transition: opacity .25s;
+  border-radius: 4px;
 }
 
 button:hover {
   opacity: 1;
 }
 
-.button-border {
-  border: solid 2px transparent;
-  padding: 2px;
-  transition: opacity .25s;
-}
 
-.enabled:hover {
-  border: solid 2px $accent1;
-  padding: 2px;
-}
+
+
 
 button:disabled {
   border: 1px solid #cccccc;

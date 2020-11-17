@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import {CookieService} from "ngx-cookie";
 import {BehaviorSubject, Observable} from "rxjs";
+import {AddressModel} from "../models/address.model";
+import {CookieOptionEnum} from "../models/cookieOption.enum";
 
 @Injectable({
   providedIn: 'root'
@@ -29,6 +31,31 @@ export class CookieHandlerService {
   }
   private saveBasket() {
     this.cookieService.put('basket', JSON.stringify(this.basket), { expires: this.getDateInAdvance(30) });
+  }
+
+  public loadCookie<T>(cookieOption: CookieOptionEnum) : T {
+    let cookie = this.cookieService.get(cookieOption.toString());
+    let model: T = null;
+    if(cookie !== undefined) {
+      model = JSON.parse(cookie);
+    }
+    return model;
+  }
+  public saveCookie<T>(cookieOption: CookieOptionEnum, model: T) : void {
+    this.cookieService.put(cookieOption.toString(), JSON.stringify(model), { expires: this.getDateInAdvance(30) });
+  }
+
+  public loadAddress() : AddressModel {
+    let cookie = this.cookieService.get('address');
+    let address: AddressModel = null;
+
+    if(cookie !== undefined) {
+      address = JSON.parse(cookie);
+    }
+    return address;
+  }
+  public saveAddress(address: AddressModel) {
+    this.cookieService.put('address', JSON.stringify(address), { expires: this.getDateInAdvance(30) });
   }
 
   public addToBasket(painting_id: number) {

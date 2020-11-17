@@ -5,6 +5,9 @@ $fontfamily: neue-haas-grotesk-display, sans-serif;
 $fontfamilyheader: neue-haas-grotesk-display, serif;
 
 $background: $nord6;
+//$background: white;
+//$hightlight1: #f8f8f8;
+//$hightlight2: #e6e6e6;
 $hightlight1: $nord5;
 $hightlight2: $nord4;
 
@@ -13,7 +16,14 @@ $accent2: $nord8;
 $accent3: $nord9;
 $accent4: $nord10;
 
-$text: $nord0;
+$error: $nord11;
+$warning: $nord12;
+$subtleWarning: $nord13;
+$success: $nord14;
+$special: $nord15;
+
+//$text: $nord0;
+$text: #3e3e3e;
 $subText: $nord1;
 $byText: $nord3;
 
@@ -30,4 +40,38 @@ html, body {
   color: $text;
 }
 
+label {
+  text-transform: uppercase;
+  font-size: 0.7em;
+  padding-bottom: 4px;
+}
+
+input {
+  outline: none;
+  border: solid 1px $hightlight1;
+  background: $hightlight1;
+  padding: 8px 12px;
+  font: $fontfamily;
+  color: inherit;
+  border-radius: 4px;
+}
+
+select {
+  outline: none;
+  border: solid 1px $hightlight1;
+  background: $hightlight1;
+  padding: 8px 30px 8px 12px;
+  font: $fontfamily;
+  color: inherit;
+  border-radius: 4px;
+}
+
+.validator-space {
+  height: 20px;
+}
+
+.button-align-right {
+  display: flex;
+  justify-content: flex-end;
+}
 

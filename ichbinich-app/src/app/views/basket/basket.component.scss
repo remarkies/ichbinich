@@ -1,9 +1,10 @@
 :host {
-  display: block;
-  padding: 25px;
-  padding-top: 100px;
+  padding: 96px 16px 16px 16px;
+}
+
+.content {
   margin: auto;
-  max-width: 770px;
+  max-width: calc(800px - 32px);
 }
 
 .basket-checkout {
@@ -25,7 +26,3 @@
   justify-content: flex-end;
 }
 
-.check-out-button {
-  display: flex;
-  justify-content: flex-end;
-}

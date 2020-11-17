@@ -13,6 +13,9 @@ export class BasketItemComponent implements OnInit {
   @Input()
   public item: PaintingModel;
 
+  @Input()
+  public size: string;
+
   constructor(private imageService: ImageService, private cookieHandlerService: CookieHandlerService) { }
 
   ngOnInit(): void {
@@ -29,5 +32,4 @@ export class BasketItemComponent implements OnInit {
       return "";
     }
   }
-
 }

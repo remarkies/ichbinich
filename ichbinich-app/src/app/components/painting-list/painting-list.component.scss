@@ -1,5 +1,15 @@
-.painting-list {
-  margin-top: 25vh;
-  display: flex;
-  justify-content: center;
+@media screen and (min-width: 800px) {
+  .painting-list {
+    margin-top: 25vh;
+    display: flex;
+    justify-content: center;
+  }
+}
+
+@media screen and (max-width: 799px) {
+  .painting-list {
+    margin-top: 100px;
+    display: flex;
+    justify-content: center;
+  }
 }

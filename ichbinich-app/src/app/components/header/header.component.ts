@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {CookieHandlerService} from "../../services/cookie-handler.service";
 import {Subscription} from "rxjs";
 import {ApiService} from "../../services/api.service";
+import {PathModel} from "../../models/path.model";
+import {ImageService} from "../../services/image.service";
 
 @Component({
   selector: 'app-header',
@@ -10,8 +12,7 @@ import {ApiService} from "../../services/api.service";
 })
 export class HeaderComponent implements OnInit {
 
-  constructor(private cookieHandlerService: CookieHandlerService, private apiService: ApiService) { }
-
+  constructor(private cookieHandlerService: CookieHandlerService, private apiService: ApiService, private imageService: ImageService) { }
   private basketSubscription: Subscription;
   public basketCount: number;
 

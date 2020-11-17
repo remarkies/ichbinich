@@ -1,6 +1,12 @@
 <div class="basket-item-image"><img src="{{getImage(item)}}"/></div>
-<div class="basket-item-name">{{item.name}}</div>
-<div class="basket-item-price"><app-currency [value]="item.price"></app-currency></div>
+<div class="basket-item-name">
+  <label>Produkt</label>
+  <p>{{item.name}}</p>
+</div>
+<div class="basket-item-price">
+  <label>Preis</label>
+  <p><app-currency [value]="item.price"></app-currency></p>
+</div>
 <div class="basket-item-remove">
-  <app-icon-button [isDisabled]="false" [iconName]="'trash'" (onClick)="removeFromBasket(item.id)"></app-icon-button>
+  <app-icon-button [iconSize]="'xs'" [isDisabled]="false" [iconName]="'trash'" (onClick)="removeFromBasket(item.id)"></app-icon-button>
 </div>

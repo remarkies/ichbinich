@@ -6,6 +6,8 @@ import {environment} from "../../environments/environment";
 import {PaintingModel} from "../models/painting.model";
 import {TitleModel} from "../models/title.model";
 import {CountryModel} from "../models/country.model";
+import {CreatePaymentSessionRequestModel} from "../models/createPaymentSessionRequest.model";
+import {CreatePaymentSessionResponseModel} from "../models/createPaymentSessionResponse.model";
 
 @Injectable({
   providedIn: 'root'
@@ -28,5 +30,9 @@ export class ApiService {
 
   public getCountries() {
     return this.http.get<CountryModel[]>(environment.apiUrl + "/infos/countries");
+  }
+
+  public createPaymentSession(requestModel: CreatePaymentSessionRequestModel) {
+    return this.http.post<CreatePaymentSessionResponseModel>(environment.apiUrl + "/payment/create-session", requestModel)
   }
 }

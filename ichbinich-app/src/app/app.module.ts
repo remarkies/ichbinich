@@ -34,6 +34,11 @@ import { LoginFormComponent } from './components/login-form/login-form.component
 import { FormHeaderComponent } from './components/form-header/form-header.component';
 import { FormInputComponent } from './components/form-input/form-input.component';
 import { FormSelectComponent } from './components/form-select/form-select.component';
+import { PageNotFoundComponent } from './views/page-not-found/page-not-found.component';
+import { FormTestComponent } from './components/form-test/form-test.component';
+import { SummaryComponent } from './components/summary/summary.component';
+import {NgxStripeModule} from "ngx-stripe";
+
 
 @NgModule({
   declarations: [
@@ -64,14 +69,18 @@ import { FormSelectComponent } from './components/form-select/form-select.compon
     LoginFormComponent,
     FormHeaderComponent,
     FormInputComponent,
-    FormSelectComponent
+    FormSelectComponent,
+    PageNotFoundComponent,
+    FormTestComponent,
+    SummaryComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     CookieModule.forRoot(),
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgxStripeModule.forRoot('pk_test_51HmkOLDUxivmNNIfUFH5IMY9eSpP8WLogw8d2gcjyGfybIpC3sonq5kdqfaRjQu4sgb3vDRoGhfujIxC0J1bXFPk00d4VdUq1n')
   ],
   providers: [ValidationService],
   bootstrap: [AppComponent]

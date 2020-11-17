@@ -1,43 +1,40 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {FormGroup} from "@angular/forms";
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {ControlContainer, FormBuilder, FormGroup, NgForm, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-form-input',
   templateUrl: './form-input.component.html',
-  styleUrls: ['./form-input.component.scss']
+  styleUrls: ['./form-input.component.scss'],
+  viewProviders: [{ provide: ControlContainer, useExisting: NgForm}]
 })
 export class FormInputComponent implements OnInit {
 
-  @Input()
-  public id: string;
+  @Input() id: string;
+  @Input() inputType: string;
+  @Input() label: string;
+  @Input() formName: string;
+  @Input() validatorConfig : any = {};
 
-  @Input()
-  public type: string;
+  @Output() isFormValid = new EventEmitter<boolean>();
+  @Output() output = new EventEmitter<string>();
 
-  @Input()
-  public label: string;
+  public form: FormGroup;
 
-  @Input()
-  public formName: string;
+  constructor(private formBuilder: FormBuilder) {
 
-  @Input()
-  public required: boolean = false;
-
-  @Input()
-  public formGroup: FormGroup;
-
-  constructor() { }
+  }
 
   ngOnInit(): void {
+    console.log(this.validatorConfig)
+    this.form = this.formBuilder.group(this.validatorConfig)
   }
 
-  public inputChanged() {
+  public onFocusOut() {
+    const valid = this.form.valid;
+    this.isFormValid.emit(valid);
 
-    if (this.formGroup.dirty && this.formGroup.valid) {
-      alert(
-        `Name: ${this.formGroup.value.email} Email: ${this.formGroup.value.password}`
-      );
+    if(valid) {
+      this.output.emit(this.form.value);
     }
   }
-
 }

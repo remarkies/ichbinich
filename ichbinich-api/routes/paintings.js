@@ -1,5 +1,6 @@
 let express = require('express');
 let database = require('../services/database');
+let paintingService = require('../services/paintingService');
 let router = express.Router();
 
 // return json object with all paintings
@@ -31,7 +32,7 @@ router.get('/',function(request,response){
 
         // create promises for getting all images foreach painting
         // includes images in json object of paintings
-        let promises = getPathsForPaintings(output);
+        let promises = paintingService.getPaths(output);
 
         // execute promises
         // then send response with json
@@ -82,7 +83,7 @@ router.post('/:ids', function(request,response) {
 
         // create promises for getting all images foreach painting
         // includes images in json object of paintings
-        let promises = getPathsForPaintings(output);
+        let promises = paintingService.getPaths(output);
 
         // execute promises
         // then send response with json
@@ -98,11 +99,6 @@ router.post('/:ids', function(request,response) {
     });
 });
 
-function getPaintings() {
-
-}
-function getPaintings(ids) {
-}
 function getPathsForPaintings(paintings) {
     let promises = [];
     paintings.forEach((painting) => {
@@ -117,12 +113,7 @@ function getPathsForPaintings(paintings) {
     });
     return promises;
 }
-function getPathsForId(id) {
-    return database.query(`SELECT I.path
-                    FROM painting_image PI
-                             JOIN IMAGE I ON PI.image_id = I.id
-                    WHERE PI.painting_id = ?;`, [id])
-}
+
 
 
 module.exports = router;

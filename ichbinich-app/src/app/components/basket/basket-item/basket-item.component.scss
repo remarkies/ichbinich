@@ -1,41 +1,46 @@
 @import "../../../../styles";
 
 :host {
-  display: grid;
-  grid-template-columns: 15% 35% 40% 10%;
-  background: $hightlight1;
-  padding: 16px;
+  display: flex;
+  padding: 8px 0px;
   margin-bottom: 8px;
+  font-size: 13px;
+  border-bottom: solid 2px $hightlight2;
+}
+
+p {
+  margin:0;
 }
 
 .basket-item-image {
   display: flex;
   align-items: center;
+  margin-left: 8px;
+  flex-grow: 0;
 }
 
 .basket-item-image img {
-  height: 40px;
+  height: 30px;
 }
-
-.icon {
-  height: 21px;
-}
-
-
-
-
 
 .basket-item-name {
-  padding: 4px 16px 4px 4px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 2;
+  padding: 4px 16px 4px 16px;
   margin: auto;
 }
 
 .basket-item-price {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
   padding: 4px;
   margin: auto;
 }
 
 .basket-item-remove {
+  display: flex;
   padding: 4px;
   margin: auto;
 }

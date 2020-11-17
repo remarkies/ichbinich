@@ -1,0 +1,26 @@
+<section>
+  <app-form-header [description]="'Produkte'"></app-form-header>
+  <div class="basket-items">
+    <app-basket-item [item]="item" *ngFor="let item of basketItems"></app-basket-item>
+  </div>
+</section>
+<section>
+  <app-form-header [description]="'Anschrift'"></app-form-header>
+  <div class="text-line">
+    <p>{{selectedTitle}}</p>
+    <p>{{checkOutService.address.firstName}}</p>
+    <p>{{checkOutService.address.lastName}}</p>
+  </div>
+  <div class="text-line">
+    <p>{{checkOutService.address.street}} {{checkOutService.address.streetNo}}</p>
+  </div>
+  <div class="text-line">
+    <p>{{checkOutService.address.postalCode}}, {{checkOutService.address.city}}</p>
+  </div>
+  <div class="text-line">
+    <p>{{selectedCountry}}</p>
+  </div>
+  <div class="button-align-right">
+    <app-button [label]="'Bezahlen'" (onClick)="pay()"></app-button>
+  </div>
+</section>

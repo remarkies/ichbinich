@@ -1,7 +1,7 @@
-<form [formGroup]="formGroup">
+<form [formGroup]="form">
   <label [for]="id">{{label}}</label>
-  <input [id]="id" [type]="type" [required]="required" [formControlName]="formName">
-  <div class="validator">
-
+  <input (focusout)="onFocusOut()"  [id]="id" [type]="inputType" [formControlName]="formName">
+  <div class="validator" *ngIf="!this.isFormValid">
+    <app-validator-info></app-validator-info>
   </div>
 </form>

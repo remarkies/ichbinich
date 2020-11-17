@@ -1,5 +1,5 @@
 :host {
-  display: block;
+  display: flex;
 
   height: 28px;
   width: 28px;
@@ -7,7 +7,7 @@
 
 
 .icon {
-  padding: 4px;
+  margin: auto;
 }
 
 .sizeX {
@@ -16,6 +16,6 @@
 }
 
 .sizeXS {
-  height: 10px !important;
-  width: 10px !important;
+  height: 15px !important;
+  width: 15px !important;
 }

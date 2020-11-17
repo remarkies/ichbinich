@@ -1,10 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ApiService} from "../../services/api.service";
-import {TitleModel} from "../../models/title.model";
 import {Subscription} from "rxjs";
-import {CountryModel} from "../../models/country.model";
 import {KeyValueModel} from "../../models/keyValue.model";
+import {CookieHandlerService} from "../../services/cookie-handler.service";
+import {CheckOutService} from "../../services/check-out.service";
+import {StepOption} from "../../models/step.model";
+import {Router} from "@angular/router";
+import {DataService} from "../../services/data.service";
 
 @Component({
   selector: 'app-address-form',
@@ -13,58 +16,47 @@ import {KeyValueModel} from "../../models/keyValue.model";
 })
 export class AddressFormComponent implements OnInit {
 
-  public titles: KeyValueModel[] = [];
-  private titlesSubscription: Subscription;
+  addressForm: FormGroup;
+  submitted = false;
 
-  public countries: KeyValueModel[] = [];
-  private countriesSubscription: Subscription;
-
-  public checkoutFormAddress: FormGroup;
-
-  constructor(private formBuilder: FormBuilder, private api: ApiService) {
-    this.checkoutFormAddress = this.formBuilder.group({
-      title: [''],
-      firstName: ['', [Validators.required, Validators.email]],
-      lastName: ['', [Validators.required, Validators.minLength(8)]],
-      street: [''],
-      streetNo: [''],
-      postCode: [''],
-      city: [''],
-      country: [''],
-      email: [''],
-      phone: ['']
-    });
-  }
+  constructor(private formBuilder: FormBuilder,
+              private apiService: ApiService,
+              private cookieHandlerService: CookieHandlerService,
+              private checkOutService: CheckOutService,
+              private router: Router,
+              public dataService: DataService) { }
 
   ngOnInit(): void {
-    this.titlesSubscription = this.api.getTitles().subscribe(titles => {
-      let models: KeyValueModel[] = [];
-      titles.forEach(title => {
-        let model: KeyValueModel = {
-          key: title.id,
-          value: title.description
-        };
-        models.push(model);
-      });
-      this.titles = models;
-    });
+    // load last entered address
+    let address = this.cookieHandlerService.loadAddress();
 
-    this.countriesSubscription = this.api.getCountries().subscribe(countries => {
-      let models: KeyValueModel[] = [];
-      countries.forEach(country => {
-        let model: KeyValueModel = {
-          key: country.id,
-          value: country.name
-        };
-        models.push(model);
-      });
-      this.countries = models;
+    this.addressForm = this.formBuilder.group({
+      title_id: [address !== null ? address.title_id : '', [Validators.required]],
+      firstName: [address !== null ? address.firstName : '', [Validators.required]],
+      lastName: [address !== null ? address.lastName : '', [Validators.required]],
+      street: [address !== null ? address.street : '', [Validators.required]],
+      streetNo: [address !== null ? address.streetNo : '', [Validators.required]],
+      postalCode: [address !== null ? address.postalCode : '', [Validators.required]],
+      city: [address !== null ? address.city : '', [Validators.required]],
+      country_id: [address !== null ? address.country_id : '', [Validators.required]],
+      email: [address !== null ? address.email : '', [Validators.required, Validators.email]],
+      phone: [address !== null ? address.phone : '', [Validators.required]]
     });
   }
+  // convenience getter for easy access to form fields
+  get f() { return this.addressForm.controls; }
 
-  public next(data) {
-    this.checkoutFormAddress.reset();
-    console.log(data);
+  onNext() {
+    this.submitted = true;
+    if (this.addressForm.invalid) { return; }
+
+    // save address to cookies if user reload or something
+    this.cookieHandlerService.saveAddress(this.addressForm.value);
+
+    // save address to checkout service for later uses
+    this.checkOutService.address = this.addressForm.value;
+
+    this.router.navigate(['/check-out/summary']);
   }
 
 }

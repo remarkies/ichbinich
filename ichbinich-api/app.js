@@ -22,6 +22,9 @@ app.use('/paintings', paintings);
 let infos = require('./routes/infos');
 app.use('/infos', infos);
 
+let payment = require('./routes/payment');
+app.use('/payment', payment);
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
     var err = new Error('Not Found');
