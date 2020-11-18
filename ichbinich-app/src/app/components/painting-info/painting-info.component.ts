@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {PaintingModel} from "../../models/painting.model";
 import * as moment from 'moment';
 import {CookieHandlerService} from "../../services/cookie-handler.service";
+import {DataService} from "../../services/data.service";
 
 @Component({
   selector: 'app-painting-info',
@@ -12,35 +13,22 @@ export class PaintingInfoComponent implements OnInit {
 
   @Input()
   public painting: PaintingModel;
-  constructor(private cookieHandlerService: CookieHandlerService) { }
+  constructor(public dataService: DataService) { }
 
   ngOnInit(): void {
 
   }
 
-  public get dimensions() : string {
+  get dimensions() : string {
     return this.painting.height + ' x ' + this.painting.width + ' x ' + this.painting.depth;
   }
-
-  public get price() : string {
+  get price() : string {
     return 'CHF ' + this.painting.price + '.-';
   }
 
-  public addToCookieBasket(painting: PaintingModel) {
-    if(painting.id !== null &&!this.isAlreadyInBasket(painting)) {
-      this.cookieHandlerService.addToBasket(painting.id);
+  addItemToBasket(painting: PaintingModel) {
+    if(painting.id !== null &&!this.dataService.isItemAlreadyInBasket(painting.id)) {
+      this.dataService.addToBasket(painting.id);
     }
   }
-
-  public isAlreadyInBasket(painting: PaintingModel) : boolean {
-    let basket = this.cookieHandlerService.basket;
-    let found = false;
-    basket.forEach((o) => {
-      if(o === painting.id) {
-        found = true;
-      }
-    });
-    return found;
-  }
-
 }

@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {PaintingModel} from "../../../models/painting.model";
 import {ImageService} from "../../../services/image.service";
 import {CookieHandlerService} from "../../../services/cookie-handler.service";
+import {DataService} from "../../../services/data.service";
 
 @Component({
   selector: 'app-basket-item',
@@ -16,13 +17,9 @@ export class BasketItemComponent implements OnInit {
   @Input()
   public size: string;
 
-  constructor(private imageService: ImageService, private cookieHandlerService: CookieHandlerService) { }
+  constructor(private imageService: ImageService, public dataService: DataService) { }
 
   ngOnInit(): void {
-  }
-
-  public removeFromBasket(id: number) {
-    this.cookieHandlerService.removeFromBasket(id)
   }
 
   public getImage(painting: PaintingModel) {

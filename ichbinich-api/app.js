@@ -22,6 +22,9 @@ app.use('/paintings', paintings);
 let infos = require('./routes/infos');
 app.use('/infos', infos);
 
+let basket = require('./routes/basket');
+app.use('/basket', basket);
+
 let payment = require('./routes/payment');
 app.use('/payment', payment);
 

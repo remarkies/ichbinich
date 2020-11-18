@@ -6,7 +6,7 @@ export interface AddressModel {
   streetNo: string;
   postalCode: string;
   city: string;
-  country_id: string;
+  country_id: number;
   email: string;
   phone: string;
 }

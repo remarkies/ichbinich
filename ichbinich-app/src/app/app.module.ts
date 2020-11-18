@@ -27,7 +27,6 @@ import { ViewTitleComponent } from './components/view-title/view-title.component
 import {ReactiveFormsModule} from "@angular/forms";
 import { ActionLinkComponent } from './components/action-link/action-link.component';
 import { ValidatorInfoComponent } from './components/validator-info/validator-info.component';
-import {ValidationService} from "./services/validation.service";
 import { HoverMessageComponent } from './components/hover-message/hover-message.component';
 import { AddressFormComponent } from './components/address-form/address-form.component';
 import { LoginFormComponent } from './components/login-form/login-form.component';
@@ -82,7 +81,7 @@ import {NgxStripeModule} from "ngx-stripe";
     ReactiveFormsModule,
     NgxStripeModule.forRoot('pk_test_51HmkOLDUxivmNNIfUFH5IMY9eSpP8WLogw8d2gcjyGfybIpC3sonq5kdqfaRjQu4sgb3vDRoGhfujIxC0J1bXFPk00d4VdUq1n')
   ],
-  providers: [ValidationService],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

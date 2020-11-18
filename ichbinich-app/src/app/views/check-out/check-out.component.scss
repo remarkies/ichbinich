@@ -1,19 +1,11 @@
 @import "../../../styles";
-@media screen and (min-width: 800px) {
-  :host {
-    width: 100vw;
-    max-width: calc(800px);
-  }
-}
-
-@media screen and (max-width: 799px) {
-  :host {
-    max-width: calc(800px - 32px);
-  }
-}
 
 :host {
   display: block;
-  padding-top: 96px;
+  padding: 96px 16px 16px 16px;
+}
+
+.content {
   margin: auto;
+  max-width: calc(800px - 32px);
 }

@@ -1,5 +1,4 @@
 export enum CookieOptionEnum {
-  basket,
-  address,
-  checkOut
+  User,
+  Basket
 }

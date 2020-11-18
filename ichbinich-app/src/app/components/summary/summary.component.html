@@ -1,24 +1,25 @@
 <section>
-  <app-form-header [description]="'Produkte'"></app-form-header>
+  <app-view-title [title]="'Übersicht'"></app-view-title>
+  <p>Produkte</p>
   <div class="basket-items">
     <app-basket-item [item]="item" *ngFor="let item of basketItems"></app-basket-item>
   </div>
 </section>
 <section>
-  <app-form-header [description]="'Anschrift'"></app-form-header>
+  <p>Anschrift</p>
   <div class="text-line">
-    <p>{{selectedTitle}}</p>
-    <p>{{checkOutService.address.firstName}}</p>
-    <p>{{checkOutService.address.lastName}}</p>
+    <!--<p *ngIf="selectedTitle !== null">{{selectedTitle.description}}</p>-->
+    <p>{{dataService.userData.address.firstName}}</p>
+    <p>{{dataService.userData.address.lastName}}</p>
   </div>
   <div class="text-line">
-    <p>{{checkOutService.address.street}} {{checkOutService.address.streetNo}}</p>
+    <p>{{dataService.userData.address.street}} {{dataService.userData.address.streetNo}}</p>
   </div>
   <div class="text-line">
-    <p>{{checkOutService.address.postalCode}}, {{checkOutService.address.city}}</p>
+    <p>{{dataService.userData.address.postalCode}}, {{dataService.userData.address.city}}</p>
   </div>
   <div class="text-line">
-    <p>{{selectedCountry}}</p>
+    <p *ngIf="selectedCountry !== undefined && selectedCountry !== null">{{selectedCountry.name}}</p>
   </div>
   <div class="button-align-right">
     <app-button [label]="'Bezahlen'" (onClick)="pay()"></app-button>

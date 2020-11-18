@@ -4,7 +4,7 @@
     <label>Anrede</label>
     <select formControlName="title_id" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.title_id.errors }">
       <option value=""></option>
-      <option [value]="title.key" *ngFor="let title of dataService.titles">{{title.value}}</option>
+      <option [value]="title.id" *ngFor="let title of titles">{{title.description}}</option>
     </select>
     <div class="validator-space">
       <app-validator-info *ngIf="submitted && f.title_id.errors" [validationMessage]="'Title is required'"></app-validator-info>
@@ -60,7 +60,7 @@
     <label>Land</label>
     <select formControlName="country_id" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.country_id.errors }">
       <option value=""></option>
-      <option [value]="country.key" *ngFor="let country of dataService.countries">{{country.value}}</option>
+      <option [value]="country.id" *ngFor="let country of countries">{{country.name}}</option>
     </select>
     <div class="validator-space">
       <app-validator-info *ngIf="submitted && f.country_id.errors" [validationMessage]="'Country is required'"></app-validator-info>

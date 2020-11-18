@@ -1,13 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import {CheckOutService} from "../../services/check-out.service";
 import {AddressModel} from "../../models/address.model";
 import {PaintingModel} from "../../models/painting.model";
 import {ApiService} from "../../services/api.service";
-import { StripeService } from "ngx-stripe";
+import {StripeService} from "ngx-stripe";
 import {ActivatedRoute, Router} from "@angular/router";
-import {Subscription} from "rxjs";
-import {CookieHandlerService} from "../../services/cookie-handler.service";
+import {forkJoin, Observable, Subscription} from "rxjs";
 import {DataService} from "../../services/data.service";
+import {KeyValueModel} from "../../models/keyValue.model";
+import {TitleModel} from "../../models/title.model";
+import {CountryModel} from "../../models/country.model";
+import {Title} from "@angular/platform-browser";
+import {map} from "rxjs/operators";
 
 
 @Component({
@@ -17,60 +20,71 @@ import {DataService} from "../../services/data.service";
 })
 export class SummaryComponent implements OnInit {
 
-  public basketItems: PaintingModel[] = [];
-  public basketTotal: number = 0;
+  basketItems: PaintingModel[] = [];
+  basketTotal: number = 0;
   private basketSubscription: Subscription;
+
+  address: AddressModel = null;
+  selectedTitle$: Observable<[TitleModel[], AddressModel]>;
+  selectedCountry: CountryModel;
+
+  private addressSubscription: Subscription;
+
+  titles: TitleModel[] = [];
+  private titlesSubscription: Subscription;
+
+  countries: CountryModel[] = [];
+  private countriesSubscription: Subscription;
 
   constructor(private route: ActivatedRoute,
               private apiService: ApiService,
-              public checkOutService: CheckOutService,
               private stripeService: StripeService,
-              private cookieHandlerService: CookieHandlerService,
               public dataService: DataService) { }
 
   ngOnInit(): void {
-    this.route.params.subscribe(
-      params =>{
-        //this.courseId = (params['id']);
-      }
-    );
+    this.selectedTitle$ = forkJoin([this.dataService.titles$, this.dataService.address$]);
 
-    this.basketSubscription = this.cookieHandlerService.basket$.subscribe((basket) => {
+  /*
+
+  (result) => {
+      this.selectedTitle = result[0].find(o => o.id === result[1].title_id);
+      console.log(this.selectedTitle);
+    }
+   */
+    this.countriesSubscription = this.dataService.countries$.subscribe(countries => {
+      this.countries = countries;
+      //this.selectedCountry = countries.find(o => o.id === this.address.country_id);
+    });
+
+    this.basketSubscription = this.dataService.basket$.subscribe((basket) => {
       this.updateBasket();
+    });
+
+    this.addressSubscription = this.dataService.address$.subscribe(address => {
+      this.address = address;
+    });
+
+    this.route.params.subscribe(params =>{
+        //this.courseId = (params['id']);
     });
   }
 
   pay(): void {
     this.apiService.createPaymentSession({
-      items: this.checkOutService.basketIds
+      items: this.dataService.basket
     }).subscribe(response => {
       this.stripeService.redirectToCheckout({
         sessionId: response.id
-      })
-        .subscribe(result => {
+      }).subscribe(result => {
         console.log(result);
       });
     });
   }
 
-  get selectedTitle() {
-    return this.dataService.titleForId(Number(this.checkOutService.address.title_id)).value
-  }
-  get selectedCountry() {
-    return this.dataService.countryForId(Number(this.checkOutService.address.country_id)).value
-  }
-
   public updateBasket() {
-    this.apiService.getPaintingsForCookieBasket(this.cookieHandlerService.basket).subscribe(items => {
+    this.dataService.basketModels$.subscribe(items => {
       this.basketItems = items;
-      this.basketTotal = this.calcBasketTotal(this.basketItems);
+      this.basketTotal = this.dataService.calcBasketTotal(items);
     });
-  }
-  private calcBasketTotal(basketItems: PaintingModel[]) : number {
-    let total = 0;
-    basketItems.forEach((item) => {
-      total += item.price;
-    });
-    return total;
   }
 }

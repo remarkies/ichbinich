@@ -1,13 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {ApiService} from "../../services/api.service";
-import {Subscription} from "rxjs";
-import {KeyValueModel} from "../../models/keyValue.model";
-import {CookieHandlerService} from "../../services/cookie-handler.service";
-import {CheckOutService} from "../../services/check-out.service";
-import {StepOption} from "../../models/step.model";
 import {Router} from "@angular/router";
 import {DataService} from "../../services/data.service";
+import {TitleModel} from "../../models/title.model";
+import {Subscription} from "rxjs";
+import {CountryModel} from "../../models/country.model";
 
 @Component({
   selector: 'app-address-form',
@@ -19,16 +16,27 @@ export class AddressFormComponent implements OnInit {
   addressForm: FormGroup;
   submitted = false;
 
+  titles: TitleModel[] = [];
+  private titlesSubscription: Subscription;
+
+  countries: CountryModel[] = [];
+  private countriesSubscription: Subscription;
+
   constructor(private formBuilder: FormBuilder,
-              private apiService: ApiService,
-              private cookieHandlerService: CookieHandlerService,
-              private checkOutService: CheckOutService,
               private router: Router,
               public dataService: DataService) { }
 
   ngOnInit(): void {
+    this.titlesSubscription = this.dataService.titles$.subscribe(titles => {
+      this.titles = titles;
+    });
+
+    this.countriesSubscription = this.dataService.countries$.subscribe(countries => {
+      this.countries = countries;
+    });
+
     // load last entered address
-    let address = this.cookieHandlerService.loadAddress();
+    let address = this.dataService.userData.address;
 
     this.addressForm = this.formBuilder.group({
       title_id: [address !== null ? address.title_id : '', [Validators.required]],
@@ -50,11 +58,7 @@ export class AddressFormComponent implements OnInit {
     this.submitted = true;
     if (this.addressForm.invalid) { return; }
 
-    // save address to cookies if user reload or something
-    this.cookieHandlerService.saveAddress(this.addressForm.value);
-
-    // save address to checkout service for later uses
-    this.checkOutService.address = this.addressForm.value;
+    this.dataService.saveAddress(this.addressForm.value);
 
     this.router.navigate(['/check-out/summary']);
   }

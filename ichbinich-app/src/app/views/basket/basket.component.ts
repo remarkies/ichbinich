@@ -1,10 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {CookieHandlerService} from "../../services/cookie-handler.service";
 import {PaintingModel} from "../../models/painting.model";
-import {ApiService} from "../../services/api.service";
 import {Subscription} from "rxjs";
-import {CheckOutService} from "../../services/check-out.service";
-import {StepOption} from "../../models/step.model";
+import {DataService} from "../../services/data.service";
 
 @Component({
   selector: 'app-basket',
@@ -18,30 +15,13 @@ export class BasketComponent implements OnInit {
 
   private basketSubscription: Subscription;
 
-  constructor(private apiService: ApiService, private cookieHandlerService: CookieHandlerService, private checkOutService: CheckOutService) { }
+  constructor(private dataService: DataService) { }
 
   ngOnInit(): void {
-    this.basketSubscription = this.cookieHandlerService.basket$.subscribe((basket) => {
-      this.updateBasket();
-    });
-  }
 
-  public updateBasket() {
-    this.apiService.getPaintingsForCookieBasket(this.cookieHandlerService.basket).subscribe(items => {
-      this.basketItems = items;
-      this.basketTotal = this.calcBasketTotal(this.basketItems);
+    this.basketSubscription = this.dataService.basket$.subscribe((basket) => {
+      this.basketItems = basket.items;
+      this.basketTotal = this.dataService.calcBasketTotal(basket.items);
     });
-  }
-
-  private calcBasketTotal(basketItems: PaintingModel[]) : number {
-    let total = 0;
-    basketItems.forEach((item) => {
-      total += item.price;
-    });
-    return total;
-  }
-
-  public checkOut() {
-    this.checkOutService.basket = this.basketItems;
   }
 }
