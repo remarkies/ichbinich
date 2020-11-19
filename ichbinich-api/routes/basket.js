@@ -9,7 +9,7 @@ let router = express.Router();
 // return json object with all titles
 router.post('/request', async (request,response) => {
     const basketCookie = request.body.basketCookie;
-
+    
     // check if user has already basket
     if(basketCookie !== null) {
         // there should be a basket
@@ -19,6 +19,7 @@ router.post('/request', async (request,response) => {
                     // basket actually exists
                     basketService.requestOldBasket(basketCookie.id)
                         .then(oldBasket => {
+
                             response.send(oldBasket);
                         })
                         .catch((err) => {
@@ -62,11 +63,25 @@ router.post('/add', async (request,response) => {
             response.send(result);
         })
         .catch(err => {
-            const message = 'paintings.addPaintingToBasket() failed.';
+            const message = 'basket.addPaintingToBasket() failed.';
             errorService.newError(message, err);
-            response.send(message)
+            response.send(message);
         });
 });
 
+router.post('/remove', async (request,response) => {
+    const basketId = request.body.basketId;
+    const paintingId = request.body.paintingId;
+
+    basketService.removePaintingFromBasket(basketId, paintingId)
+        .then(result => {
+            response.send(result);
+        })
+        .catch(err => {
+            const message = 'basket.deletePaintingFromBasket() failed.';
+            errorService.newError(message, err);
+            response.send(message);
+        });
+});
 
 module.exports = router;

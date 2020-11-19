@@ -110,10 +110,10 @@ export class DataService {
       });
   }
 
-  public isItemAlreadyInBasket(id: number) : boolean {
+  public isItemAlreadyInBasket(basket: RequestBasketResponseModel, painting: PaintingModel) : boolean {
     let found = false;
-    this.basket.items.forEach((o) => {
-      if(o.id === id) { found = true; }
+    basket.items.forEach((o) => {
+      if(o.id === painting.id) { found = true; }
     });
     return found;
   }
@@ -124,13 +124,16 @@ export class DataService {
     });
     return total;
   }
-  public removeFromBasket(id: number) {
-    const index = this._basket.value.items.findIndex(a => a.id === id);
-    if (index >= 0) {
-      this._basket.value.items.splice(index, 1);
-      this._basket.next(this._basket.value);
+  public removeFromBasket(paintingId: number) {
+    if(this.basket === null) {
+      console.log('Basket not loaded properly.');
+      return;
     }
-    this.saveUserData();
+
+    this.apiService.removeFromBasket({ basketId: this.basket.id, paintingId: paintingId })
+      .subscribe(response => {
+        this.requestBasket();
+      });
   }
 
   // checkout related

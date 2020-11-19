@@ -71,7 +71,7 @@ export class SummaryComponent implements OnInit {
 
   pay(): void {
     this.apiService.createPaymentSession({
-      items: this.dataService.basket
+      items: this.dataService.basket.items.map(item => item.id)
     }).subscribe(response => {
       this.stripeService.redirectToCheckout({
         sessionId: response.id
@@ -82,9 +82,9 @@ export class SummaryComponent implements OnInit {
   }
 
   public updateBasket() {
-    this.dataService.basketModels$.subscribe(items => {
-      this.basketItems = items;
-      this.basketTotal = this.dataService.calcBasketTotal(items);
+    this.dataService.basket$.subscribe(basket => {
+      this.basketItems = basket.items;
+      this.basketTotal = this.dataService.calcBasketTotal(basket.items);
     });
   }
 }

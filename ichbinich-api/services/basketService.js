@@ -5,7 +5,7 @@ module.exports.basketExists = function(id)  {
     return new Promise((resolve, reject) => {
         database.query('select count(*) \'basketFound\' from basket b where b.id = ?;', [id])
             .then((output) => {
-                const basketFound = output[0].basketFound === 0 ? true : false;
+                const basketFound = output[0].basketFound === 0 ? false : true;
                 resolve(basketFound);
             })
             .catch((err) => {
@@ -20,13 +20,24 @@ module.exports.requestOldBasket = function(id)  {
             items: []
         };
 
-        database.query(`select bp.painting_id from basket_painting bp where bp.basket_id = ?;`, [id])
-            .then(paintingIds => {
-                paintingService.requestPaintingsWithParams(paintingIds)
-                    .then(paintings => {
-                        resultObject.items = paintings;
-                        resolve(resultObject);
-                    });
+        database.query(`select bp.painting_id id from basket_painting bp where bp.basket_id = ?;`, [id])
+            .then(result => {
+                let hasValues = result[0] === undefined ? false : true;
+
+                if(hasValues) {
+                    const ids = result.map(row => row.id );
+                    paintingService.requestPaintingsWithParams(ids)
+                        .then(paintings => {
+                            resultObject.items = paintings;
+                            resolve(resultObject);
+                        })
+                        .catch(err => {
+                            reject(err);
+                        });
+                } else {
+                    resolve(resultObject);
+                }
+
             })
             .catch(err => {
                 reject(err);
@@ -55,8 +66,7 @@ module.exports.addPaintingToBasket = function(basketId, paintingId)  {
                 if(!exists) {
                     database.query('insert into basket_painting (basket_id, painting_id) values (?, ?);', [basketId, paintingId])
                         .then((output) => {
-                            const basketFound = output[0].basketFound === 0 ? true : false;
-                            resolve(basketFound);
+                            resolve();
                         })
                         .catch((err) => {
                             reject(err);
@@ -71,12 +81,34 @@ module.exports.addPaintingToBasket = function(basketId, paintingId)  {
 
     });
 };
+module.exports.removePaintingFromBasket = function(basketId, paintingId)  {
+    return new Promise((resolve, reject) => {
+        this.paintingExistsInBasket(basketId, paintingId)
+            .then(exists => {
+                if(exists) {
+                    database.query('delete from basket_painting where basket_id = ? and painting_id = ?;', [basketId, paintingId])
+                        .then((output) => {
+                            resolve();
+                        })
+                        .catch((err) => {
+                            reject(err);
+                        });
+                } else {
+                    reject("There is no painting to remove!");
+                }
+            })
+            .catch(err => {
+                reject(err);
+            });
+
+    });
+};
 module.exports.paintingExistsInBasket = function(basketId, paintingId)  {
     return new Promise((resolve, reject) => {
         database.query('select count(*) \'paintingFound\' from basket_painting bp where bp.basket_id = ? and bp.painting_id = ?;', [basketId, paintingId])
             .then((output) => {
-                const basketFound = output[0].paintingFound === 0 ? true : false;
-                resolve(basketFound);
+                const exists = output[0].paintingFound === 0 ? false : true;
+                resolve(exists);
             })
             .catch((err) => {
                 reject(err);

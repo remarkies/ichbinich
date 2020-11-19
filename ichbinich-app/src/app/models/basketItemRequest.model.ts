@@ -1,4 +1,4 @@
-export interface AddToBasketRequestModel {
+export interface BasketItemRequestModel {
   basketId: number;
   paintingId: number;
 }

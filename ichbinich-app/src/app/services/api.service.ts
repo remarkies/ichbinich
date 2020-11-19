@@ -9,7 +9,7 @@ import {CreatePaymentSessionResponseModel} from "../models/createPaymentSessionR
 import {BasketCookieModel} from "../models/basketCookie.model";
 import {RequestBasketRequestModel} from "../models/requestBasketRequest.model";
 import {RequestBasketResponseModel} from "../models/requestBasketResponse.model";
-import {AddToBasketRequestModel} from "../models/addToBasketRequest.model";
+import {BasketItemRequestModel} from "../models/basketItemRequest.model";
 
 @Injectable({
   providedIn: 'root'
@@ -26,8 +26,12 @@ export class ApiService {
     return this.http.post<RequestBasketResponseModel>(environment.apiUrl + "/basket/request", requestBasketModel)
   }
 
-  public addToBasket(addToBasketRequestModel: AddToBasketRequestModel) {
-    return this.http.post(environment.apiUrl + "/basket/add", addToBasketRequestModel);
+  public addToBasket(basketItemRequestModel: BasketItemRequestModel) {
+    return this.http.post(environment.apiUrl + "/basket/add", basketItemRequestModel);
+  }
+
+  public removeFromBasket(basketItemRequestModel: BasketItemRequestModel) {
+    return this.http.post(environment.apiUrl + "/basket/remove", basketItemRequestModel);
   }
 
   public getPaintingsForCookieBasket(basket: number[]) {

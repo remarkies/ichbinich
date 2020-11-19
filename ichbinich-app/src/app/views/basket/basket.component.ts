@@ -20,8 +20,10 @@ export class BasketComponent implements OnInit {
   ngOnInit(): void {
 
     this.basketSubscription = this.dataService.basket$.subscribe((basket) => {
-      this.basketItems = basket.items;
-      this.basketTotal = this.dataService.calcBasketTotal(basket.items);
+      if(basket !== null) {
+        this.basketItems = basket.items;
+        this.basketTotal = this.dataService.calcBasketTotal(basket.items);
+      }
     });
   }
 }
