@@ -74,7 +74,6 @@ module.exports.upsertCustomerFromAddress = function(address, basketCookie) {
     return new Promise(((resolve, reject) => {
         this.customerIdForBasket(basketCookie.id)
             .then(customerId => {
-                console.log('customerid', customerId);
                 if(customerId !== null) {
                     this.updateCustomerFromAddress(address, customerId)
                         .then(() => {
@@ -86,6 +85,7 @@ module.exports.upsertCustomerFromAddress = function(address, basketCookie) {
                 } else {
                     this.insertCustomerFromAddress(address)
                         .then(newCustomerId => {
+                            console.log('customerid', newCustomerId);
                             this.linkCustomerToBasket(newCustomerId, basketCookie.id)
                                 .then(() => {
                                     resolve();
@@ -190,7 +190,7 @@ module.exports.linkAddressToBasket = function(addressId, basketId)  {
 module.exports.linkCustomerToBasket = function(customerId, basketId)  {
     return new Promise((resolve, reject) => {
         database.query(`update basket set customer_id = ?
-                                        where id = ?;`, [addressId, basketId])
+                                        where id = ?;`, [customerId, basketId])
             .then((output) => {
                 resolve();
             })
