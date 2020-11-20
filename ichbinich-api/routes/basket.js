@@ -1,15 +1,12 @@
 let express = require('express');
-let database = require('../services/database');
 let basketService = require('../services/basketService');
-let paintingService = require('../services/paintingService')
 let errorService = require('../services/errorService')
 
 let router = express.Router();
 
-// return json object with all titles
 router.post('/request', async (request,response) => {
     const basketCookie = request.body.basketCookie;
-    
+
     // check if user has already basket
     if(basketCookie !== null) {
         // there should be a basket
@@ -19,14 +16,13 @@ router.post('/request', async (request,response) => {
                     // basket actually exists
                     basketService.requestOldBasket(basketCookie.id)
                         .then(oldBasket => {
-
                             response.send(oldBasket);
                         })
                         .catch((err) => {
                         const message = 'basketService.requestOldBasket failed.';
                         errorService.newError(message, err);
                         response.send(message)
-                    });;
+                    });
                 } else {
                     // basket id not valid
                     basketService.requestNewBasket()

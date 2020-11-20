@@ -24,17 +24,9 @@ export class SummaryComponent implements OnInit {
   basketTotal: number = 0;
   private basketSubscription: Subscription;
 
-  address: AddressModel = null;
-  selectedTitle$: Observable<[TitleModel[], AddressModel]>;
-  selectedCountry: CountryModel;
+  address: AddressModel;
 
   private addressSubscription: Subscription;
-
-  titles: TitleModel[] = [];
-  private titlesSubscription: Subscription;
-
-  countries: CountryModel[] = [];
-  private countriesSubscription: Subscription;
 
   constructor(private route: ActivatedRoute,
               private apiService: ApiService,
@@ -42,30 +34,15 @@ export class SummaryComponent implements OnInit {
               public dataService: DataService) { }
 
   ngOnInit(): void {
-    this.selectedTitle$ = forkJoin([this.dataService.titles$, this.dataService.address$]);
-
-  /*
-
-  (result) => {
-      this.selectedTitle = result[0].find(o => o.id === result[1].title_id);
-      console.log(this.selectedTitle);
-    }
-   */
-    this.countriesSubscription = this.dataService.countries$.subscribe(countries => {
-      this.countries = countries;
-      //this.selectedCountry = countries.find(o => o.id === this.address.country_id);
-    });
-
     this.basketSubscription = this.dataService.basket$.subscribe((basket) => {
-      this.updateBasket();
+      if(basket !== null) {
+        this.basketItems = basket.items;
+        this.basketTotal = this.dataService.calcBasketTotal(basket.items);
+      }
     });
 
     this.addressSubscription = this.dataService.address$.subscribe(address => {
       this.address = address;
-    });
-
-    this.route.params.subscribe(params =>{
-        //this.courseId = (params['id']);
     });
   }
 
@@ -78,13 +55,6 @@ export class SummaryComponent implements OnInit {
       }).subscribe(result => {
         console.log(result);
       });
-    });
-  }
-
-  public updateBasket() {
-    this.dataService.basket$.subscribe(basket => {
-      this.basketItems = basket.items;
-      this.basketTotal = this.dataService.calcBasketTotal(basket.items);
     });
   }
 }

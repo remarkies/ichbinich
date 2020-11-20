@@ -22,6 +22,8 @@ export class AddressFormComponent implements OnInit {
   countries: CountryModel[] = [];
   private countriesSubscription: Subscription;
 
+  private addressSubscription: Subscription;
+
   constructor(private formBuilder: FormBuilder,
               private router: Router,
               public dataService: DataService) { }
@@ -35,20 +37,19 @@ export class AddressFormComponent implements OnInit {
       this.countries = countries;
     });
 
-    // load last entered address
-    let address = this.dataService.userData.address;
-
-    this.addressForm = this.formBuilder.group({
-      title_id: [address !== null ? address.title_id : '', [Validators.required]],
-      firstName: [address !== null ? address.firstName : '', [Validators.required]],
-      lastName: [address !== null ? address.lastName : '', [Validators.required]],
-      street: [address !== null ? address.street : '', [Validators.required]],
-      streetNo: [address !== null ? address.streetNo : '', [Validators.required]],
-      postalCode: [address !== null ? address.postalCode : '', [Validators.required]],
-      city: [address !== null ? address.city : '', [Validators.required]],
-      country_id: [address !== null ? address.country_id : '', [Validators.required]],
-      email: [address !== null ? address.email : '', [Validators.required, Validators.email]],
-      phone: [address !== null ? address.phone : '', [Validators.required]]
+    this.addressSubscription = this.dataService.address$.subscribe(address => {
+      this.addressForm = this.formBuilder.group({
+        title_id: [address !== null ? address.title_id : '', [Validators.required]],
+        firstName: [address !== null ? address.firstName : '', [Validators.required]],
+        lastName: [address !== null ? address.lastName : '', [Validators.required]],
+        street: [address !== null ? address.street : '', [Validators.required]],
+        streetNo: [address !== null ? address.streetNo : '', [Validators.required]],
+        postalCode: [address !== null ? address.postalCode : '', [Validators.required]],
+        city: [address !== null ? address.city : '', [Validators.required]],
+        country_id: [address !== null ? address.country_id : '', [Validators.required]],
+        email: [address !== null ? address.email : '', [Validators.required, Validators.email]],
+        phone: [address !== null ? address.phone : '', [Validators.required]]
+      });
     });
   }
   // convenience getter for easy access to form fields
@@ -58,7 +59,7 @@ export class AddressFormComponent implements OnInit {
     this.submitted = true;
     if (this.addressForm.invalid) { return; }
 
-    this.dataService.saveAddress(this.addressForm.value);
+    this.dataService.linkAddressToBasket(this.addressForm.value);
 
     this.router.navigate(['/check-out/summary']);
   }

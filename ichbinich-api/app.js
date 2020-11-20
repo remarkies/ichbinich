@@ -25,6 +25,9 @@ app.use('/infos', infos);
 let basket = require('./routes/basket');
 app.use('/basket', basket);
 
+let address = require('./routes/address');
+app.use('/address', address);
+
 let payment = require('./routes/payment');
 app.use('/payment', payment);
 

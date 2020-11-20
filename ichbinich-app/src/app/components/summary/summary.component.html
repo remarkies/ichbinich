@@ -1,25 +1,25 @@
-<section>
-  <app-view-title [title]="'Übersicht'"></app-view-title>
+<app-view-title [title]="'Übersicht'"></app-view-title>
+<section *ngIf="basketItems.length > 0">
   <p>Produkte</p>
   <div class="basket-items">
     <app-basket-item [item]="item" *ngFor="let item of basketItems"></app-basket-item>
   </div>
 </section>
-<section>
+<section *ngIf="address !== null">
   <p>Anschrift</p>
   <div class="text-line">
-    <!--<p *ngIf="selectedTitle !== null">{{selectedTitle.description}}</p>-->
-    <p>{{dataService.userData.address.firstName}}</p>
-    <p>{{dataService.userData.address.lastName}}</p>
+    <p>{{address.title}}</p>
+    <p>{{address.firstName}}</p>
+    <p>{{address.lastName}}</p>
   </div>
   <div class="text-line">
-    <p>{{dataService.userData.address.street}} {{dataService.userData.address.streetNo}}</p>
+    <p>{{address.street}} {{address.streetNo}}</p>
   </div>
   <div class="text-line">
-    <p>{{dataService.userData.address.postalCode}}, {{dataService.userData.address.city}}</p>
+    <p>{{address.postalCode}}, {{address.city}}</p>
   </div>
   <div class="text-line">
-    <p *ngIf="selectedCountry !== undefined && selectedCountry !== null">{{selectedCountry.name}}</p>
+    <p>{{address.country}}</p>
   </div>
   <div class="button-align-right">
     <app-button [label]="'Bezahlen'" (onClick)="pay()"></app-button>

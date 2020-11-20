@@ -42,37 +42,11 @@ export class DataService {
   }
   private _countries: BehaviorSubject<CountryModel[]> = new BehaviorSubject<CountryModel[]>([]);
 
-  public userData: UserModel;
-
-  private isUserLoggedIn: boolean = false;
-
   constructor(private apiService: ApiService, private cookieHandlerService: CookieHandlerService) {
     this.loadTitles();
     this.loadCountries();
     this.requestBasket();
-  }
-
-  private loadUserData() {
-    if(this.isUserLoggedIn) {
-      // server request for basket
-    } else {
-      // cookie request for basket
-      this.userData = this.cookieHandlerService.loadCookie<UserModel>(CookieOptionEnum.User);
-      if(this.userData === undefined || this.userData === null) {
-        //this._basket.next([]);
-        this._address.next(null);
-      } else {
-        //this._basket.next(this.userData.basket);
-        this._address.next(this.userData.address);
-      }
-    }
-  }
-  private saveUserData() {
-    if(this.isUserLoggedIn) {
-      // server side save
-    } else {
-      this.cookieHandlerService.saveCookie(CookieOptionEnum.User, this.userData);
-    }
+    this.requestAddressForBasket();
   }
 
   private loadTitles() {
@@ -97,7 +71,6 @@ export class DataService {
       this.cookieHandlerService.saveCookie(CookieOptionEnum.Basket, { id: response.id, version: 'v1' })
     });
   }
-
   public addToBasket(paintingId: number) {
     if(this.basket === null) {
       console.log('Basket not loaded properly.');
@@ -109,7 +82,6 @@ export class DataService {
         this.requestBasket();
       });
   }
-
   public isItemAlreadyInBasket(basket: RequestBasketResponseModel, painting: PaintingModel) : boolean {
     let found = false;
     basket.items.forEach((o) => {
@@ -135,18 +107,30 @@ export class DataService {
         this.requestBasket();
       });
   }
-
-  // checkout related
-  public saveAddress(address: AddressModel) {
-    if(this.userData === undefined || this.userData === null) {
-      this.userData = {
-        basket: [],
-        address: address
-      };
-    } else {
-      this.userData.address = address;
-    }
-    this._address.next(this.userData.address);
-    this.saveUserData();
+  public requestAddressForBasket() {
+    const basketCookie = this.cookieHandlerService.loadCookie<BasketCookieModel>(CookieOptionEnum.Basket);
+    this.apiService.requestAddressForBasket({ basketCookie: basketCookie}).subscribe( response => {
+      if(response.status === 0) {
+        this._address.next(response.address);
+      } else {
+        console.log(response.message);
+      }
+    });
   }
+  public linkAddressToBasket(address: AddressModel) {
+    if(this.basket === null) {
+      console.log('Basket not loaded properly.');
+      return;
+    }
+    const basketCookie = this.cookieHandlerService.loadCookie<BasketCookieModel>(CookieOptionEnum.Basket);
+    this.apiService.newAddressForBasket({
+      basketCookie: basketCookie,
+      address: address
+    }).subscribe(() => {
+      console.log('New address updated');
+      this.requestAddressForBasket();
+    });
+
+  }
+
 }

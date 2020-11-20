@@ -1,4 +1,6 @@
 export interface AddressModel {
+  id: number;
+  addressType_id: number;
   title_id: number;
   firstName: string;
   lastName: string;
@@ -9,4 +11,6 @@ export interface AddressModel {
   country_id: number;
   email: string;
   phone: string;
+  title: string;
+  country: string;
 }
