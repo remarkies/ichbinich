@@ -10,13 +10,7 @@ module.exports.createSession = function(params) {
     });
 };
 
-module.exports.createPaymentIntent = function(params) {
-    return new Promise(function (resolve, reject) {
-        stripeService.paymentIntents.create(params).then(paymentIntent => {
-            resolve(paymentIntent);
-        }).catch(error => {
-            reject(error);
-        });
-    });
+module.exports.getSession = function(sessionId) {
+    return stripeService.checkout.sessions.retrieve(sessionId);
 };
 

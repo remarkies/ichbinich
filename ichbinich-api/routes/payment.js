@@ -1,81 +1,79 @@
-let express = require('express');
-let database = require('../services/database');
-let paintingService = require('../services/paintingService');
-let stripe = require('../services/stripeService');
+const express = require('express');
+const stripe = require('../services/stripeService');
+const basketService = require('../services/basketService');
+const paymentService = require('../services/paymentService');
+const errorService = require('../services/errorService');
 
 let router = express.Router();
 router.post('/create-session', async (request,response) => {
-    let items = request.body.items;
+    const basketCookie = request.body.basketCookie;
 
-    // get paintings from database
-    database.query( `SELECT P.ID 'id',
-               P.name,
-               P.price
-        FROM PAINTING P
-        WHERE P.ID IN (?);`, [items]).then((output) => {
+    // check if user has already basket
+    if(basketCookie !== null) {
+        // there should be a basket
+        basketService.basketExists(basketCookie.id)
+            .then(exists => {
+                if(exists) {
+                    // basket actually exists
+                    paymentService.requestCheckOutItems(basketCookie.id)
+                        .then(items => {
+                            const params = paymentService.buildParamsForItems(basketCookie.id, items);
 
-        // create promises for getting all images foreach painting
-        // includes images in json object of paintings
-        let promises = paintingService.getPaths(output);
+                            stripe.createSession(params).then(session => {
+                                basketService.updateBasketWithSession(basketCookie.id, session.id)
+                                    .then(() => {
+                                        response.send({ id: session.id});
+                                    })
+                                    .catch(err => {
+                                        // basket id not valid
+                                        const message = '/create-session -> could not update basket with session.';
+                                        errorService.newError(message, err);
+                                        response.send(message)
+                                    });
 
-        // execute promises
-        // then send response with json
-        Promise.all(promises).then(() => {
+                            }).catch(err => {
+                                // basket id not valid
+                                const message = '/create-session -> could not create stripe session.';
+                                errorService.newError(message, err);
+                                response.send(message)
+                            });
+                        })
+                        .catch(err => {
+                            const message = '/create-session -> requestCheckOutItems failed.';
+                            errorService.newError(message, err);
+                            response.send(message)
+                        });
 
-            let params = {
-                payment_method_types: ['card'],
-                line_items: [],
-                mode: 'payment',
-                success_url: `${process.env.STRIPE_SUCCESS_URL}?success=true`,
-                cancel_url: `${process.env.STRIPE_CANCEL_URL}?canceled=true`,
-            };
 
-            output.forEach(item => {
-                params.line_items.push({
-                    price_data: {
-                        currency: 'chf',
-                        product_data: {
-                            name: item.name,
-                            images: ['https://i.imgur.com/EHyR2nP.png']
-                        },
-                        unit_amount_decimal: (item.price * 100),
-                    },
-                    quantity: 1,
-                });
+                } else {
+                    // basket id not valid
+                    const message = '/create-session -> basket id not valid.';
+                    errorService.newError(message, err);
+                    response.send(message)
+                }
             });
-
-            stripe.createSession(params).then(session => {
-                response.send({ id: session.id});
-            }).catch(error => {
-                let code = 'BACKEND ERROR. CREATE_SESSION: Creating session.';
-                console.log(code);
-                console.log(error);
-                // just during dev time
-                response.send(error);
-            });
-        });
-
-    }).catch((err) => {
-        let code = 'BACKEND ERROR. CREATE_SESSION: Receive payment relevant data from database.';
-        console.log(code);
-        console.log(err);
-        response.send(code)
-    });
+    } else {
+        // no cookie available
+        const message = '/create-session -> no cookie available.';
+        errorService.newError(message, err);
+        response.send(message)
+    }
 });
+router.post('/confirm', async (request,response) => {
+    const sessionId = request.body.stripe_session_id; //"cs_test_a1AYCOw8FHCFFefPuTMbdzCvqnD3ypuexJv1wDaUUerGDgHu3JWe6YZeJ7";
 
-// return json object with all paintings
-router.get('/',function(request,response){
-
-    let defaultPayment = {
-        amount: 1000,
-        currency: 'chf',
-        payment_method_types: ['card'],
-        receipt_email: 'luka@ichbinich.ch',
-    };
-
-    stripe.createPaymentIntent(defaultPayment).then(output => {
-        response.send(output);
-    });
+    stripe.getSession(sessionId)
+        .then(result => {
+            let responseObject = {
+                payment_status: result.payment_status
+            };
+            response.send(responseObject);
+        })
+        .catch(err => {
+            const message = '/confirm -> could not get stripe session.';
+            errorService.newError(message, err);
+            response.send(message)
+        });
 });
 
 module.exports = router;

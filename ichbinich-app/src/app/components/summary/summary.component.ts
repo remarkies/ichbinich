@@ -11,6 +11,7 @@ import {TitleModel} from "../../models/title.model";
 import {CountryModel} from "../../models/country.model";
 import {Title} from "@angular/platform-browser";
 import {map} from "rxjs/operators";
+import {PaymentService} from "../../services/payment.service";
 
 
 @Component({
@@ -28,33 +29,59 @@ export class SummaryComponent implements OnInit {
 
   private addressSubscription: Subscription;
 
-  constructor(private route: ActivatedRoute,
+  constructor(private activatedRoute: ActivatedRoute,
               private apiService: ApiService,
               private stripeService: StripeService,
-              public dataService: DataService) { }
+              public dataService: DataService,
+              private paymentService: PaymentService) { }
 
   ngOnInit(): void {
     this.basketSubscription = this.dataService.basket$.subscribe((basket) => {
       if(basket !== null) {
         this.basketItems = basket.items;
         this.basketTotal = this.dataService.calcBasketTotal(basket.items);
+
+        if(basket.stripe_session_id !== null) {
+          this.paymentService.checkPaymentStatus(basket.stripe_session_id)
+            .subscribe(status => {
+              if(status.payment_status === "paid") {
+                this.paymentService.submitOrder(basket.stripe_session_id)
+                  .subscribe(response => {
+                    this.dataService.requestBasket();
+                  });
+              } else if(status.payment_status === "unpaid") {
+                console.log('oh no not paid yet');
+              } else {
+                console.log('dont know this payment status:', status.payment_status);
+              }
+            });
+        }
       }
     });
 
     this.addressSubscription = this.dataService.address$.subscribe(address => {
       this.address = address;
     });
+
+    this.activatedRoute.queryParams.subscribe(params => {
+      let success = params['success'];
+      let canceled = params['canceled']
+      console.log(success); // Print the parameter to the console.
+      console.log(canceled);
+      if(success !== undefined && success) {
+
+      }
+
+    });
   }
 
   pay(): void {
-    this.apiService.createPaymentSession({
-      items: this.dataService.basket.items.map(item => item.id)
-    }).subscribe(response => {
-      this.stripeService.redirectToCheckout({
-        sessionId: response.id
-      }).subscribe(result => {
-        console.log(result);
-      });
+    this.paymentService.createPaymentSession(this.dataService.getBasketCookie())
+      .subscribe(response => {
+        this.paymentService.redirectToCheckout(response.id)
+          .subscribe(result => {
+            console.log(result);
+          });
     });
   }
 }

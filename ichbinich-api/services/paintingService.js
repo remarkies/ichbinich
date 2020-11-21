@@ -38,7 +38,6 @@ module.exports.requestPaintings = function()  {
             });
     });
 };
-
 module.exports.requestPaintingsWithParams = function(ids)  {
     return new Promise((resolve, reject) => {
         database.query( `SELECT P.ID 'id',
@@ -78,7 +77,6 @@ module.exports.requestPaintingsWithParams = function(ids)  {
             });
     });
 };
-
 module.exports.getPaths = function(paintings)  {
     let promises = [];
     paintings.forEach((painting) => {

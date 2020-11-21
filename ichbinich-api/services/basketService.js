@@ -20,28 +20,37 @@ module.exports.requestOldBasket = function(id)  {
             items: []
         };
 
-        database.query(`select bp.painting_id id from basket_painting bp where bp.basket_id = ?;`, [id])
-            .then(result => {
-                let hasValues = result[0] === undefined ? false : true;
+        this.getStripeSessionIdFromBasket(id)
+            .then(stripeSessionId => {
+                resultObject.stripe_session_id = stripeSessionId;
 
-                if(hasValues) {
-                    const ids = result.map(row => row.id );
-                    paintingService.requestPaintingsWithParams(ids)
-                        .then(paintings => {
-                            resultObject.items = paintings;
+                database.query(`select bp.painting_id id from basket_painting bp where bp.basket_id = ?;`, [id])
+                    .then(result => {
+                        let hasValues = result[0] === undefined ? false : true;
+
+                        if(hasValues) {
+                            const ids = result.map(row => row.id );
+                            paintingService.requestPaintingsWithParams(ids)
+                                .then(paintings => {
+                                    resultObject.items = paintings;
+                                    resolve(resultObject);
+                                })
+                                .catch(err => {
+                                    reject(err);
+                                });
+                        } else {
                             resolve(resultObject);
-                        })
-                        .catch(err => {
-                            reject(err);
-                        });
-                } else {
-                    resolve(resultObject);
-                }
+                        }
 
+                    })
+                    .catch(err => {
+                        reject(err);
+                    });
             })
             .catch(err => {
                 reject(err);
             });
+
     });
 };
 module.exports.requestNewBasket = function()  {
@@ -50,11 +59,24 @@ module.exports.requestNewBasket = function()  {
             .then((output) => {
                 let resultObject = {
                     id: output.insertId,
+                    stripe_session_id: null,
                     items: []
                 };
                 resolve(resultObject);
             })
             .catch((err) => {
+                reject(err);
+            });
+    });
+};
+module.exports.getStripeSessionIdFromBasket = function(id)  {
+    return new Promise((resolve, reject) => {
+        database.query(`select b.stripe_session_id from basket b where b.id = ?;`, [id])
+            .then(result => {
+                const stripeSessionId = result[0] === undefined ? null : result[0].stripe_session_id;
+                resolve(stripeSessionId);
+            })
+            .catch(err => {
                 reject(err);
             });
     });
@@ -109,6 +131,28 @@ module.exports.paintingExistsInBasket = function(basketId, paintingId)  {
             .then((output) => {
                 const exists = output[0].paintingFound === 0 ? false : true;
                 resolve(exists);
+            })
+            .catch((err) => {
+                reject(err);
+            });
+    });
+};
+module.exports.updateBasketWithSession = function(basketId, sessionId)  {
+    return new Promise((resolve, reject) => {
+        database.query('update basket set stripe_session_id = ? where id = ?;', [sessionId, basketId])
+            .then((output) => {
+                resolve();
+            })
+            .catch((err) => {
+                reject(err);
+            });
+    });
+};
+module.exports.clearBasketFromItems = function(basketId)  {
+    return new Promise((resolve, reject) => {
+        database.query('delete from basket_painting where basket_id = ?;', [basketId])
+            .then((output) => {
+                resolve();
             })
             .catch((err) => {
                 reject(err);

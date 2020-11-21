@@ -3,33 +3,36 @@ require('dotenv').config()
 const app = express()
 const port = 3000
 
-let cors = require('cors');
+const cors = require('cors');
 app.use(cors());
 
-let bodyParser = require('body-parser')
+const bodyParser = require('body-parser')
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(bodyParser.raw());
 
-let database = require('./services/database');
+const database = require('./services/database');
 database.connect().then(function () {
     console.log('connected');
 });
 
-let paintings = require('./routes/paintings');
+const paintings = require('./routes/paintings');
 app.use('/paintings', paintings);
 
-let infos = require('./routes/infos');
+const infos = require('./routes/infos');
 app.use('/infos', infos);
 
-let basket = require('./routes/basket');
+const basket = require('./routes/basket');
 app.use('/basket', basket);
 
-let address = require('./routes/address');
+const address = require('./routes/address');
 app.use('/address', address);
 
-let payment = require('./routes/payment');
+const payment = require('./routes/payment');
 app.use('/payment', payment);
+
+const order = require('./routes/order');
+app.use('/order', order);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

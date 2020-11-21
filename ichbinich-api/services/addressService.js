@@ -1,5 +1,4 @@
 let database = require('../services/database');
-let errorService = require('../services/errorService');
 module.exports.requestAddressForBasket = function(basketId)  {
     return new Promise((resolve, reject) => {
         database.query(`select a.*, c.email, c.phone, t.description 'title', c2.name 'country' from basket b
@@ -35,7 +34,6 @@ module.exports.requestUserForAddress = function(addressId)  {
             });
     });
 };
-
 module.exports.upsertAddress = function(address, basketCookie) {
     return new Promise(((resolve, reject) => {
         this.addressIdForBasket(basketCookie.id)
@@ -85,7 +83,6 @@ module.exports.upsertCustomerFromAddress = function(address, basketCookie) {
                 } else {
                     this.insertCustomerFromAddress(address)
                         .then(newCustomerId => {
-                            console.log('customerid', newCustomerId);
                             this.linkCustomerToBasket(newCustomerId, basketCookie.id)
                                 .then(() => {
                                     resolve();
@@ -104,7 +101,6 @@ module.exports.upsertCustomerFromAddress = function(address, basketCookie) {
             });
     }));
 };
-
 module.exports.insertAddress = function(address)  {
     return new Promise((resolve, reject) => {
         database.query(`insert into address (addressType_id, title_id, firstName, lastName, street, streetNo, postalCode, city, country_id)

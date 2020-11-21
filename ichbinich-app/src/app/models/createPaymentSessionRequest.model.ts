@@ -1,3 +1,5 @@
+import {BasketCookieModel} from "./basketCookie.model";
+
 export interface CreatePaymentSessionRequestModel {
-  items: number[]
+  basketCookie: BasketCookieModel
 }

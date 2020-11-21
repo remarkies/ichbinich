@@ -12,6 +12,7 @@ import {RequestBasketResponseModel} from "../models/requestBasketResponse.model"
 import {BasketItemRequestModel} from "../models/basketItemRequest.model";
 import {RequestAddressForBasketResponseModel} from "../models/requestAddressForBasketResponse.model";
 import {NewAddressForBasketRequestModel} from "../models/newAddressForBasketRequest.model";
+import {CheckPaymentOfSessionResponseModel} from "../models/checkPaymentOfSessionResponse.model";
 
 @Injectable({
   providedIn: 'root'
@@ -37,9 +38,15 @@ export class ApiService {
   public requestAddressForBasket(requestBasketModel: RequestBasketRequestModel) {
     return this.http.post<RequestAddressForBasketResponseModel>(environment.apiUrl + "/address/request", requestBasketModel);
   }
-
   public newAddressForBasket(model: NewAddressForBasketRequestModel) {
     return this.http.post(environment.apiUrl + "/address/new", model);
+  }
+
+  public checkPaymentOfSession(sessionId: string) {
+    return this.http.post<CheckPaymentOfSessionResponseModel>(environment.apiUrl + "/payment/confirm", { stripe_session_id: sessionId });
+  }
+  public submitOrder(sessionId: string) {
+    return this.http.post(environment.apiUrl + "/order/submit", { stripe_session_id: sessionId});
   }
 
   public getPaintingsForCookieBasket(basket: number[]) {

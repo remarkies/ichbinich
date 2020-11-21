@@ -2,7 +2,6 @@ import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable} from "rxjs";
 import {ApiService} from "./api.service";
 import {CookieHandlerService} from "./cookie-handler.service";
-import {UserModel} from "../models/user.model";
 import {CookieOptionEnum} from "../models/cookieOption.enum";
 import {PaintingModel} from "../models/painting.model";
 import {AddressModel} from "../models/address.model";
@@ -60,13 +59,18 @@ export class DataService {
     });
   }
 
+  public getBasketCookie() {
+    return this.cookieHandlerService.loadCookie<BasketCookieModel>(CookieOptionEnum.Basket);
+  }
+
   // basket related
   public requestBasket() {
     // search for basket cookie
-    const basketCookie = this.cookieHandlerService.loadCookie<BasketCookieModel>(CookieOptionEnum.Basket);
+    const basketCookie = this.getBasketCookie();
     this.apiService.requestBasket({ basketCookie: basketCookie }).subscribe(response => {
       // update basket
       this._basket.next(response);
+      console.log(response);
       // set basket cookie
       this.cookieHandlerService.saveCookie(CookieOptionEnum.Basket, { id: response.id, version: 'v1' })
     });
@@ -108,7 +112,7 @@ export class DataService {
       });
   }
   public requestAddressForBasket() {
-    const basketCookie = this.cookieHandlerService.loadCookie<BasketCookieModel>(CookieOptionEnum.Basket);
+    const basketCookie = this.getBasketCookie();
     this.apiService.requestAddressForBasket({ basketCookie: basketCookie}).subscribe( response => {
       if(response.status === 0) {
         this._address.next(response.address);
@@ -122,15 +126,13 @@ export class DataService {
       console.log('Basket not loaded properly.');
       return;
     }
-    const basketCookie = this.cookieHandlerService.loadCookie<BasketCookieModel>(CookieOptionEnum.Basket);
+    const basketCookie = this.getBasketCookie();
     this.apiService.newAddressForBasket({
       basketCookie: basketCookie,
       address: address
     }).subscribe(() => {
-      console.log('New address updated');
       this.requestAddressForBasket();
     });
 
   }
-
 }
