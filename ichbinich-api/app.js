@@ -1,7 +1,7 @@
 const express = require('express')
-require('dotenv').config()
-const app = express()
-const port = 3000
+require('dotenv').config();
+const app = express();
+const port = process.env.PORT;
 
 const cors = require('cors');
 app.use(cors());
@@ -11,32 +11,34 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(bodyParser.raw());
 
-const database = require('./services/database');
+const database = require('./src/services/DatabaseService');
 database.connect().then(function () {
-    console.log('connected');
+    console.log('Connected to mariaDB');
 });
 
-const paintings = require('./routes/paintings');
+const paintings = require('./src/routes/paintings');
 app.use('/paintings', paintings);
 
-const infos = require('./routes/infos');
+const infos = require('./src/routes/infos');
 app.use('/infos', infos);
 
-const basket = require('./routes/basket');
+const basket = require('./src/routes/basket');
 app.use('/basket', basket);
 
-const address = require('./routes/address');
+const address = require('./src/routes/address');
 app.use('/address', address);
 
-const payment = require('./routes/payment');
+const payment = require('./src/routes/payment');
 app.use('/payment', payment);
 
-const order = require('./routes/order');
+const order = require('./src/routes/order');
 app.use('/order', order);
+
+app.use('/public', express.static('./public'))
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-    var err = new Error('Not Found');
+    let err = new Error('Not Found');
     err.status = 404;
     next(err);
 });

@@ -9,6 +9,6 @@ export class ImageService {
   constructor() { }
 
   public getFullPath(pathModel: PathModel) : string {
-    return "/assets/images/" + pathModel.path;
+    return "http://localhost:3000/public/images/" + pathModel.path;
   }
 }

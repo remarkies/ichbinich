@@ -1,5 +1,5 @@
 let express = require('express');
-let database = require('../services/database');
+let database = require('../services/DatabaseService');
 let router = express.Router();
 
 // return json object with all titles

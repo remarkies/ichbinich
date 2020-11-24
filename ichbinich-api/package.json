@@ -13,6 +13,8 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "mariadb": "^2.4.2",
+    "nodemailer": "^6.4.16",
+    "nodemailer-smtp-transport": "^2.7.4",
     "stripe": "^8.121.0"
   },
   "devDependencies": {

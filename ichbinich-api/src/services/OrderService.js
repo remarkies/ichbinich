@@ -1,5 +1,7 @@
-const database = require('../services/database');
-const basketService = require('../services/basketService');
+const DatabaseService = require('./DatabaseService');
+const BasketService = require('./BasketService');
+const QueryService = require('./QueryService');
+const ErrorService = require('./ErrorService');
 
 module.exports.submitOrder = function(sessionId)  {
     return new Promise((resolve, reject) => {
@@ -19,9 +21,9 @@ module.exports.submitOrder = function(sessionId)  {
 
                                         Promise.all(promises)
                                             .then(() => {
-                                                basketService.clearBasketFromItems(basketId)
+                                                BasketService.clearBasketFromItems(basketId)
                                                     .then(() => {
-                                                        basketService.updateBasketWithSession(basketId, null)
+                                                        BasketService.updateBasketWithSession(basketId, null)
                                                             .then(() => {
                                                                 resolve();
                                                             })
@@ -42,62 +44,59 @@ module.exports.submitOrder = function(sessionId)  {
 };
 module.exports.getBasketIdFromSession = function(sessionId)  {
     return new Promise((resolve, reject) => {
-        database.query('select b.id from basket b where b.stripe_session_id = ?;', [sessionId])
+        DatabaseService.query(QueryService.SelectBasketIdFromStripeSessionId, [sessionId])
             .then((output) => {
                 const basketId = output[0] === undefined ? null : output[0];
                 resolve(basketId.id);
             })
             .catch((err) => {
-                reject(err);
+                reject(new ErrorService.Error('Getting basket id from session id failed.', err));
             });
     });
 };
 module.exports.getDataForOrder = function(sessionId)  {
     return new Promise((resolve, reject) => {
-        database.query(`select b.customer_id, b.address_id from basket b where b.stripe_session_id = ?;`, [sessionId])
+        DatabaseService.query(QueryService.SelectDataForOrder, [sessionId])
             .then((output) => {
                 const orderData = output[0] === undefined ? null : output[0];
                 resolve(orderData);
             })
             .catch((err) => {
-                reject(err);
+                reject(new ErrorService.Error('Getting data for order failed.', err));
             });
     });
 };
 module.exports.getOrderItemsFromSession = function(sessionId)  {
     return new Promise((resolve, reject) => {
-        database.query(`select bp.painting_id from basket_painting bp
-                                join basket b on bp.basket_id = b.id
-                                where b.stripe_session_id = ?;`, [sessionId])
+        DatabaseService.query(QueryService.SelectOrderItemsFromStripeSessionId, [sessionId])
             .then((output) => {
                 const orderItems = output[0] === undefined ? [] : output;
                 resolve(orderItems);
             })
             .catch((err) => {
-                reject(err);
+                reject(new ErrorService.Error('Getting order items from session id failed.', err));
             });
     });
 };
 module.exports.insertOrder = function(customerId, address_id, sessionId)  {
     return new Promise((resolve, reject) => {
-        database.query(`insert into \`order\` (customer_id, orderDateTime, orderAddress_id, billingAddress_id, orderState_id, employee_id, changeDateTime, stripe_session_id)
-                                VALUES (?, ?, ?, ?, 1, null, null, ?);`, [customerId, new Date(), address_id, address_id, sessionId])
+        DatabaseService.query(QueryService.InsertOrder,[customerId, new Date(), address_id, address_id, sessionId])
             .then((output) => {
                 resolve(output.insertId);
             })
             .catch((err) => {
-                reject(err);
+                reject(new ErrorService.Error('Insert order failed.', err));
             });
     });
 };
 module.exports.insertOrderItem = function(orderId, paintingId)  {
     return new Promise((resolve, reject) => {
-        database.query(`insert into order_painting (order_id, painting_id) VALUES (?, ?);`, [orderId, paintingId])
+        DatabaseService.query(QueryService.InsertOrderItem, [orderId, paintingId])
             .then((output) => {
                 resolve(output.insertId);
             })
             .catch((err) => {
-                reject(err);
+                reject(new ErrorService.Error('Insert order item failed.', err));
             });
     });
 };

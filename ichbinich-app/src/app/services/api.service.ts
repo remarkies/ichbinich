@@ -22,7 +22,7 @@ export class ApiService {
   constructor(private http: HttpClient) { }
 
   public getPaintings() {
-    return this.http.get<PaintingModel[]>(environment.apiUrl + "/paintings");
+    return this.http.post<PaintingModel[]>(environment.apiUrl + "/paintings", null);
   }
 
   public requestBasket(requestBasketModel: RequestBasketRequestModel) {

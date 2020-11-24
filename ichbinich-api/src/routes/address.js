@@ -1,7 +1,7 @@
 let express = require('express');
-let basketService = require('../services/basketService');
-let addressService = require('../services/addressService');
-let errorService = require('../services/errorService')
+let basketService = require('../services/BasketService');
+let addressService = require('../services/AddressService');
+let errorService = require('../services/ErrorService')
 
 let router = express.Router();
 

@@ -1,19 +1,16 @@
-const database = require('../services/database');
+const DatabaseService = require('./DatabaseService');
+const QueryService = require('./QueryService');
+const ErrorService = require('./ErrorService');
 
 module.exports.requestCheckOutItems = function(basketId)  {
     return new Promise((resolve, reject) => {
-        database.query(`select p.id, p.name, p.price, (select i.path from painting_image pi
-                                    join image i on pi.image_id = i.id
-                                    where pi.painting_id = p.id limit 0,1) 'path' from basket b
-                                join basket_painting bp on b.id = bp.basket_id
-                                join painting p on bp.painting_id = p.id
-                                where bp.basket_id = ?;`, [basketId])
+        DatabaseService.query(QueryService.SelectCheckoutItems, [basketId])
             .then((output) => {
                 let items = output[0] === undefined ? [] : output;
                 resolve(items);
             })
             .catch((err) => {
-                reject(err);
+                reject(new ErrorService.Error('Request checkout items failed.', err));
             });
     });
 };

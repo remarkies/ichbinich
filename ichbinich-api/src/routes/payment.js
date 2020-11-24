@@ -1,8 +1,8 @@
 const express = require('express');
-const stripe = require('../services/stripeService');
-const basketService = require('../services/basketService');
-const paymentService = require('../services/paymentService');
-const errorService = require('../services/errorService');
+const stripe = require('../services/StripeService');
+const basketService = require('../services/BasketService');
+const paymentService = require('../services/PaymentService');
+const errorService = require('../services/ErrorService');
 
 let router = express.Router();
 router.post('/create-session', async (request,response) => {
