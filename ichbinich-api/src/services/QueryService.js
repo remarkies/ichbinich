@@ -88,3 +88,8 @@ module.exports.SelectAddressIdForBasketId = `select b.address_id from basket b w
 module.exports.SelectCustomerIdForBasketId = `select b.customer_id from basket b where b.id = ?;`;
 module.exports.UpdateLinkAddressToBasket = `update basket set address_id = ? where id = ?;`;
 module.exports.UpdateLinkCustomerToBasket = `update basket set customer_id = ? where id = ?;`;
+
+module.exports.SelectMailAdressForOrder = `select a.firstName, a.lastName, c.email from \`order\` o
+                                                join customer c on o.customer_id = c.id
+                                                join address a on o.orderAddress_id = a.id
+                                                where o.stripe_session_id = ?;`

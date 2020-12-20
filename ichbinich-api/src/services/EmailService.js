@@ -23,6 +23,7 @@ module.exports.createEmailOptions = function(to, subject, text, html, attachment
 };
 module.exports.sendEmail = function(mailOptions) {
     return new Promise((resolve, reject) => {
+        const transport = this.initEmail();
         transport.sendMail(mailOptions, (err, info) => {
             if (err) {
                 reject(ErrorService.Error('Sending email failed.', err));

@@ -2,6 +2,7 @@ const DatabaseService = require('./DatabaseService');
 const BasketService = require('./BasketService');
 const QueryService = require('./QueryService');
 const ErrorService = require('./ErrorService');
+const EmailService = require('./EmailService');
 
 module.exports.submitOrder = function(sessionId)  {
     return new Promise((resolve, reject) => {
@@ -99,4 +100,11 @@ module.exports.insertOrderItem = function(orderId, paintingId)  {
                 reject(new ErrorService.Error('Insert order item failed.', err));
             });
     });
+};
+module.exports.sendMailsForOrder = async function(sessionId)  {
+
+    let customerMail = await DatabaseService.query(QueryService.SelectMailAdressForOrder, [sessionId]);
+
+    //EmailService.createEmailOptions(customerMail[0].email, )
+
 };
