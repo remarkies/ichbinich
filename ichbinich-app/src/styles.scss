@@ -1,15 +1,15 @@
 /* You can add global styles to this file, and also import other style files */
 @import "../node_modules/nord/src/sass/nord.scss";
 
-$fontfamily: neue-haas-grotesk-display, sans-serif;
+$fontfamily: 'Manrope', sans-serif;
 $fontfamilyheader: neue-haas-grotesk-display, serif;
 
-$background: $nord6;
+$background: white;
 //$background: white;
 //$hightlight1: #f8f8f8;
 //$hightlight2: #e6e6e6;
-$hightlight1: $nord5;
-$hightlight2: $nord4;
+$hightlight1: white;
+$hightlight2: lightgray;
 
 $accent1: $nord7;
 $accent2: $nord8;

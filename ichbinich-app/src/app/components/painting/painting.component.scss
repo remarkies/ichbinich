@@ -1,15 +1,19 @@
 @media screen and (min-width: 800px) {
   .painting {
-    display: flex;
     flex-direction: row;
   }
 }
 
 @media screen and (max-width: 799px) {
   .painting {
-    display: flex;
     flex-direction: column;
   }
+}
+
+.painting {
+  display: flex;
+  height: 100vh;
+  justify-content: center;
 }
 
 

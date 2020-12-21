@@ -68,6 +68,7 @@ export class DataService {
     // search for basket cookie
     const basketCookie = this.getBasketCookie();
     this.apiService.requestBasket({ basketCookie }).subscribe(response => {
+      console.log(response);
       // update basket
       this._basket.next(response);
       // set basket cookie
