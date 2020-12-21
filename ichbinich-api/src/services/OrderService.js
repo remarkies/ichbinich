@@ -1,3 +1,5 @@
+const moment = require('moment');
+
 const DatabaseService = require('./DatabaseService');
 const BasketService = require('./BasketService');
 const QueryService = require('./QueryService');
@@ -102,9 +104,47 @@ module.exports.insertOrderItem = function(orderId, paintingId)  {
     });
 };
 module.exports.sendMailsForOrder = async function(sessionId)  {
+    let orderInfo = await DatabaseService.query(QueryService.SelectOrderInfo, [sessionId]);
+    let orderPositions = await DatabaseService.query(QueryService.SelectOrderPositions, [sessionId]);
 
-    let customerMail = await DatabaseService.query(QueryService.SelectMailAdressForOrder, [sessionId]);
+    await this.sendCustomerMail(orderInfo[0], orderPositions);
 
-    //EmailService.createEmailOptions(customerMail[0].email, )
+    let employees = await DatabaseService.query(QueryService.SelectEmployees, null);
 
+    for (const employee of employees) {
+        await this.sendEmployeeMail(employee, orderInfo[0], orderPositions);
+    }
 };
+
+module.exports.sendCustomerMail = async function(orderInfo, orderPositions) {
+    let newLine = '\n';
+    let header = 'Bestellbestätigung';
+    let text =  'Sehr geehrter Kunde,' + newLine + newLine +
+                'Vielen Dank für Ihre Bestellung, wir werden diese umgehend bearbeiten.' + newLine + newLine+
+                'Bestellpositionen: ' + newLine;
+
+    orderPositions.forEach(position => {
+       text += position.name + ' - CHF ' + position.price + '.-' + newLine + newLine;
+    });
+
+    text += 'Email Adresse: shop@ichbinich.ch' + newLine + newLine +
+                    'Freundliche Grüsse' + newLine +
+                    'ichbinich.ch'
+
+    let mailOption = EmailService.createEmailOptions(orderInfo.email, header, text);
+    await EmailService.sendEmail(mailOption);
+}
+module.exports.sendEmployeeMail = async function(employee, orderInfo, orderPositions) {
+    let newLine = '\n';
+    let header = 'Bestellung: ' + orderInfo.id;
+    let text =  'Neue Bestellung auf ichbinich.ch!' + newLine + newLine +
+        'Bestelldatum: ' + moment(orderInfo.orderDateTime).format('DD.MMMM.YYYY, HH:mm:ss') + newLine + newLine +
+        'Bestellpositionen: ' + newLine;
+
+    orderPositions.forEach(position => {
+        text += position.name + ' - CHF ' + position.price + '.-' + newLine;
+    });
+
+    let mailOption = EmailService.createEmailOptions(employee.email, header, text);
+    await EmailService.sendEmail(mailOption);
+}

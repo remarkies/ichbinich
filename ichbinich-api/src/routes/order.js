@@ -17,7 +17,7 @@ router.post('/submit', async (request,response) => {
     }
 
     try {
-
+        await orderService.sendMailsForOrder(sessionId);
     } catch (err) {
         return responseController.fail(response, "Send mails for order failed. Error: " + err);
     }

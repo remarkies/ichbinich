@@ -26,7 +26,7 @@ module.exports.sendEmail = function(mailOptions) {
         const transport = this.initEmail();
         transport.sendMail(mailOptions, (err, info) => {
             if (err) {
-                reject(ErrorService.Error('Sending email failed.', err));
+                reject(new ErrorService.Error('Sending email failed.', err));
             }
             resolve();
         });

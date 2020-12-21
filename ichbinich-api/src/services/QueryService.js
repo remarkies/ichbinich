@@ -89,7 +89,21 @@ module.exports.SelectCustomerIdForBasketId = `select b.customer_id from basket b
 module.exports.UpdateLinkAddressToBasket = `update basket set address_id = ? where id = ?;`;
 module.exports.UpdateLinkCustomerToBasket = `update basket set customer_id = ? where id = ?;`;
 
-module.exports.SelectMailAdressForOrder = `select a.firstName, a.lastName, c.email from \`order\` o
-                                                join customer c on o.customer_id = c.id
-                                                join address a on o.orderAddress_id = a.id
-                                                where o.stripe_session_id = ?;`
+module.exports.SelectOrderPositions = `select p.name, p.price from order_painting op
+join \`order\` o on op.order_id = o.id
+join painting p on op.painting_id = p.id
+where o.stripe_session_id = ?;`
+module.exports.SelectOrderInfo = `select
+        o.id,
+       (select sum(p.price) from order_painting op
+       join painting p on op.painting_id = p.id
+       where op.order_id = o.id) 'orderTotal',
+       o.orderDateTime,
+       c.email, t.description 'title', a.firstName, a.lastName, a.street, a.streetNo, a.postalCode, a.city, c2.name 'country'
+from \`order\` o
+join customer c on o.customer_id = c.id
+join address a on o.orderAddress_id = a.id
+join title t on a.title_id = t.id
+join country c2 on a.country_id = c2.id
+where o.stripe_session_id = ?`;
+module.exports.SelectEmployees = `select e.email from employee e;`;
