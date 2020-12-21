@@ -34,6 +34,9 @@ ichbinichApp.use('/payment', payment);
 const order = require('./src/routes/order');
 ichbinichApp.use('/order', order);
 
+const employees = require('./src/routes/employees');
+ichbinichApp.use('/employees', employees);
+
 ichbinichApp.use('/public', express.static('./public'))
 
 // catch 404 and forward to error handler

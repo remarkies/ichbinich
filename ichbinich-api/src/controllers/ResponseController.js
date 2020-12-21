@@ -6,6 +6,11 @@ class ResponseController {
             return res.status(200);
         }
     }
+    static unauthorized (res, error) {
+        return res.status(401).json({
+            message: error.toString()
+        })
+    }
     static fail (res, error) {
         return res.status(500).json({
             message: error.toString()

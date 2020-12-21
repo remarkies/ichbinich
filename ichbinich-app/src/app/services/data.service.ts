@@ -1,42 +1,42 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, Observable} from "rxjs";
-import {ApiService} from "./api.service";
-import {CookieHandlerService} from "./cookie-handler.service";
-import {CookieOptionEnum} from "../models/cookieOption.enum";
-import {PaintingModel} from "../models/painting.model";
-import {AddressModel} from "../models/address.model";
-import {TitleModel} from "../models/title.model";
-import {CountryModel} from "../models/country.model";
-import {BasketCookieModel} from "../models/basketCookie.model";
-import {RequestBasketResponseModel} from "../models/requestBasketResponse.model";
+import {BehaviorSubject, Observable} from 'rxjs';
+import {ApiService} from './api.service';
+import {CookieHandlerService} from './cookie-handler.service';
+import {CookieOptionEnum} from '../models/cookieOption.enum';
+import {PaintingModel} from '../models/painting.model';
+import {AddressModel} from '../models/address.model';
+import {TitleModel} from '../models/title.model';
+import {CountryModel} from '../models/country.model';
+import {BasketCookieModel} from '../models/basketCookie.model';
+import {RequestBasketResponseModel} from '../models/requestBasketResponse.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataService {
 
-  public get basket$() : Observable<RequestBasketResponseModel>{
+  public get basket$(): Observable<RequestBasketResponseModel>{
     return this._basket.asObservable();
   }
-  public get basket() : RequestBasketResponseModel {
+  public get basket(): RequestBasketResponseModel {
     return this._basket.value;
   }
   private _basket: BehaviorSubject<RequestBasketResponseModel> = new BehaviorSubject<RequestBasketResponseModel>(null);
 
-  public get address$() : Observable<AddressModel> {
+  public get address$(): Observable<AddressModel> {
     return this._address.asObservable();
   }
-  public get address() : AddressModel {
+  public get address(): AddressModel {
     return this._address.value;
   }
   private _address: BehaviorSubject<AddressModel> = new BehaviorSubject<AddressModel>(null);
 
-  public get titles$() : Observable<TitleModel[]> {
+  public get titles$(): Observable<TitleModel[]> {
     return this._titles.asObservable();
   }
   private _titles: BehaviorSubject<TitleModel[]> = new BehaviorSubject<TitleModel[]>([]);
 
-  public get countries$() : Observable<CountryModel[]> {
+  public get countries$(): Observable<CountryModel[]> {
     return this._countries.asObservable();
   }
   private _countries: BehaviorSubject<CountryModel[]> = new BehaviorSubject<CountryModel[]>([]);
@@ -67,33 +67,32 @@ export class DataService {
   public requestBasket() {
     // search for basket cookie
     const basketCookie = this.getBasketCookie();
-    this.apiService.requestBasket({ basketCookie: basketCookie }).subscribe(response => {
+    this.apiService.requestBasket({ basketCookie }).subscribe(response => {
       // update basket
       this._basket.next(response);
-      console.log(response);
       // set basket cookie
-      this.cookieHandlerService.saveCookie(CookieOptionEnum.Basket, { id: response.id, version: 'v1' })
+      this.cookieHandlerService.saveCookie(CookieOptionEnum.Basket, { id: response.id, version: 'v1' });
     });
   }
   public addToBasket(paintingId: number) {
-    if(this.basket === null) {
+    if (this.basket === null) {
       console.log('Basket not loaded properly.');
       return;
     }
 
-    this.apiService.addToBasket({ basketId: this.basket.id, paintingId: paintingId })
+    this.apiService.addToBasket({ basketId: this.basket.id, paintingId })
       .subscribe(response => {
         this.requestBasket();
       });
   }
-  public isItemAlreadyInBasket(basket: RequestBasketResponseModel, painting: PaintingModel) : boolean {
+  public isItemAlreadyInBasket(basket: RequestBasketResponseModel, painting: PaintingModel): boolean {
     let found = false;
     basket.items.forEach((o) => {
-      if(o.id === painting.id) { found = true; }
+      if (o.id === painting.id) { found = true; }
     });
     return found;
   }
-  public calcBasketTotal(items: PaintingModel[]) : number {
+  public calcBasketTotal(items: PaintingModel[]): number {
     let total = 0;
     items.forEach((item) => {
       total += item.price;
@@ -101,20 +100,20 @@ export class DataService {
     return total;
   }
   public removeFromBasket(paintingId: number) {
-    if(this.basket === null) {
+    if (this.basket === null) {
       console.log('Basket not loaded properly.');
       return;
     }
 
-    this.apiService.removeFromBasket({ basketId: this.basket.id, paintingId: paintingId })
+    this.apiService.removeFromBasket({ basketId: this.basket.id, paintingId })
       .subscribe(response => {
         this.requestBasket();
       });
   }
   public requestAddressForBasket() {
     const basketCookie = this.getBasketCookie();
-    this.apiService.requestAddressForBasket({ basketCookie: basketCookie}).subscribe( response => {
-      if(response.status === 0) {
+    this.apiService.requestAddressForBasket({ basketCookie}).subscribe( response => {
+      if (response.status === 0) {
         this._address.next(response.address);
       } else {
         console.log(response.message);
@@ -122,14 +121,14 @@ export class DataService {
     });
   }
   public linkAddressToBasket(address: AddressModel) {
-    if(this.basket === null) {
+    if (this.basket === null) {
       console.log('Basket not loaded properly.');
       return;
     }
     const basketCookie = this.getBasketCookie();
     this.apiService.newAddressForBasket({
-      basketCookie: basketCookie,
-      address: address
+      basketCookie,
+      address
     }).subscribe(() => {
       this.requestAddressForBasket();
     });

@@ -1,10 +1,10 @@
 <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
   <app-form-header [description]="'Login'"></app-form-header>
   <div class="text-input">
-    <label>Email</label>
-    <input type="text" formControlName="email" class="form-control" [ngClass]="{ 'is-invalid' : submitted && f.email.errors }" />
+    <label>Username</label>
+    <input type="text" formControlName="username" class="form-control" [ngClass]="{ 'is-invalid' : submitted && f.username.errors }" />
     <div class="validator-space">
-      <app-validator-info *ngIf="submitted && f.email.errors" [validationMessage]="'Email is required or not valid'"></app-validator-info>
+      <app-validator-info *ngIf="submitted && f.username.errors" [validationMessage]="'Username is required or not valid'"></app-validator-info>
     </div>
   </div>
   <div class="text-input">
@@ -16,9 +16,5 @@
   </div>
   <div class="login-actions">
     <div class="login-button"><app-button [type]="'submit'" [isDisabled]="false" [label]="'Login'"></app-button></div>
-    <div class="action-options">
-      <app-action-link [link]="''" [text]="'Registrieren'"></app-action-link>
-      <app-action-link [link]="''" [text]="'Password vergessen'"></app-action-link>
-    </div>
   </div>
 </form>

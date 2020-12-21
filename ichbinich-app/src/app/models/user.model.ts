@@ -1,6 +1,6 @@
-import {AddressModel} from "./address.model";
+import {AddressModel} from './address.model';
 
 export interface UserModel {
-  basket: number[],
-  address: AddressModel
+  basket: number[];
+  address: AddressModel;
 }

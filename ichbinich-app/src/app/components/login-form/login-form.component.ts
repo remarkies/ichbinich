@@ -1,5 +1,8 @@
 import {Component, OnInit, Output} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {AuthenticationService} from '../../services/authentication.service';
+import {first} from 'rxjs/operators';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-login-form',
@@ -9,13 +12,17 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 export class LoginFormComponent implements OnInit {
 
   loginForm: FormGroup;
-  submitted: boolean =  false;
+  submitted =  false;
+  loading = false;
 
-  constructor(private formBuilder: FormBuilder) { }
+  constructor(private formBuilder: FormBuilder,
+              private authenticationService: AuthenticationService,
+              private route: ActivatedRoute,
+              private router: Router) { }
 
   ngOnInit(): void {
     this.loginForm = this.formBuilder.group({
-      email: ['', [Validators.required, Validators.email]],
+      username: ['', [Validators.required]],
       password: ['', [Validators.required]]
     });
   }
@@ -23,13 +30,22 @@ export class LoginFormComponent implements OnInit {
   // convenience getter for easy access to form fields
   get f() { return this.loginForm.controls; }
 
-  onLogin() {
+  onLogin(): void {
     this.submitted = true;
 
     if (this.loginForm.invalid) {
       return;
     }
 
-    console.log('Login as: ' + JSON.stringify(this.loginForm.value, null, 4));
+    this.loading = true;
+    this.authenticationService.login(this.f.username.value, this.f.password.value)
+      .pipe(first())
+      .subscribe(
+        data => {
+          this.router.navigate(['/user/employee']);
+        },
+        error => {
+          this.loading = false;
+        });
   }
 }

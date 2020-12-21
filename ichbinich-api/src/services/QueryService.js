@@ -107,3 +107,6 @@ join title t on a.title_id = t.id
 join country c2 on a.country_id = c2.id
 where o.stripe_session_id = ?`;
 module.exports.SelectEmployees = `select e.email from employee e;`;
+
+module.exports.SelectEmployeeWithUsername = 'select * from employee e\n' +
+    'where e.username = ?;'

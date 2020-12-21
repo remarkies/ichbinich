@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule} from "@angular/common/http";
+import { HttpClientModule} from '@angular/common/http';
 import { CookieModule } from 'ngx-cookie';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -24,7 +24,7 @@ import { BasketItemComponent } from './components/basket/basket-item/basket-item
 import { IconButtonComponent } from './components/icon-button/icon-button.component';
 import { CheckOutComponent } from './views/check-out/check-out.component';
 import { ViewTitleComponent } from './components/view-title/view-title.component';
-import {ReactiveFormsModule} from "@angular/forms";
+import {ReactiveFormsModule} from '@angular/forms';
 import { ActionLinkComponent } from './components/action-link/action-link.component';
 import { ValidatorInfoComponent } from './components/validator-info/validator-info.component';
 import { HoverMessageComponent } from './components/hover-message/hover-message.component';
@@ -36,7 +36,8 @@ import { FormSelectComponent } from './components/form-select/form-select.compon
 import { PageNotFoundComponent } from './views/page-not-found/page-not-found.component';
 import { FormTestComponent } from './components/form-test/form-test.component';
 import { SummaryComponent } from './components/summary/summary.component';
-import {NgxStripeModule} from "ngx-stripe";
+import {NgxStripeModule} from 'ngx-stripe';
+import { EmployeeComponent } from './components/employee/employee.component';
 
 
 @NgModule({
@@ -71,7 +72,8 @@ import {NgxStripeModule} from "ngx-stripe";
     FormSelectComponent,
     PageNotFoundComponent,
     FormTestComponent,
-    SummaryComponent
+    SummaryComponent,
+    EmployeeComponent
   ],
   imports: [
     BrowserModule,
