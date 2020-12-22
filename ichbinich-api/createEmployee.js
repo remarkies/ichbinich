@@ -10,7 +10,7 @@ async function createEmploye(email, username, password) {
     await database.connect();
 
     // hash password
-    let hashedPwd = hashService.hash(password);
+    let hashedPwd = await hashService.hash(password);
 
     let exists = await database.query(`select count(*) 'exists' from employee e
                                         where e.email = ? or e.username = ?;`, [email, username])

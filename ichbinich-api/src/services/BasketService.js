@@ -32,7 +32,7 @@ module.exports.requestOldBasket = function(id)  {
 
                         if(hasValues) {
                             const ids = result.map(row => row.id );
-                            PaintingService.loadPaintings(ids)
+                            PaintingService.getPaintings(ids)
                                 .then(paintings => {
                                     resultObject.items = paintings;
                                     resolve(resultObject);

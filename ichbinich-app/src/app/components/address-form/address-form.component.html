@@ -42,7 +42,7 @@
   </div>
   <div class="city-info">
     <div class="text-input">
-      <label>PLZ</label>
+      <label>Postleitzahl</label>
       <input type="text" formControlName="postalCode" class="form-control" [ngClass]="{ 'is-invalid' : submitted && f.postalCode.errors }" />
       <div class="validator-space">
         <app-validator-info *ngIf="submitted && f.postalCode.errors" [validationMessage]="'PLZ is required'"></app-validator-info>

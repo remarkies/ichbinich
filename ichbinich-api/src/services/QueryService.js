@@ -1,5 +1,5 @@
 // PaintingService
-module.exports.SelectLoadPaintings = `SELECT P.ID 'id', P.name, P.style_id, S.description 'style', p.technique_id, t.description 'technique',
+module.exports.SelectGetPaintings = `SELECT P.ID 'id', P.name, P.style_id, S.description 'style', p.technique_id, t.description 'technique',
                                     P.underground_id, U.description 'underground', P.height, P.width, P.depth, P.price, P.collection_id,
                                     C.name 'collection', P.series_id, SE.name 'series', 
                                    (select count(*) from order_painting op
@@ -10,35 +10,10 @@ module.exports.SelectLoadPaintings = `SELECT P.ID 'id', P.name, P.style_id, S.de
                              join underground u on P.underground_id = u.id
                              LEFT JOIN collection C ON P.collection_id = C.id
                              LEFT JOIN series SE ON P.series_id = SE.id;`;
-module.exports.SelectLoadPathsForPainting = `SELECT I.path FROM painting_image PI
+module.exports.SelectGetPathsForPainting = `SELECT I.path FROM painting_image PI
                                     JOIN IMAGE I ON PI.image_id = I.id
                                     WHERE PI.painting_id = ?;`;
-module.exports.SelectLoadPaintingsWithParams = `SELECT P.ID 'id',
-                                   P.name,
-                                   P.style_id,
-                                   S.description 'style',
-                                   p.technique_id,
-                                   t.description 'technique',
-                                   P.underground_id,
-                                   U.description 'underground',
-                                   P.height,
-                                   P.width,
-                                   P.depth,
-                                   P.price,
-                                   P.collection_id,
-                                   C.name        'collection',
-                                   P.series_id,
-                                   SE.name       'series', 
-                                   (select count(*) from order_painting op
-                                                    where op.painting_id = p.id) 'sold'
-                            FROM PAINTING P
-                                     JOIN style S ON P.style_id = S.id
-                                     JOIN technique t on P.technique_id = t.id
-                                     join underground u on P.underground_id = u.id
-                                     LEFT JOIN collection C ON P.collection_id = C.id
-                                     LEFT JOIN series SE ON P.series_id = SE.id
-                            WHERE P.ID IN (?);`;
-module.exports.SelectLoadPainting = `SELECT P.ID 'id',
+module.exports.SelectGetPainting = `SELECT P.ID 'id',
                                    P.name,
                                    P.style_id,
                                    S.description 'style',

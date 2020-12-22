@@ -35,6 +35,7 @@ export class PaintingInfoComponent implements OnInit {
   addItemToBasket(painting: PaintingModel) {
     if(painting.id !== null &&!this.isAlreadyInBasket) {
       this.dataService.addToBasket(painting.id);
+      this.dataService.loadPaintings();
     }
   }
 }

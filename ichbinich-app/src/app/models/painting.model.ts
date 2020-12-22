@@ -17,5 +17,6 @@ export interface PaintingModel {
   collection: string;
   series_id: number;
   series: string;
+  sold: number;
   paths: PathModel[];
 }

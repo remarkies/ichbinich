@@ -6,9 +6,9 @@ $fontfamilyheader: neue-haas-grotesk-display, serif;
 
 $background: white;
 //$background: white;
-//$hightlight1: #f8f8f8;
+$hightlight1: #f8f8f8;
 //$hightlight2: #e6e6e6;
-$hightlight1: white;
+//$hightlight1: white;
 $hightlight2: lightgray;
 
 $accent1: $nord7;
@@ -41,8 +41,8 @@ html, body {
 }
 
 label {
-  text-transform: uppercase;
   font-size: 0.7em;
+  font-weight: 700;
   padding-bottom: 4px;
 }
 

@@ -15,6 +15,14 @@ import {RequestBasketResponseModel} from '../models/requestBasketResponse.model'
 })
 export class DataService {
 
+  public get paintings$(): Observable<PaintingModel[]>{
+    return this._paintings.asObservable();
+  }
+  public get paintings(): PaintingModel[] {
+    return this._paintings.value;
+  }
+  private _paintings: BehaviorSubject<PaintingModel[]> = new BehaviorSubject<PaintingModel[]>(null);
+
   public get basket$(): Observable<RequestBasketResponseModel>{
     return this._basket.asObservable();
   }
@@ -42,10 +50,16 @@ export class DataService {
   private _countries: BehaviorSubject<CountryModel[]> = new BehaviorSubject<CountryModel[]>([]);
 
   constructor(private apiService: ApiService, private cookieHandlerService: CookieHandlerService) {
+    this.loadPaintings();
     this.loadTitles();
     this.loadCountries();
     this.requestBasket();
     this.requestAddressForBasket();
+  }
+  public loadPaintings() {
+    this.apiService.getPaintings().subscribe(paintings => {
+      this._paintings.next(paintings);
+    });
   }
 
   private loadTitles() {

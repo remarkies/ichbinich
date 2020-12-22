@@ -124,10 +124,10 @@ module.exports.sendCustomerMail = async function(orderInfo, orderPositions) {
                 'Bestellpositionen: ' + newLine;
 
     orderPositions.forEach(position => {
-       text += position.name + ' - CHF ' + position.price + '.-' + newLine + newLine;
+       text += position.name + ' - CHF ' + position.price + '.-' + newLine;
     });
 
-    text += 'Email Adresse: shop@ichbinich.ch' + newLine + newLine +
+    text += newLine + 'Email Adresse: shop@ichbinich.ch' + newLine + newLine +
                     'Freundliche Grüsse' + newLine +
                     'ichbinich.ch'
 

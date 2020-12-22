@@ -1,17 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import {AddressModel} from "../../models/address.model";
-import {PaintingModel} from "../../models/painting.model";
-import {ApiService} from "../../services/api.service";
-import {StripeService} from "ngx-stripe";
-import {ActivatedRoute, Router} from "@angular/router";
-import {forkJoin, Observable, Subscription} from "rxjs";
-import {DataService} from "../../services/data.service";
-import {KeyValueModel} from "../../models/keyValue.model";
-import {TitleModel} from "../../models/title.model";
-import {CountryModel} from "../../models/country.model";
-import {Title} from "@angular/platform-browser";
-import {map} from "rxjs/operators";
-import {PaymentService} from "../../services/payment.service";
+import {AddressModel} from '../../models/address.model';
+import {PaintingModel} from '../../models/painting.model';
+import {ApiService} from '../../services/api.service';
+import {StripeService} from 'ngx-stripe';
+import {ActivatedRoute, Router} from '@angular/router';
+import {forkJoin, Observable, Subscription} from 'rxjs';
+import {DataService} from '../../services/data.service';
+import {KeyValueModel} from '../../models/keyValue.model';
+import {TitleModel} from '../../models/title.model';
+import {CountryModel} from '../../models/country.model';
+import {Title} from '@angular/platform-browser';
+import {map} from 'rxjs/operators';
+import {PaymentService} from '../../services/payment.service';
 
 
 @Component({
@@ -22,7 +22,7 @@ import {PaymentService} from "../../services/payment.service";
 export class SummaryComponent implements OnInit {
 
   basketItems: PaintingModel[] = [];
-  basketTotal: number = 0;
+  basketTotal = 0;
   private basketSubscription: Subscription;
 
   address: AddressModel;
@@ -30,6 +30,7 @@ export class SummaryComponent implements OnInit {
   private addressSubscription: Subscription;
 
   constructor(private activatedRoute: ActivatedRoute,
+              private router: Router,
               private apiService: ApiService,
               private stripeService: StripeService,
               public dataService: DataService,
@@ -37,19 +38,19 @@ export class SummaryComponent implements OnInit {
 
   ngOnInit(): void {
     this.basketSubscription = this.dataService.basket$.subscribe((basket) => {
-      if(basket !== null) {
+      if (basket !== null) {
         this.basketItems = basket.items;
         this.basketTotal = this.dataService.calcBasketTotal(basket.items);
 
-        if(basket.stripe_session_id !== null) {
+        if (basket.stripe_session_id !== null) {
           this.paymentService.checkPaymentStatus(basket.stripe_session_id)
             .subscribe(status => {
-              if(status.payment_status === "paid") {
+              if (status.payment_status === 'paid') {
                 this.paymentService.submitOrder(basket.stripe_session_id)
                   .subscribe(response => {
                     this.dataService.requestBasket();
                   });
-              } else if(status.payment_status === "unpaid") {
+              } else if (status.payment_status === 'unpaid') {
                 console.log('oh no not paid yet');
               } else {
                 console.log('dont know this payment status:', status.payment_status);
@@ -64,14 +65,13 @@ export class SummaryComponent implements OnInit {
     });
 
     this.activatedRoute.queryParams.subscribe(params => {
-      let success = params['success'];
-      let canceled = params['canceled']
-      console.log(success); // Print the parameter to the console.
-      console.log(canceled);
-      if(success !== undefined && success) {
+      const success = params.success;
 
+      if (success !== undefined && success) {
+        this.dataService.loadPaintings();
+        this.dataService.requestBasket();
+        this.router.navigate(['/']);
       }
-
     });
   }
 

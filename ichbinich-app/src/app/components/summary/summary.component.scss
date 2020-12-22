@@ -1,5 +1,9 @@
 section {
-  //border: solid 2px red;
+  margin-top: 32px;
+}
+
+section p {
+  margin-bottom: 4px;
 }
 
 .text-line {
@@ -9,5 +13,5 @@ section {
 
 .text-line p {
   margin: 0px 2px;
-  font-size: 13px;
+  font-size: 1em;
 }
