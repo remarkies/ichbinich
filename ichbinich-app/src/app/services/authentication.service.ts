@@ -4,6 +4,7 @@ import {HttpClient} from '@angular/common/http';
 import {map} from 'rxjs/operators';
 import {EmployeeModel} from '../models/employee.model';
 import {environment} from '../../environments/environment';
+import {ApiService} from './api.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,8 +13,19 @@ export class AuthenticationService {
   private currentEmployeeSubject: BehaviorSubject<EmployeeModel>;
   public currentEmployee: Observable<EmployeeModel>;
 
-  constructor(private http: HttpClient) {
-    this.currentEmployeeSubject = new BehaviorSubject<EmployeeModel>(JSON.parse(localStorage.getItem('currentEmployee')));
+  constructor(private http: HttpClient, private apiService: ApiService) {
+    let localStorageObject = JSON.parse(localStorage.getItem('currentEmployee'));
+
+    if (localStorageObject !== null) {
+      apiService.isTokenValid(localStorageObject.token)
+        .subscribe(response => {
+          if (!response.valid) {
+            localStorageObject = null;
+          }
+        });
+    }
+
+    this.currentEmployeeSubject = new BehaviorSubject<EmployeeModel>(localStorageObject);
     this.currentEmployee = this.currentEmployeeSubject.asObservable();
   }
 

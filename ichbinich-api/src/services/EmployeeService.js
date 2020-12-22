@@ -10,3 +10,11 @@ module.exports.login = async function(username) {
         return employees[0];
     }
 }
+
+module.exports.saveTokenForId = async function(token, id) {
+    return await DatabaseService.query(QueryService.UpdateTokenForId, [token, id]);
+}
+
+module.exports.isTokenValid = async function(token) {
+    return await DatabaseService.query(QueryService.SelectIsTokenValid, [token]);
+}

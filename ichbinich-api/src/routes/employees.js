@@ -21,10 +21,19 @@ router.post('/authenticate',async function(request,response, next){
 
     if (equals) {
         employee.token = TokenService.generateToken();
-        return responseController.ok(response, employee);
+        EmployeeService.saveTokenForId(employee.token, employee.id);
+        return responseController.ok(response, { token: employee.token });
     } else {
         return responseController.unauthorized(response, "Password not matching!");
     }
+});
+
+
+router.post('/isTokenValid',async function(request,response, next){
+    const token = request.body.token;
+    let result = await EmployeeService.isTokenValid(token);
+
+    return responseController.ok(response, { valid: result[0].isValid > 0 });
 });
 
 module.exports = router;

@@ -110,3 +110,6 @@ module.exports.SelectEmployees = `select e.email from employee e;`;
 
 module.exports.SelectEmployeeWithUsername = 'select * from employee e\n' +
     'where e.username = ?;'
+
+module.exports.UpdateTokenForId = `update employee set token = ? where id = ?;`;
+module.exports.SelectIsTokenValid = `select count(*) 'isValid' from employee e where e.token = ?;`;
