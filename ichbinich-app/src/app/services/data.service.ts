@@ -23,6 +23,14 @@ export class DataService {
   }
   private _paintings: BehaviorSubject<PaintingModel[]> = new BehaviorSubject<PaintingModel[]>(null);
 
+  public get selectedPainting$(): Observable<PaintingModel>{
+    return this._selectedPainting.asObservable();
+  }
+  public get selectedPainting(): PaintingModel {
+    return this._selectedPainting.value;
+  }
+  private _selectedPainting: BehaviorSubject<PaintingModel> = new BehaviorSubject<PaintingModel>(null);
+
   public get basket$(): Observable<RequestBasketResponseModel>{
     return this._basket.asObservable();
   }
@@ -101,9 +109,11 @@ export class DataService {
   }
   public isItemAlreadyInBasket(basket: RequestBasketResponseModel, painting: PaintingModel): boolean {
     let found = false;
-    basket.items.forEach((o) => {
-      if (o.id === painting.id) { found = true; }
-    });
+    if (basket !== null) {
+      basket.items.forEach((o) => {
+        if (o.id === painting.id) { found = true; }
+      });
+    }
     return found;
   }
   public calcBasketTotal(items: PaintingModel[]): number {
@@ -146,6 +156,27 @@ export class DataService {
     }).subscribe(() => {
       this.requestAddressForBasket();
     });
+  }
 
+  public nextPainting() {
+    const index = this.paintings.indexOf(this.selectedPainting);
+    if (index === this.paintings.length - 1) {
+      this._selectedPainting.next(this.paintings[0]);
+    } else {
+      this._selectedPainting.next(this.paintings[index + 1]);
+    }
+  }
+
+  public previousPainting() {
+    const index = this.paintings.indexOf(this.selectedPainting);
+    if (index === 0) {
+      this._selectedPainting.next(this.paintings[this.paintings.length - 1]);
+    } else {
+      this._selectedPainting.next(this.paintings[index - 1]);
+    }
+  }
+
+  public selectPainting(painting: PaintingModel) {
+    this._selectedPainting.next(painting);
   }
 }

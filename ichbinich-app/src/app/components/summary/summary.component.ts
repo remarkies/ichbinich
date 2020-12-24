@@ -4,13 +4,8 @@ import {PaintingModel} from '../../models/painting.model';
 import {ApiService} from '../../services/api.service';
 import {StripeService} from 'ngx-stripe';
 import {ActivatedRoute, Router} from '@angular/router';
-import {forkJoin, Observable, Subscription} from 'rxjs';
+import {Subscription} from 'rxjs';
 import {DataService} from '../../services/data.service';
-import {KeyValueModel} from '../../models/keyValue.model';
-import {TitleModel} from '../../models/title.model';
-import {CountryModel} from '../../models/country.model';
-import {Title} from '@angular/platform-browser';
-import {map} from 'rxjs/operators';
 import {PaymentService} from '../../services/payment.service';
 
 
@@ -73,6 +68,7 @@ export class SummaryComponent implements OnInit {
         this.router.navigate(['/']);
       }
     });
+
   }
 
   pay(): void {

@@ -11,11 +11,10 @@ router.post('/authenticate',async function(request,response, next){
     const password = request.body.password;
 
     let employee = await EmployeeService.login(username);
-    console.log(employee);
+
     if (employee === null) {
         return responseController.unauthorized(response, "No employee found with this username!");
     }
-    console.log(password, employee.password);
 
     let equals = await HashService.compare(password, employee.password)
 

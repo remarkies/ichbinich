@@ -1,4 +1,4 @@
-import {PathModel} from "./path.model";
+import {PathModel} from './path.model';
 
 export interface PaintingModel {
   id: number;
@@ -11,7 +11,8 @@ export interface PaintingModel {
   underground: string;
   height: number;
   width: number;
-  depth: number;
+  description: string;
+  year: number;
   price: number;
   collection_id: number;
   collection: string;

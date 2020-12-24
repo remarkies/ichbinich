@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {PaintingModel} from "../../models/painting.model";
+import {PaintingModel} from '../../../models/painting.model';
 
 
 @Component({

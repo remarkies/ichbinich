@@ -1,0 +1,26 @@
+@import '../../../styles';
+
+:host {
+  height: 100vh;
+  display: flex;
+}
+
+.painting {
+  display: flex;
+}
+
+.image {
+  width: 50vw;
+  height: calc(100vh - 75px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.content {
+  width: 50vw;
+  height: calc(100vh - 75px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

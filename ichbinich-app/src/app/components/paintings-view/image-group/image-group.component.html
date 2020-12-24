@@ -1,0 +1,27 @@
+<div class="image-group">
+  <div *ngIf="selectedPainting.paths.length > 1" class="image-nav">
+    <div (click)="selectImage(path)" [ngClass]="selectedPath == path? 'selected-image' : ''" *ngFor="let path of paths" class="image-nav-item"></div>
+  </div>
+  <div class="vertical">
+    <div class="axis axis-x">
+      <div class="axis-x-content">
+        <p class="text">{{selectedPainting.width}} cm</p>
+        <div class="line"></div>
+      </div>
+    </div>
+    <div class="horizontal">
+      <div class="axis axis-y">
+        <div class="axis-y-content">
+          <div class="text-content">
+            <div class="spacer"></div>
+            <p class="text">{{selectedPainting.height}} cm</p>
+            <div class="spacer"></div>
+          </div>
+          <div class="line"></div>
+        </div>
+      </div>
+      <app-image [model]="selectedPath"></app-image>
+    </div>
+
+  </div>
+</div>

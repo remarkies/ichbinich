@@ -1,6 +1,8 @@
 // PaintingService
 module.exports.SelectGetPaintings = `SELECT P.ID 'id', P.name, P.style_id, S.description 'style', p.technique_id, t.description 'technique',
-                                    P.underground_id, U.description 'underground', P.height, P.width, P.depth, P.price, P.collection_id,
+                                    P.underground_id, U.description 'underground', P.height, P.width, 
+                                   P.description,
+                                   P.year, P.price, P.collection_id,
                                     C.name 'collection', P.series_id, SE.name 'series', 
                                    (select count(*) from order_painting op
                                                     where op.painting_id = p.id) 'sold'
@@ -23,7 +25,8 @@ module.exports.SelectGetPainting = `SELECT P.ID 'id',
                                    U.description 'underground',
                                    P.height,
                                    P.width,
-                                   P.depth,
+                                   P.description,
+                                   P.year,
                                    P.price,
                                    P.collection_id,
                                    C.name        'collection',

@@ -1,0 +1,84 @@
+@import "../../../../styles";
+
+.image-nav {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 16px;
+}
+
+.image-nav-item {
+  width: 8px;
+  height: 8px;
+  border: solid 2px $hightlight1;
+  border-radius: 10px;
+}
+
+.selected-image {
+  background: $hightlight2;
+}
+
+.horizontal {
+  display: flex;
+}
+
+.axis-x {
+  height: 50px;
+  margin-bottom: 16px;
+}
+
+.axis-y {
+  width: 50px;
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 32px;
+}
+
+.axis-x-content {
+  margin-left: 82px;
+  display: flex;
+  flex-direction: column;
+}
+
+.axis-y-content {
+  display: flex;
+}
+
+.axis-x .text {
+  text-align: center;
+  margin: 8px 0;
+}
+
+.axis-y .text {
+  text-align: center;
+  margin: auto;
+  transform: rotate(-90deg);
+}
+
+.axis .line {
+  background: $hightlight1;
+}
+
+.axis-x .line {
+  height: 2px;
+}
+
+.axis-y .line {
+  width: 2px;
+}
+
+.text-content {
+  display: flex;
+}
+
+.text-content .text {
+  flex-grow: 0;
+}
+
+.spacer {
+  flex-grow: 1
+}
+
+.text {
+  color: $hightlight2;
+  font-size: 0.8em;
+}

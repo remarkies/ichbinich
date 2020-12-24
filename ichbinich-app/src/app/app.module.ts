@@ -6,15 +6,15 @@ import { CookieModule } from 'ngx-cookie';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
-import { PaintingComponent } from './components/painting/painting.component';
+import { PaintingComponent } from './components/paintings-view/painting/painting.component';
 import { PaintingListComponent } from './components/painting-list/painting-list.component';
-import { ImageComponent } from './components/image/image.component';
-import { ImageGroupComponent } from './components/image-group/image-group.component';
-import { PaintingInfoComponent } from './components/painting-info/painting-info.component';
-import { PaintingInfoItemComponent } from './components/painting-info-item/painting-info-item.component';
+import { ImageComponent } from './components/paintings-view/image/image.component';
+import { ImageGroupComponent } from './components/paintings-view/image-group/image-group.component';
+import { PaintingInfoComponent } from './components/paintings-view/painting-info/painting-info.component';
+import { PaintingInfoItemComponent } from './components/paintings-view/painting-info-item/painting-info-item.component';
 import { CurrencyComponent } from './components/currency/currency.component';
 import { ButtonComponent } from './components/button/button.component';
-import { PaintingInfoPriceItemComponent } from './components/painting-info-price-item/painting-info-price-item.component';
+import { PaintingInfoPriceItemComponent } from './components/paintings-view/painting-info-price-item/painting-info-price-item.component';
 import { IconComponent } from './components/icon/icon.component';
 import { PaintingsComponent } from './views/paintings/paintings.component';
 import { UserComponent } from './views/user/user.component';
@@ -38,6 +38,7 @@ import { FormTestComponent } from './components/form-test/form-test.component';
 import { SummaryComponent } from './components/summary/summary.component';
 import {NgxStripeModule} from 'ngx-stripe';
 import { EmployeeComponent } from './components/employee/employee.component';
+import { FooterComponent } from './components/footer/footer.component';
 
 
 @NgModule({
@@ -73,7 +74,8 @@ import { EmployeeComponent } from './components/employee/employee.component';
     PageNotFoundComponent,
     FormTestComponent,
     SummaryComponent,
-    EmployeeComponent
+    EmployeeComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,

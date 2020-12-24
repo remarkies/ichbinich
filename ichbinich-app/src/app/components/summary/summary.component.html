@@ -1,8 +1,14 @@
-<app-view-title [title]="'Übersicht'"></app-view-title>
+<app-view-title [title]="'Überprüfe die Bestellung, ob alles stimmt.'"></app-view-title>
 <section *ngIf="basketItems.length > 0">
   <p>Produkte</p>
   <div class="basket-items">
     <app-basket-item [item]="item" *ngFor="let item of basketItems"></app-basket-item>
+  </div>
+  <div class="basket-checkout-total">
+    <p class="price-description">Total:</p>
+    <p class="price-value">
+      <app-currency [value]="basketTotal"></app-currency>
+    </p>
   </div>
 </section>
 <section *ngIf="address !== null">

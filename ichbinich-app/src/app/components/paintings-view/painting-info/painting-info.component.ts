@@ -1,9 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {PaintingModel} from "../../models/painting.model";
-import * as moment from 'moment';
-import {CookieHandlerService} from "../../services/cookie-handler.service";
-import {DataService} from "../../services/data.service";
-import {Subscription} from "rxjs";
+import {PaintingModel} from '../../../models/painting.model';
+import {DataService} from '../../../services/data.service';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-painting-info',
@@ -15,7 +13,7 @@ export class PaintingInfoComponent implements OnInit {
   @Input()
   public painting: PaintingModel;
   private basketSubscription: Subscription;
-  public isAlreadyInBasket: boolean = false;
+  public isAlreadyInBasket = false;
 
   constructor(public dataService: DataService) { }
 
@@ -25,15 +23,23 @@ export class PaintingInfoComponent implements OnInit {
     });
   }
 
-  get dimensions() : string {
-    return this.painting.height + ' x ' + this.painting.width + ' x ' + this.painting.depth;
+  get dimensions(): string {
+    return this.painting.height + ' x ' + this.painting.width;
   }
-  get price() : string {
+  get price(): string {
     return 'CHF ' + this.painting.price + '.-';
   }
 
+  get tags(): string[] {
+    const tags = [];
+    tags.push(this.painting.style);
+    tags.push(this.painting.technique);
+    tags.push(this.painting.underground);
+    return tags;
+  }
+
   addItemToBasket(painting: PaintingModel) {
-    if(painting.id !== null &&!this.isAlreadyInBasket) {
+    if (painting !== undefined && painting.id !== null && !this.isAlreadyInBasket) {
       this.dataService.addToBasket(painting.id);
       this.dataService.loadPaintings();
     }

@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {PathModel} from "../../models/path.model";
-import {ImageService} from "../../services/image.service";
+import {PathModel} from '../../../models/path.model';
+import {ImageService} from '../../../services/image.service';
 
 @Component({
   selector: 'app-image',
