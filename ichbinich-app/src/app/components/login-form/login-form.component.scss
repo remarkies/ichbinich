@@ -2,28 +2,17 @@
 
 :host {
   display: block;
-  padding: 40px;
 }
-
 
 .check-out-option {
   background: $hightlight1;
   padding: 20px;
 }
 
-form {
-}
-
 .text-input {
   display: flex;
   flex-direction: column;
-  margin: 6px 0px;
-}
-
-.login-actions {
-  display: grid;
-  grid-template-columns: 40% 60%;
-  margin-top: 8px;
+  margin: 6px 0;
 }
 
 .login-button {

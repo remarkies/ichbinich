@@ -99,7 +99,7 @@ module.exports.upsertCustomerFromAddress = function(address, basketCookie) {
 };
 module.exports.insertAddress = function(address)  {
     return new Promise((resolve, reject) => {
-        DatabaseService.query(QueryService.InsertAddress, [address.addressType_id, address.title_id, address.firstName, address.lastName, address.street, address.streetNo, address.postalCode, address.city, address.country_id])
+        DatabaseService.query(QueryService.InsertAddress, [address.addressType_id, address.title_id, address.firstName, address.lastName, address.street, address.postalCode, address.city, address.country_id, address.company])
             .then((output) => {
                 resolve(output.insertId);
             })
@@ -110,7 +110,7 @@ module.exports.insertAddress = function(address)  {
 };
 module.exports.updateAddress = function(address)  {
     return new Promise((resolve, reject) => {
-        DatabaseService.query(QueryService.UpdateAddress, [address.addressType_id, address.title_id, address.firstName, address.lastName, address.street, address.streetNo, address.postalCode, address.city, address.country_id, address.id])
+        DatabaseService.query(QueryService.UpdateAddress, [address.addressType_id, address.title_id, address.firstName, address.lastName, address.street, address.postalCode, address.city, address.country_id, address.company, address.id])
             .then((output) => {
                 resolve();
             })

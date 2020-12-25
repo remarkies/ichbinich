@@ -1,16 +1,31 @@
 <div class="content">
-  <app-view-title [title]="'Warenkorb'"></app-view-title>
-  <div class="basket-items">
-    <app-basket-item [item]="item" *ngFor="let item of basketItems"></app-basket-item>
-    <div class="basket-checkout">
-      <div class="basket-checkout-total">
-        <p class="price-description">Total:</p>
-        <p class="price-value">
-          <app-currency [value]="basketTotal"></app-currency>
-        </p>
-      </div>
-      <div class="button-align-right">
-        <app-button [routerLink]="['../check-out/address']" [isDisabled]="basketTotal == 0" [label]="'Zur Kasse'"></app-button>
+  <div class="header">
+    <app-view-title [title]="'Warenkorb'"></app-view-title>
+  </div>
+  <div class="panels">
+    <div class="panel panel-left">
+      <app-form-header [description]="'Wichtig zu wissen'"></app-form-header>
+      <p class="info">Zurzeit liefern wir nur innerhalb der Schweiz.<br>Versandtkosten sind im Preis imbegriffen.</p>
+    </div>
+
+    <div class="panel panel-right">
+      <div class="basket-items">
+        <app-form-header [description]="'Deine ausgewählten Gemälde'"></app-form-header>
+        <app-basket-item [item]="item" *ngFor="let item of basketItems"></app-basket-item>
+        <div class="basket-checkout">
+
+          <div class="basket-checkout-total">
+            <p class="price-description">Total:</p>
+            <p class="price-value">
+              <app-currency [value]="basketTotal"></app-currency>
+            </p>
+          </div>
+
+          <div class="button-align-right">
+            <app-button [routerLink]="['../check-out/address']" [isDisabled]="basketTotal == 0" [label]="'Zur Kasse'"></app-button>
+          </div>
+
+        </div>
       </div>
     </div>
   </div>

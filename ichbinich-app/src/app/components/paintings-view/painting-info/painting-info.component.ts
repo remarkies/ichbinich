@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {PaintingModel} from '../../../models/painting.model';
 import {DataService} from '../../../services/data.service';
 import {Subscription} from 'rxjs';
+import {RequestBasketResponseModel} from '../../../models/requestBasketResponse.model';
 
 @Component({
   selector: 'app-painting-info',
@@ -10,24 +11,32 @@ import {Subscription} from 'rxjs';
 })
 export class PaintingInfoComponent implements OnInit {
 
-  @Input()
   public painting: PaintingModel;
+  private paintingSubscription: Subscription;
+
+  public basket: RequestBasketResponseModel;
   private basketSubscription: Subscription;
-  public isAlreadyInBasket = false;
+
+  public isPaintingInBasket = false;
+  private isPaintingInBasketSubscription: Subscription;
+
+  public isSold = false;
 
   constructor(public dataService: DataService) { }
 
   ngOnInit(): void {
     this.basketSubscription = this.dataService.basket$.subscribe(basket => {
-      this.isAlreadyInBasket = this.dataService.isItemAlreadyInBasket(basket, this.painting);
+      this.basket = basket;
     });
-  }
 
-  get dimensions(): string {
-    return this.painting.height + ' x ' + this.painting.width;
-  }
-  get price(): string {
-    return 'CHF ' + this.painting.price + '.-';
+    this.paintingSubscription = this.dataService.selectedPainting$.subscribe(painting => {
+      this.painting = painting;
+      this.isSold = painting.sold > 0;
+    });
+
+    this.isPaintingInBasketSubscription = this.dataService.isSelectedPaintingInBasket$.subscribe(is =>{
+      this.isPaintingInBasket = is;
+    });
   }
 
   get tags(): string[] {
@@ -39,9 +48,8 @@ export class PaintingInfoComponent implements OnInit {
   }
 
   addItemToBasket(painting: PaintingModel) {
-    if (painting !== undefined && painting.id !== null && !this.isAlreadyInBasket) {
+    if (painting !== undefined && painting.id !== null && !this.isPaintingInBasket) {
       this.dataService.addToBasket(painting.id);
-      this.dataService.loadPaintings();
     }
   }
 }

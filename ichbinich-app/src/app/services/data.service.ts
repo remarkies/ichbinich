@@ -31,6 +31,14 @@ export class DataService {
   }
   private _selectedPainting: BehaviorSubject<PaintingModel> = new BehaviorSubject<PaintingModel>(null);
 
+  public get isSelectedPaintingInBasket$(): Observable<boolean>{
+    return this._isSelectedPaintingInBasket.asObservable();
+  }
+  public get isSelectedPaintingInBasket(): boolean {
+    return this._isSelectedPaintingInBasket.value;
+  }
+  private _isSelectedPaintingInBasket: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+
   public get basket$(): Observable<RequestBasketResponseModel>{
     return this._basket.asObservable();
   }
@@ -64,39 +72,44 @@ export class DataService {
     this.requestBasket();
     this.requestAddressForBasket();
   }
-  public loadPaintings() {
+
+  public loadPaintings(): void {
     this.apiService.getPaintings().subscribe(paintings => {
       this._paintings.next(paintings);
     });
   }
-
-  private loadTitles() {
+  private loadTitles(): void {
     this.apiService.getTitles().subscribe(titles => {
       this._titles.next(titles);
     });
   }
-  private loadCountries() {
+  private loadCountries(): void {
     this.apiService.getCountries().subscribe(countries => {
       this._countries.next(countries);
     });
   }
 
-  public getBasketCookie() {
+  public getBasketCookie(): BasketCookieModel {
     return this.cookieHandlerService.loadCookie<BasketCookieModel>(CookieOptionEnum.Basket);
   }
 
   // basket related
-  public requestBasket() {
+  public requestBasket(): void {
     // search for basket cookie
     const basketCookie = this.getBasketCookie();
     this.apiService.requestBasket({ basketCookie }).subscribe(response => {
       // update basket
       this._basket.next(response);
+
+      if (this.selectedPainting !== null) {
+        this._isSelectedPaintingInBasket.next(this.isItemAlreadyInBasket(this.selectedPainting));
+      }
+
       // set basket cookie
       this.cookieHandlerService.saveCookie(CookieOptionEnum.Basket, { id: response.id, version: 'v1' });
     });
   }
-  public addToBasket(paintingId: number) {
+  public addToBasket(paintingId: number): void {
     if (this.basket === null) {
       console.log('Basket not loaded properly.');
       return;
@@ -107,13 +120,15 @@ export class DataService {
         this.requestBasket();
       });
   }
-  public isItemAlreadyInBasket(basket: RequestBasketResponseModel, painting: PaintingModel): boolean {
+  public isItemAlreadyInBasket(painting: PaintingModel): boolean {
     let found = false;
-    if (basket !== null) {
-      basket.items.forEach((o) => {
+
+    if (this.basket !== null) {
+      this.basket.items.forEach((o) => {
         if (o.id === painting.id) { found = true; }
       });
     }
+
     return found;
   }
   public calcBasketTotal(items: PaintingModel[]): number {
@@ -123,7 +138,7 @@ export class DataService {
     });
     return total;
   }
-  public removeFromBasket(paintingId: number) {
+  public removeFromBasket(paintingId: number): void {
     if (this.basket === null) {
       console.log('Basket not loaded properly.');
       return;
@@ -134,7 +149,7 @@ export class DataService {
         this.requestBasket();
       });
   }
-  public requestAddressForBasket() {
+  public requestAddressForBasket(): void {
     const basketCookie = this.getBasketCookie();
     this.apiService.requestAddressForBasket({ basketCookie}).subscribe( response => {
       if (response.status === 0) {
@@ -144,7 +159,7 @@ export class DataService {
       }
     });
   }
-  public linkAddressToBasket(address: AddressModel) {
+  public linkAddressToBasket(address: AddressModel): void {
     if (this.basket === null) {
       console.log('Basket not loaded properly.');
       return;
@@ -158,25 +173,27 @@ export class DataService {
     });
   }
 
-  public nextPainting() {
+  public nextPainting(): void {
     const index = this.paintings.indexOf(this.selectedPainting);
     if (index === this.paintings.length - 1) {
-      this._selectedPainting.next(this.paintings[0]);
+      this.selectPainting(this.paintings[0]);
     } else {
-      this._selectedPainting.next(this.paintings[index + 1]);
+      this.selectPainting(this.paintings[index + 1]);
     }
   }
-
-  public previousPainting() {
+  public previousPainting(): void {
     const index = this.paintings.indexOf(this.selectedPainting);
     if (index === 0) {
-      this._selectedPainting.next(this.paintings[this.paintings.length - 1]);
+      this.selectPainting(this.paintings[this.paintings.length - 1]);
     } else {
-      this._selectedPainting.next(this.paintings[index - 1]);
+      this.selectPainting(this.paintings[index - 1]);
     }
   }
-
-  public selectPainting(painting: PaintingModel) {
+  public selectPainting(painting: PaintingModel): void {
     this._selectedPainting.next(painting);
+
+    if (this.selectedPainting !== null) {
+      this._isSelectedPaintingInBasket.next(this.isItemAlreadyInBasket(this.selectedPainting));
+    }
   }
 }

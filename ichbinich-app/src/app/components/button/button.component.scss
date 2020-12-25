@@ -31,13 +31,8 @@ button:hover {
   opacity: 1;
 }
 
-
-
-
-
 button:disabled {
-  border: 1px solid #cccccc;
-  background-color: #cccccc;
-  color: #666666;
+  background-color: $hightlight1;
+  color: $text;
 }
 

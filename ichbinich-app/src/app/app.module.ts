@@ -7,7 +7,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
 import { PaintingComponent } from './components/paintings-view/painting/painting.component';
-import { PaintingListComponent } from './components/painting-list/painting-list.component';
 import { ImageComponent } from './components/paintings-view/image/image.component';
 import { ImageGroupComponent } from './components/paintings-view/image-group/image-group.component';
 import { PaintingInfoComponent } from './components/paintings-view/painting-info/painting-info.component';
@@ -46,7 +45,6 @@ import { FooterComponent } from './components/footer/footer.component';
     AppComponent,
     HeaderComponent,
     PaintingComponent,
-    PaintingListComponent,
     ImageComponent,
     ImageGroupComponent,
     PaintingInfoComponent,

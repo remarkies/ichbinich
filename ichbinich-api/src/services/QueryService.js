@@ -81,9 +81,9 @@ module.exports.SelectAddressForBasketId = `select a.*, c.email, c.phone, t.descr
 module.exports.SelectUserForBasketId = `select c.email, c.phone from customer c
                                 join customer_address ca on c.id = ca.customer_id
                                 where ca.address_id = ?;`;
-module.exports.InsertAddress = `insert into address (addressType_id, title_id, firstName, lastName, street, streetNo, postalCode, city, country_id)
+module.exports.InsertAddress = `insert into address (addressType_id, title_id, firstName, lastName, street, postalCode, city, country_id, company)
                                 values(?, ?, ?, ?, ?, ?, ?, ?, ?);`;
-module.exports.UpdateAddress = `update address set addressType_id = ?, title_id = ?, firstName = ?, lastName = ?, street = ?, streetNo = ?, postalCode = ?, city = ?, country_id = ?
+module.exports.UpdateAddress = `update address set addressType_id = ?, title_id = ?, firstName = ?, lastName = ?, street = ?, postalCode = ?, city = ?, country_id = ?, company = ?
                                 where id = ?;`;
 module.exports.InsertCustomerFromAddress = `insert into customer (email, password, phone, language_id) VALUES (?, null, ?, 1);`;
 module.exports.UpdateCustomerFromAddress = `update customer set email = ?, phone = ? where id = ?;`;
@@ -102,7 +102,7 @@ module.exports.SelectOrderInfo = `select
        join painting p on op.painting_id = p.id
        where op.order_id = o.id) 'orderTotal',
        o.orderDateTime,
-       c.email, t.description 'title', a.firstName, a.lastName, a.street, a.streetNo, a.postalCode, a.city, c2.name 'country'
+       c.email, t.description 'title', a.firstName, a.lastName, a.street, a.postalCode, a.city, c2.name 'country', a.company
 from \`order\` o
 join customer c on o.customer_id = c.id
 join address a on o.orderAddress_id = a.id

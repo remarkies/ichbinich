@@ -7,7 +7,7 @@
 }
 
 .footer {
-  margin: 32px;
+  margin: 0 32px 32px 32px;
 }
 
 .image-nav {
@@ -21,6 +21,9 @@
   padding: 4px 16px;
   border-radius: 3px;
   cursor: pointer;
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
 }
 
 .nav-item:hover {

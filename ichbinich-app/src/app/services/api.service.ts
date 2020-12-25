@@ -6,7 +6,6 @@ import {TitleModel} from '../models/title.model';
 import {CountryModel} from '../models/country.model';
 import {CreatePaymentSessionRequestModel} from '../models/createPaymentSessionRequest.model';
 import {CreatePaymentSessionResponseModel} from '../models/createPaymentSessionResponse.model';
-import {BasketCookieModel} from '../models/basketCookie.model';
 import {RequestBasketRequestModel} from '../models/requestBasketRequest.model';
 import {RequestBasketResponseModel} from '../models/requestBasketResponse.model';
 import {BasketItemRequestModel} from '../models/basketItemRequest.model';
@@ -38,6 +37,10 @@ export class ApiService {
   public requestAddressForBasket(requestBasketModel: RequestBasketRequestModel) {
     return this.http.post<RequestAddressForBasketResponseModel>(environment.apiUrl + '/address/request', requestBasketModel);
   }
+  public isPaintingInBasket(basketId: number, paintingId: number) {
+    return this.http.post<any>(environment.apiUrl + '/basket/itemExists', { basketId, paintingId });
+  }
+
   public newAddressForBasket(model: NewAddressForBasketRequestModel) {
     return this.http.post(environment.apiUrl + '/address/new', model);
   }

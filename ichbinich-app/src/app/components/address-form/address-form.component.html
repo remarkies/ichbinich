@@ -1,88 +1,94 @@
 <form [formGroup]="addressForm" (ngSubmit)="onNext()" >
-  <app-form-header [description]="'Wohin sollen wir die Kunst schicken?'"></app-form-header>
-  <div class="text-input">
-    <label>Anrede</label>
-    <select formControlName="title_id" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.title_id.errors }">
-      <option value=""></option>
-      <option [value]="title.id" *ngFor="let title of titles">{{title.description}}</option>
-    </select>
-    <div class="validator-space">
-      <app-validator-info *ngIf="submitted && f.title_id.errors" [validationMessage]="'Title is required'"></app-validator-info>
-    </div>
-  </div>
-  <div class="text-input">
-    <label>Vorname</label>
-    <input type="text" formControlName="firstName" class="form-control" [ngClass]="{ 'is-invalid' : submitted && f.firstName.errors }" />
-    <div class="validator-space">
-      <app-validator-info *ngIf="submitted && f.firstName.errors" [validationMessage]="'Firstname is required'"></app-validator-info>
-    </div>
-  </div>
-  <div class="text-input">
-    <label>Nachname</label>
-    <input type="text" formControlName="lastName" class="form-control" [ngClass]="{ 'is-invalid' : submitted && f.lastName.errors }" />
-    <div class="validator-space">
-      <app-validator-info *ngIf="submitted && f.lastName.errors" [validationMessage]="'Lastname is required'"></app-validator-info>
-    </div>
-  </div>
-  <div class="street-info">
-    <div class="text-input">
-      <label>Strasse</label>
-      <input type="text" formControlName="street" class="form-control" [ngClass]="{ 'is-invalid' : submitted && f.street.errors }" />
-      <div class="validator-space">
-        <app-validator-info *ngIf="submitted && f.street.errors" [validationMessage]="'Street is required'"></app-validator-info>
+  <app-view-title [title]="'Lieferung'"></app-view-title>
+  <div class="panels">
+    <div class="panel panel-left">
+      <app-form-header [description]="'Wohin sollen wir die Kunst schicken?'"></app-form-header>
+      <div class="text-input">
+        <label>Firma (Optional)</label>
+        <input type="text" formControlName="company" class="form-control" [ngClass]="{ 'is-invalid' : submitted && f.company.errors }" />
+        <div class="validator-space">
+          <app-validator-info *ngIf="submitted && f.company.errors" [validationMessage]="'Company is required'"></app-validator-info>
+        </div>
+      </div>
+      <div class="text-input">
+        <label>Anrede*</label>
+        <select formControlName="title_id" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.title_id.errors }">
+          <option value=""></option>
+          <option [value]="title.id" *ngFor="let title of titles">{{title.description}}</option>
+        </select>
+        <div class="validator-space">
+          <app-validator-info *ngIf="submitted && f.title_id.errors" [validationMessage]="'Title is required'"></app-validator-info>
+        </div>
+      </div>
+      <div class="text-input">
+        <label>Vorname*</label>
+        <input type="text" formControlName="firstName" class="form-control" [ngClass]="{ 'is-invalid' : submitted && f.firstName.errors }" />
+        <div class="validator-space">
+          <app-validator-info *ngIf="submitted && f.firstName.errors" [validationMessage]="'Firstname is required'"></app-validator-info>
+        </div>
+      </div>
+      <div class="text-input">
+        <label>Nachname*</label>
+        <input type="text" formControlName="lastName" class="form-control" [ngClass]="{ 'is-invalid' : submitted && f.lastName.errors }" />
+        <div class="validator-space">
+          <app-validator-info *ngIf="submitted && f.lastName.errors" [validationMessage]="'Lastname is required'"></app-validator-info>
+        </div>
+      </div>
+      <div class="text-input">
+        <label>Strasse & Hausnummer*</label>
+        <input type="text" formControlName="street" class="form-control" [ngClass]="{ 'is-invalid' : submitted && f.street.errors }" />
+        <div class="validator-space">
+          <app-validator-info *ngIf="submitted && f.street.errors" [validationMessage]="'Street is required'"></app-validator-info>
+        </div>
+      </div>
+      <div class="city-info">
+        <div class="text-input">
+          <label>Postleitzahl*</label>
+          <input type="text" formControlName="postalCode" class="form-control" [ngClass]="{ 'is-invalid' : submitted && f.postalCode.errors }" />
+          <div class="validator-space">
+            <app-validator-info *ngIf="submitted && f.postalCode.errors" [validationMessage]="'PLZ is required'"></app-validator-info>
+          </div>
+        </div>
+        <div class="text-input ">
+          <label>Stadt*</label>
+          <input type="text" formControlName="city" class="form-control" [ngClass]="{ 'is-invalid' : submitted && f.city.errors }" />
+          <div class="validator-space">
+            <app-validator-info *ngIf="submitted && f.city.errors" [validationMessage]="'City is required'"></app-validator-info>
+          </div>
+        </div>
+      </div>
+      <div class="text-input">
+        <label>Land*</label>
+        <select formControlName="country_id" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.country_id.errors }">
+          <option value=""></option>
+          <option [value]="country.id" *ngFor="let country of countries">{{country.name}}</option>
+        </select>
+        <div class="validator-space">
+          <app-validator-info *ngIf="submitted && f.country_id.errors" [validationMessage]="'Country is required'"></app-validator-info>
+        </div>
       </div>
     </div>
-    <div class="text-input">
-      <label>Hausnummer</label>
-      <input type="text" formControlName="streetNo" class="form-control" [ngClass]="{ 'is-invalid' : submitted && f.streetNo.errors }" />
-      <div class="validator-space">
-        <app-validator-info *ngIf="submitted && f.streetNo.errors" [validationMessage]="'Street No is required'"></app-validator-info>
+    <div class="panel panel-right">
+      <app-form-header [description]="'Wie können wir dich erreichen?'"></app-form-header>
+      <div class="text-input">
+        <label>Email*</label>
+        <input type="text" formControlName="email" class="form-control" [ngClass]="{ 'is-invalid' : submitted && f.email.errors }" />
+        <div class="validator-space">
+          <app-validator-info *ngIf="submitted && f.email.errors" [validationMessage]="'Email is required or not valid'"></app-validator-info>
+        </div>
       </div>
-    </div>
-  </div>
-  <div class="city-info">
-    <div class="text-input">
-      <label>Postleitzahl</label>
-      <input type="text" formControlName="postalCode" class="form-control" [ngClass]="{ 'is-invalid' : submitted && f.postalCode.errors }" />
-      <div class="validator-space">
-        <app-validator-info *ngIf="submitted && f.postalCode.errors" [validationMessage]="'PLZ is required'"></app-validator-info>
+      <div class="text-input">
+        <label>Telefon (Optional)</label>
+        <input type="text" formControlName="phone" class="form-control" [ngClass]="{ 'is-invalid' : submitted && f.phone.errors }" />
+        <div class="validator-space">
+          <app-validator-info *ngIf="submitted && f.phone.errors" [validationMessage]="'Phone is required'"></app-validator-info>
+        </div>
       </div>
-    </div>
-    <div class="text-input ">
-      <label>Stadt</label>
-      <input type="text" formControlName="city" class="form-control" [ngClass]="{ 'is-invalid' : submitted && f.city.errors }" />
-      <div class="validator-space">
-        <app-validator-info *ngIf="submitted && f.city.errors" [validationMessage]="'City is required'"></app-validator-info>
-      </div>
-    </div>
-  </div>
-  <div class="text-input">
-    <label>Land</label>
-    <select formControlName="country_id" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.country_id.errors }">
-      <option value=""></option>
-      <option [value]="country.id" *ngFor="let country of countries">{{country.name}}</option>
-    </select>
-    <div class="validator-space">
-      <app-validator-info *ngIf="submitted && f.country_id.errors" [validationMessage]="'Country is required'"></app-validator-info>
-    </div>
-  </div>
 
-  <app-form-header [description]="'Wie können wir dich erreichen?'"></app-form-header>
-  <div class="text-input">
-    <label>Email</label>
-    <input type="text" formControlName="email" class="form-control" [ngClass]="{ 'is-invalid' : submitted && f.email.errors }" />
-    <div class="validator-space">
-      <app-validator-info *ngIf="submitted && f.email.errors" [validationMessage]="'Email is required or not valid'"></app-validator-info>
     </div>
-  </div>
-  <div class="text-input">
-    <label>Telefon</label>
-    <input type="text" formControlName="phone" class="form-control" [ngClass]="{ 'is-invalid' : submitted && f.phone.errors }" />
-    <div class="validator-space">
-      <app-validator-info *ngIf="submitted && f.phone.errors" [validationMessage]="'Phone is required'"></app-validator-info>
-    </div>
+
   </div>
   <div class="actions button-align-right">
-    <div class="next-button"><app-button [type]="'submit'" [label]="'Zur Übersicht'"></app-button></div>
+    <div class="next-button"><app-button [type]="'submit'" [label]="'Zur Bestellübersicht'"></app-button></div>
   </div>
 </form>

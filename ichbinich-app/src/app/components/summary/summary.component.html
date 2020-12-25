@@ -1,33 +1,46 @@
-<app-view-title [title]="'Überprüfe die Bestellung, ob alles stimmt.'"></app-view-title>
-<section *ngIf="basketItems.length > 0">
-  <p>Produkte</p>
-  <div class="basket-items">
-    <app-basket-item [item]="item" *ngFor="let item of basketItems"></app-basket-item>
+<div class="content">
+  <div class="header">
+    <app-view-title [title]="'Bestellübersicht'"></app-view-title>
   </div>
-  <div class="basket-checkout-total">
-    <p class="price-description">Total:</p>
-    <p class="price-value">
-      <app-currency [value]="basketTotal"></app-currency>
-    </p>
+  <div class="panels" *ngIf="basketItems.length > 0">
+    <div class="panel panel-left">
+      <app-form-header [description]="'Anschrift'"></app-form-header>
+      <section *ngIf="address !== null">
+        <div class="text-line">
+          <p>{{address.title}}</p>
+          <p>{{address.firstName}}</p>
+          <p>{{address.lastName}}</p>
+        </div>
+        <div class="text-line">
+          <p>{{address.street}}</p>
+        </div>
+        <div class="text-line">
+          <p>{{address.postalCode}}, {{address.city}}</p>
+        </div>
+        <div class="text-line">
+          <p>{{address.country}}</p>
+        </div>
+      </section>
+    </div>
+
+    <div class="panel panel-right">
+      <div class="basket-items">
+        <app-form-header [description]="'Überprüfe die Bestellung, ob alles stimmt.'"></app-form-header>
+        <app-basket-item [item]="item" *ngFor="let item of basketItems"></app-basket-item>
+        <div class="basket-checkout">
+
+          <div class="basket-checkout-total">
+            <p class="price-description">Total:</p>
+            <p class="price-value">
+              <app-currency [value]="basketTotal"></app-currency>
+            </p>
+          </div>
+          <div class="button-align-right">
+            <app-button [label]="'Bezahlen'" (onClick)="pay()"></app-button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-</section>
-<section *ngIf="address !== null">
-  <p>Anschrift</p>
-  <div class="text-line">
-    <p>{{address.title}}</p>
-    <p>{{address.firstName}}</p>
-    <p>{{address.lastName}}</p>
-  </div>
-  <div class="text-line">
-    <p>{{address.street}} {{address.streetNo}}</p>
-  </div>
-  <div class="text-line">
-    <p>{{address.postalCode}}, {{address.city}}</p>
-  </div>
-  <div class="text-line">
-    <p>{{address.country}}</p>
-  </div>
-  <div class="button-align-right">
-    <app-button [label]="'Bezahlen'" (onClick)="pay()"></app-button>
-  </div>
-</section>
+
+</div>

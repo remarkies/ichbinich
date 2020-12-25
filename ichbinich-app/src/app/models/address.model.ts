@@ -5,7 +5,6 @@ export interface AddressModel {
   firstName: string;
   lastName: string;
   street: string;
-  streetNo: string;
   postalCode: string;
   city: string;
   country_id: number;
@@ -13,4 +12,5 @@ export interface AddressModel {
   phone: string;
   title: string;
   country: string;
+  company: string;
 }

@@ -1,5 +1,6 @@
 const express = require('express');
 const BasketService = require('../services/BasketService');
+const responseController = require('../controllers/ResponseController');
 
 let router = express.Router();
 
@@ -66,5 +67,15 @@ router.post('/remove', async (request,response, next) => {
             next(err);
         });
 });
+
+router.post('/itemExists', async (request,response, next) => {
+    const basketId = request.body.basketId;
+    const paintingId = request.body.paintingId;
+
+    const exists = await BasketService.paintingExistsInBasket(basketId, paintingId);
+
+    return responseController.ok(response, exists);
+});
+
 
 module.exports = router;

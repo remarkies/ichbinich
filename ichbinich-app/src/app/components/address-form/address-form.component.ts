@@ -1,10 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {Router} from "@angular/router";
-import {DataService} from "../../services/data.service";
-import {TitleModel} from "../../models/title.model";
-import {Subscription} from "rxjs";
-import {CountryModel} from "../../models/country.model";
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Router} from '@angular/router';
+import {DataService} from '../../services/data.service';
+import {TitleModel} from '../../models/title.model';
+import {Subscription} from 'rxjs';
+import {CountryModel} from '../../models/country.model';
 
 @Component({
   selector: 'app-address-form',
@@ -39,16 +39,16 @@ export class AddressFormComponent implements OnInit {
 
     this.addressSubscription = this.dataService.address$.subscribe(address => {
       this.addressForm = this.formBuilder.group({
+        company: [address !== null ? address.company : '', []],
         title_id: [address !== null ? address.title_id : '', [Validators.required]],
         firstName: [address !== null ? address.firstName : '', [Validators.required]],
         lastName: [address !== null ? address.lastName : '', [Validators.required]],
         street: [address !== null ? address.street : '', [Validators.required]],
-        streetNo: [address !== null ? address.streetNo : '', [Validators.required]],
         postalCode: [address !== null ? address.postalCode : '', [Validators.required]],
         city: [address !== null ? address.city : '', [Validators.required]],
         country_id: [address !== null ? address.country_id : '', [Validators.required]],
         email: [address !== null ? address.email : '', [Validators.required, Validators.email]],
-        phone: [address !== null ? address.phone : '', [Validators.required]]
+        phone: [address !== null ? address.phone : '', []]
       });
     });
   }

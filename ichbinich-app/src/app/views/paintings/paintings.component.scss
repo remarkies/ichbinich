@@ -5,22 +5,51 @@
   display: flex;
 }
 
+@media screen and (min-width: 601px) {
+  .painting {
+    flex-direction: row;
+  }
+
+  .image {
+    width: 50vw;
+    height: calc(100vh - 75px);
+  }
+
+  .content {
+    width: 50vw;
+    height: calc(100vh - 75px);
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .painting {
+    flex-direction: column;
+  }
+
+  .image {
+    width: 100vw;
+    height: calc(50vh);
+    margin-left: -32px;
+  }
+
+  .content {
+    width: 100vw;
+  }
+}
+
 .painting {
   display: flex;
 }
 
 .image {
-  width: 50vw;
-  height: calc(100vh - 75px);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .content {
-  width: 50vw;
-  height: calc(100vh - 75px);
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-bottom: 75px;
 }

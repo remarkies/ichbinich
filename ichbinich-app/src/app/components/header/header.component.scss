@@ -1,20 +1,26 @@
 @import "../../../styles";
 
-@media screen and (min-width: 800px) {
+@media screen and (min-width: 601px) {
   .big {
     display: block;
   }
   .small {
     display: none;
+  }
+  .inner-header {
+    margin: 32px 64px;
   }
 }
 
-@media screen and (max-width: 799px) {
+@media screen and (max-width: 600px) {
   .big {
     display: none;
   }
   .small {
     display: block;
+  }
+  .inner-header {
+    margin: 32px;
   }
 }
 
@@ -27,7 +33,6 @@
 .inner-header {
   display: flex;
   align-items: center;
-  margin: 32px;
 }
 
 h1 {
