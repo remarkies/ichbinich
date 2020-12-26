@@ -1,7 +1,7 @@
 <div *ngIf="painting !== undefined" class="painting-info">
   <p class="collection">{{painting.collection}}</p>
   <p class="name">{{painting.name}}</p>
-  <p class="price">{{painting.price | currency: 'CHF ':'code'}}</p>
+  <p class="price" *ngIf="!isSold">{{painting.price | currency: 'CHF ':'code'}}</p>
   <div class="tags">
     <div class="tag" *ngFor="let tag of tags">{{tag}}</div>
   </div>
