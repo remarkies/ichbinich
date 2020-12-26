@@ -6,6 +6,9 @@
     <div class="panel panel-left">
       <app-form-header [description]="'Anschrift'"></app-form-header>
       <section *ngIf="address !== null">
+        <div *ngIf="address.company" class="text-line">
+          <p>{{address.company}}</p>
+        </div>
         <div class="text-line">
           <p>{{address.title}}</p>
           <p>{{address.firstName}}</p>
