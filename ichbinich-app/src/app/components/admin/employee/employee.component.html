@@ -1,0 +1,10 @@
+<div class="container">
+  <app-view-title [title]="'Verwaltung'"></app-view-title>
+  <div class="nav">
+    <div [ngClass]="isOrdersViewVisibile ? 'selected' : ''" class="nav-item" (click)="enableOrdersView()">Bestellungen</div>
+    <div [ngClass]="isPaintingsViewVisible ? 'selected' : ''" class="nav-item" (click)="enablePaintingsView()">Gemälde</div>
+  </div>
+  <app-orders *ngIf="isOrdersViewVisibile"></app-orders>
+  <app-employee-paintings *ngIf="isPaintingsViewVisible"></app-employee-paintings>
+  <app-button [type]="'submit'" (onClick)="logout()" [isDisabled]="false" [label]="'Logout'"></app-button>
+</div>

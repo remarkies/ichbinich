@@ -110,9 +110,37 @@ join title t on a.title_id = t.id
 join country c2 on a.country_id = c2.id
 where o.stripe_session_id = ?`;
 module.exports.SelectEmployees = `select e.email from employee e;`;
-
-module.exports.SelectEmployeeWithUsername = 'select * from employee e\n' +
-    'where e.username = ?;'
-
+module.exports.SelectEmployeeWithUsername = 'select * from employee e where e.username = ?;'
 module.exports.UpdateTokenForId = `update employee set token = ? where id = ?;`;
 module.exports.SelectIsTokenValid = `select count(*) 'isValid' from employee e where e.token = ?;`;
+
+// EmployeeService
+module.exports.SelectEmployeeOrders = `select o.id,
+       o.orderDateTime,
+       (select count(*) from order_painting op
+        where op.order_id = o.id) 'orderItemsCount',
+       (select sum(p.price) from order_painting op
+        join painting p on op.painting_id = p.id
+        where op.order_id = o.id) 'orderValue',
+        o2.id 'orderStateId',
+       o2.description 'orderState',
+       t.description 'title',
+       a.firstName,
+       a.lastName,
+       a.street,
+       a.postalCode,
+       a.city,
+       c.name 'country',
+       a.company,
+       c2.email,
+       c2.phone
+from \`order\` o
+join address a on o.orderAddress_id = a.id
+join title t on a.title_id = t.id
+join country c on a.country_id = c.id
+join orderstate o2 on o.orderState_id = o2.id
+join customer c2 on o.customer_id = c2.id;`;
+module.exports.SelectEmployeeOrderItems = `select p.id, p.name, p.price from order_painting op
+join painting p on op.painting_id = p.id
+where op.order_id = ?;`;
+module.exports.UpdateMarkOrderAsSent = `update \`order\` set orderState_id = 2 where id = ?;`;

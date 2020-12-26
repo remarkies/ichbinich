@@ -26,13 +26,10 @@ router.post('/authenticate',async function(request,response, next){
         return responseController.unauthorized(response, "Password not matching!");
     }
 });
-
-
 router.post('/isTokenValid',async function(request,response, next){
     const token = request.body.token;
     let result = await EmployeeService.isTokenValid(token);
 
-    return responseController.ok(response, { valid: result[0].isValid > 0 });
+    return responseController.ok(response, { valid: result });
 });
-
 module.exports = router;

@@ -1,5 +1,4 @@
-@import '../../../styles';
-
+@import "../../../../styles";
 :host {
   width: 100vw;
   display: flex;
@@ -11,7 +10,7 @@
   }
 
   .content {
-    margin: 75px 32px 32px 32px;
+    margin: 32px 32px 32px 32px;
     width: 100vw;
   }
   .panel-right {
@@ -26,7 +25,6 @@
 @media screen and (max-width: 600px) {
   .content {
     width: 100vw;
-    margin: 75px 0 0 0;
   }
   .panels {
     flex-direction: column;
@@ -39,7 +37,6 @@
 
 .header {
   padding: 32px 32px 0 32px;
-  margin-top: 32px;
 }
 
 .panels {
@@ -51,17 +48,22 @@
   border-radius: 3px;
 }
 
-.basket-checkout {
-  padding: 4px;
-  font-weight: bold;
+
+.text-line {
+  display: flex;
+  flex-direction: row;
 }
 
+.text-line p {
+  margin: 0 2px;
+  font-size: 1em;
+}
+
+// total line
 .basket-checkout-total {
   display: grid;
   grid-template-columns: 50% 50%;
-}
-
-.price-description {
+  font-weight: 700;
 }
 
 .price-value {
@@ -69,8 +71,6 @@
   justify-content: flex-end;
 }
 
-.info {
-  margin-bottom: 16px;
-  font-size: 1em;
-  margin-top: 26px;
+section {
+  margin-bottom: 32px;
 }

@@ -12,6 +12,8 @@ import {BasketItemRequestModel} from '../models/basketItemRequest.model';
 import {RequestAddressForBasketResponseModel} from '../models/requestAddressForBasketResponse.model';
 import {NewAddressForBasketRequestModel} from '../models/newAddressForBasketRequest.model';
 import {CheckPaymentOfSessionResponseModel} from '../models/checkPaymentOfSessionResponse.model';
+import {OrderStateModel} from '../models/orderState.model';
+import {Observable} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -67,7 +69,15 @@ export class ApiService {
     return this.http.post<CreatePaymentSessionResponseModel>(environment.apiUrl + '/payment/create-session', requestModel);
   }
 
-  public isTokenValid(token: string) {
+  public isTokenValid(token: string): any {
     return this.http.post<any>(environment.apiUrl + '/employees/isTokenValid', { token });
+  }
+
+  public getOrders(token: string): any {
+    return this.http.post<any>(environment.apiUrl + '/orders/get', {token});
+  }
+
+  public markOrderAsSent(token: string, id: number, email: string): any {
+    return this.http.post<any>(environment.apiUrl + '/orders/markAsSent', {token, id, email});
   }
 }

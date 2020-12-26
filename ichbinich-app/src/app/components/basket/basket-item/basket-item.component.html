@@ -7,8 +7,8 @@
 </div>
 <div class="basket-item-price">
   <label>Preis</label>
-  <p><app-currency [value]="item.price"></app-currency></p>
+  <p>{{item.price | currency: 'CHF ':'code'  }}</p>
 </div>
-<div class="basket-item-remove">
+<div *ngIf="editable" class="basket-item-remove">
   <app-icon-button [iconSize]="'xs'" [isDisabled]="false" [iconName]="'trash'" (onClick)="dataService.removeFromBasket(item.id)"></app-icon-button>
 </div>

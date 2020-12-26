@@ -1,0 +1,17 @@
+@import "../../../../styles";
+
+:host {
+  display: block;
+  padding: 4px;
+  height: 15px;
+  width: 15px;
+  font-size: 0.7em;
+  font-weight: bold;
+  background: $accent2;
+  border-radius: 20px;
+  text-align: center;
+  color: $background;
+  position: absolute;
+  margin-top: 30px;
+  margin-left: 30px;
+}

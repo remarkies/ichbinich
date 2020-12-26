@@ -16,9 +16,7 @@
 
           <div class="basket-checkout-total">
             <p class="price-description">Total:</p>
-            <p class="price-value">
-              <app-currency [value]="basketTotal"></app-currency>
-            </p>
+            <p class="price-value">{{basketTotal | currency: 'CHF ':'code'}}</p>
           </div>
 
           <div class="button-align-right">

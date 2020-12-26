@@ -5,11 +5,11 @@ import {PaintingsComponent} from './views/paintings/paintings.component';
 import {UserComponent} from './views/user/user.component';
 import {CheckOutComponent} from './views/check-out/check-out.component';
 import {PageNotFoundComponent} from './views/page-not-found/page-not-found.component';
-import {AddressFormComponent} from './components/address-form/address-form.component';
-import {SummaryComponent} from './components/summary/summary.component';
-import {EmployeeComponent} from './components/employee/employee.component';
+import {AddressFormComponent} from './components/check-out/address-form/address-form.component';
+import {SummaryComponent} from './components/check-out/summary/summary.component';
+import {EmployeeComponent} from './components/admin/employee/employee.component';
 import {AuthGuard} from './helpers/auth.guard';
-import {LoginFormComponent} from './components/login-form/login-form.component';
+import {LoginFormComponent} from './components/admin/login-form/login-form.component';
 
 const routes: Routes = [
   { path: 'paintings', component: PaintingsComponent},
@@ -17,7 +17,7 @@ const routes: Routes = [
   { path: 'user', component: UserComponent,
     children: [
       { path: 'login', component: LoginFormComponent},
-      { path: 'employee', component: EmployeeComponent, canActivate: [AuthGuard]},
+      { path: 'employee', component: EmployeeComponent, canActivate: [AuthGuard] },
       { path: '**', component: UserComponent }
     ],
     runGuardsAndResolvers: 'always',

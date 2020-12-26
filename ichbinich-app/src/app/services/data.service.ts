@@ -9,6 +9,9 @@ import {TitleModel} from '../models/title.model';
 import {CountryModel} from '../models/country.model';
 import {BasketCookieModel} from '../models/basketCookie.model';
 import {RequestBasketResponseModel} from '../models/requestBasketResponse.model';
+import {AuthenticationService} from './authentication.service';
+import {EmployeeOrderModel} from '../models/employeeOrder.model';
+import {OrderStateModel} from '../models/orderState.model';
 
 @Injectable({
   providedIn: 'root'
@@ -65,7 +68,23 @@ export class DataService {
   }
   private _countries: BehaviorSubject<CountryModel[]> = new BehaviorSubject<CountryModel[]>([]);
 
-  constructor(private apiService: ApiService, private cookieHandlerService: CookieHandlerService) {
+  public get orders$(): Observable<EmployeeOrderModel[]> {
+    return this._orders.asObservable();
+  }
+  public get orders(): EmployeeOrderModel[] {
+    return this._orders.value;
+  }
+  private _orders: BehaviorSubject<EmployeeOrderModel[]> = new BehaviorSubject<EmployeeOrderModel[]>([]);
+
+  public get orderStates$(): Observable<OrderStateModel[]> {
+    return this._orderStates.asObservable();
+  }
+  public get orderStates(): OrderStateModel[] {
+    return this._orderStates.value;
+  }
+  private _orderStates: BehaviorSubject<OrderStateModel[]> = new BehaviorSubject<OrderStateModel[]>([]);
+
+  constructor(private apiService: ApiService, private cookieHandlerService: CookieHandlerService, private authenticationService: AuthenticationService) {
     this.loadPaintings();
     this.loadTitles();
     this.loadCountries();
@@ -173,6 +192,7 @@ export class DataService {
     });
   }
 
+  // paintings related
   public nextPainting(): void {
     const index = this.paintings.indexOf(this.selectedPainting);
     if (index === this.paintings.length - 1) {
@@ -194,6 +214,28 @@ export class DataService {
 
     if (this.selectedPainting !== null) {
       this._isSelectedPaintingInBasket.next(this.isItemAlreadyInBasket(this.selectedPainting));
+    }
+  }
+
+  // employee related
+  public loadOrders(): void {
+    const currentEmployee = this.authenticationService.currentEmployeeValue;
+    if (currentEmployee !== null) {
+      this.apiService.getOrders(currentEmployee.token).subscribe(orders => {
+        this._orders.next(orders);
+      });
+    } else {
+      console.log('Current employee not loaded.');
+    }
+  }
+  public markOrderAsSent(order: EmployeeOrderModel): void {
+    const currentEmployee = this.authenticationService.currentEmployeeValue;
+    if (currentEmployee !== null) {
+      this.apiService.markOrderAsSent(currentEmployee.token, order.id, order.email).subscribe(() => {
+        this.loadOrders();
+      });
+    } else {
+      console.log('Current employee not loaded.');
     }
   }
 }

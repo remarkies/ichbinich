@@ -1,0 +1,52 @@
+<div class="orders">
+  <div class="order" *ngFor="let order of orders">
+    <div class="content">
+      <div class="header">
+        <div class="header-item">
+          <label>Id</label>
+          <p>{{order.id }}</p>
+        </div>
+        <div class="header-item">
+          <label>Bestelldatum</label>
+          <p>{{order.orderDateTime | date }}</p>
+        </div>
+        <div class="header-item">
+          <label>Positionen</label>
+          <p>{{order.orderItemsCount}}</p>
+        </div>
+        <div class="header-item">
+          <label>Totaler Wert</label>
+          <p>{{order.orderValue | currency: 'CHF ': 'code'}}</p>
+        </div>
+        <div class="header-item">
+          <label>Status</label>
+          <p>{{order.orderState}}</p>
+        </div>
+        <div class="header-item">
+          <label>Kunde</label>
+          <p>{{order.company}}</p>
+          <p>{{order.title}} {{order.firstName}} {{order.lastName}}</p>
+          <p>{{order.street}}</p>
+          <p>{{order.postalCode}}, {{order.city}}</p>
+          <p>{{order.country}}</p>
+        </div>
+        <div class="header-item">
+          <label>Kontakt</label>
+          <p>{{order.email}}</p>
+          <p>{{order.phone}}</p>
+        </div>
+      </div>
+      <table>
+        <tr>
+          <th>Gemälde</th>
+          <th>Preis</th>
+        </tr>
+        <tr *ngFor="let pos of order.items">
+          <td>{{pos.name}}</td>
+          <td>{{pos.price | currency: 'CHF ': 'code'}}</td>
+        </tr>
+      </table>
+      <app-button *ngIf="order.orderStateId !== 2" [label]="'Als versendet markieren'" (onClick)="markAsSent(order)"></app-button>
+    </div>
+  </div>
+</div>

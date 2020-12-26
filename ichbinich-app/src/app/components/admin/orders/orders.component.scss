@@ -1,0 +1,47 @@
+@import '../../../../styles';
+
+.orders {
+  padding: 32px 0;
+  width: calc(100vw - 128px);
+}
+
+.order {
+  border-top: solid 2px $hightlight1;
+  padding: 16px 0;
+  display: flex;
+}
+
+.content {
+  flex-grow: 1;
+}
+
+.contact {
+  flex-grow: 0;
+}
+
+.header {
+  display: flex;
+}
+
+.header-item {
+  margin-right: 32px;
+  display: flex;
+  flex-direction: column;
+}
+
+p {
+  margin: 0;
+}
+
+table {
+  border-collapse: separate;
+  border-spacing: 40px 0;
+  padding: 16px 0;
+}
+
+th {
+  text-align: start;
+  font-size: 0.8em;
+}
+
+

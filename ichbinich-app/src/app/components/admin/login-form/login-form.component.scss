@@ -1,0 +1,33 @@
+@import "../../../../styles";
+
+:host {
+  display: block;
+}
+
+form {
+  margin-top: 75px;
+}
+
+@media screen and (min-width: 601px) {
+  form {
+    padding: 64px 64px 32px 64px;
+    width: 300px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  form {
+    padding: 64px 32px 32px 32px;
+    width: calc(100vw - 64px);
+  }
+}
+
+.text-input {
+  display: flex;
+  flex-direction: column;
+  margin: 6px 0;
+}
+
+.login-button {
+  display: flex;
+}

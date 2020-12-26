@@ -2,6 +2,7 @@
   <p class="collection">{{painting.collection}}</p>
   <p class="name">{{painting.name}}</p>
   <p class="price" *ngIf="!isSold">{{painting.price | currency: 'CHF ':'code'}}</p>
+  <p class="sold" *ngIf="isSold">Verkauft</p>
   <div class="tags">
     <div class="tag" *ngFor="let tag of tags">{{tag}}</div>
   </div>

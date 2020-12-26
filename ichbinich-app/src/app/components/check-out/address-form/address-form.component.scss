@@ -1,0 +1,61 @@
+@import "../../../../styles";
+
+@media screen and (min-width: 601px) {
+
+  form {
+    margin: 32px 32px 0 32px;
+    padding: 32px;
+  }
+  .panel {
+    width: calc(50vw - 48px);
+  }
+
+  .panel-left {
+    margin-right: 16px;
+  }
+
+  .panel-right {
+    margin-left: 16px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .panels {
+    flex-direction: column;
+  }
+  form {
+     margin: 32px;
+   }
+}
+
+.panels {
+  display: flex;
+}
+
+.text-input {
+  display: flex;
+  flex-direction: column;
+  margin: 6px 0;
+}
+
+.street-info {
+  display: grid;
+  grid-template-columns: 69% 29%;
+  grid-gap: 2%;
+}
+
+.city-info {
+  display: grid;
+  grid-template-columns: 39% 59%;
+  grid-gap: 2%;
+}
+
+
+.country-info {
+  margin-bottom: 20px;
+}
+
+.actions {
+  display: flex;
+  margin-bottom: 16px;
+}

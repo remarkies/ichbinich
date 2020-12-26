@@ -1,0 +1,56 @@
+<div class="content">
+  <div class="header">
+    <app-view-title [title]="'Bestellübersicht'"></app-view-title>
+  </div>
+  <div class="panels" *ngIf="basketItems.length > 0">
+    <div class="panel panel-left">
+      <app-form-header [description]="'Anschrift'"></app-form-header>
+      <section *ngIf="address !== null">
+        <div *ngIf="address.company" class="text-line">
+          <p>{{address.company}}</p>
+        </div>
+        <div class="text-line">
+          <p>{{address.title}}</p>
+          <p>{{address.firstName}}</p>
+          <p>{{address.lastName}}</p>
+        </div>
+        <div class="text-line">
+          <p>{{address.street}}</p>
+        </div>
+        <div class="text-line">
+          <p>{{address.postalCode}}, {{address.city}}</p>
+        </div>
+        <div class="text-line">
+          <p>{{address.country}}</p>
+        </div>
+      </section>
+      <app-form-header [description]="'Kontakt'"></app-form-header>
+      <section *ngIf="address !== null">
+        <div *ngIf="address.email" class="text-line">
+          <p>{{address.email}}</p>
+        </div>
+        <div *ngIf="address.phone" class="text-line">
+          <p>{{address.phone}}</p>
+        </div>
+      </section>
+    </div>
+
+    <div class="panel panel-right">
+      <div class="basket-items">
+        <app-form-header [description]="'Überprüfe die Bestellung, ob alles stimmt.'"></app-form-header>
+        <app-basket-item [editable]="false" [item]="item" *ngFor="let item of basketItems"></app-basket-item>
+        <div class="basket-checkout">
+
+          <div class="basket-checkout-total">
+            <p class="price-description">Total:</p>
+            <p class="price-value">{{basketTotal | currency: 'CHF ':'code'}}</p>
+          </div>
+          <div class="button-align-right">
+            <app-button [label]="'Bezahlen'" (onClick)="pay()"></app-button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
