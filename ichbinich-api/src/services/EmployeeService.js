@@ -28,6 +28,19 @@ module.exports.getOrders = async function() {
     return result;
 }
 
+module.exports.getOrder = async function(id) {
+    let result = await DatabaseService.query(QueryService.SelectEmployeeOrder, [id]);
+    for (const order of result) {
+        order.items = await DatabaseService.query(QueryService.SelectEmployeeOrderItems, [order.id])
+    }
+
+    if (result.length > 0) {
+        return result[0];
+    }
+
+    return result;
+}
+
 module.exports.markOrderAsSent = async function(orderId) {
     return await DatabaseService.query(QueryService.UpdateMarkOrderAsSent, [orderId]);
 }

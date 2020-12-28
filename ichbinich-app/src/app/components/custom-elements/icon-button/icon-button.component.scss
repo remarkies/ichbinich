@@ -1,8 +1,9 @@
 @import "../../../../styles";
 
 :host {
-  display: block;
+  display: flex;
   cursor: pointer !important;
+  justify-content: center;
 }
 
 button {
@@ -15,6 +16,8 @@ button {
 
 button:hover {
   cursor: pointer;
+  background: $hightlight1;
+  border-radius: 3px;
 }
 
 .btn:disabled {

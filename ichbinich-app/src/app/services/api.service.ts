@@ -77,6 +77,10 @@ export class ApiService {
     return this.http.post<any>(environment.apiUrl + '/orders/get', {token});
   }
 
+  public getOrder(token: string, id: number): any {
+    return this.http.post<any>(environment.apiUrl + '/orders/order', {token, id});
+  }
+
   public markOrderAsSent(token: string, id: number, email: string): any {
     return this.http.post<any>(environment.apiUrl + '/orders/markAsSent', {token, id, email});
   }

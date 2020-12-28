@@ -10,6 +10,7 @@ import {SummaryComponent} from './components/check-out/summary/summary.component
 import {EmployeeComponent} from './components/admin/employee/employee.component';
 import {AuthGuard} from './helpers/auth.guard';
 import {LoginFormComponent} from './components/admin/login-form/login-form.component';
+import {OrderComponent} from './components/admin/order/order.component';
 
 const routes: Routes = [
   { path: 'paintings', component: PaintingsComponent},
@@ -18,6 +19,7 @@ const routes: Routes = [
     children: [
       { path: 'login', component: LoginFormComponent},
       { path: 'employee', component: EmployeeComponent, canActivate: [AuthGuard] },
+      { path: 'order/:id', component: OrderComponent, canActivate: [AuthGuard] },
       { path: '**', component: UserComponent }
     ],
     runGuardsAndResolvers: 'always',

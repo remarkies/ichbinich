@@ -17,6 +17,19 @@ router.post('/get',async function(request,response, next){
     }
 });
 
+router.post('/order',async function(request,response, next){
+    const token = request.body.token;
+    const id = request.body.id;
+
+    const valid = await EmployeeService.isTokenValid(token);
+    if (valid) {
+        const order = await EmployeeService.getOrder(id);
+        return responseController.ok(response, order);
+    } else {
+        return responseController.fail(response, 'Not authorized!');
+    }
+});
+
 router.post('/markAsSent',async function(request,response, next){
     const token = request.body.token;
     const id = request.body.id;

@@ -1,0 +1,56 @@
+<div class="container" *ngIf="order !== null">
+  <app-view-title [title]="'Bestellung #' + order.id"></app-view-title>
+  <div class="content">
+    <h3>Kunde</h3>
+    <div class="customer">
+      <div class="panel">
+        <div class="customer-item">
+          <app-icon [size]="'xs'" [name]="'user'"></app-icon>
+          <p>{{order.firstName}} {{order.lastName}}</p>
+        </div>
+        <div class="customer-item">
+          <app-icon [size]="'xs'" [name]="'phone'"></app-icon>
+          <p>{{order.phone}}</p>
+        </div>
+        <div class="customer-item">
+          <app-icon [size]="'xs'" [name]="'email'"></app-icon>
+          <p>{{order.email}}</p>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="customer-item">
+          <app-icon [size]="'xs'" [name]="'home'"></app-icon>
+          <div class="address">
+            <p>{{order.street}}</p>
+            <p>{{order.postalCode}}, {{order.city}}</p>
+            <p>{{order.country}}</p>
+          </div>
+        </div>
+        <div class="customer-item">
+          <app-icon [size]="'xs'" [name]="'status'"></app-icon>
+          <p [ngClass]="order.orderStateId === 1? 'warning' : 'success'">{{order.orderState}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="positions">
+    <h3>Positionen</h3>
+    <table>
+      <thead>
+      <tr>
+        <th>#Id</th>
+        <th>Gemälde</th>
+        <th>Preis</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr class="table-row" *ngFor="let item of order.items">
+        <td><p>#{{item.id}}</p></td>
+        <td><p>{{item.name}}</p></td>
+        <td><p>{{item.price | currency: 'CHF ': 'code'}}</p></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <app-button [type]="'submit'" (onClick)="back()" [isDisabled]="false" [label]="'Zurück'"></app-button>
+</div>

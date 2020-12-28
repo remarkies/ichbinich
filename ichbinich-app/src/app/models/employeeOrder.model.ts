@@ -6,6 +6,7 @@ export class EmployeeOrderModel {
   orderItemsCount: number;
   orderStateId: number;
   orderState: string;
+  selected = false;
   orderValue: number;
   company: string;
   title: string;
