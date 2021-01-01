@@ -184,10 +184,7 @@ export class DataService {
       return;
     }
     const basketCookie = this.getBasketCookie();
-    this.apiService.newAddressForBasket({
-      basketCookie,
-      address
-    }).subscribe(() => {
+    this.apiService.newAddressForBasket(basketCookie, address).subscribe(response => {
       this.requestAddressForBasket();
     });
   }

@@ -1,115 +1,59 @@
 const moment = require('moment');
+const databaseService = require('./DatabaseService');
+const basketService = require('./BasketService');
+const queryService = require('./QueryService');
+const emailService = require('./EmailService');
+const errorService = require('./ErrorService');
 
-const DatabaseService = require('./DatabaseService');
-const BasketService = require('./BasketService');
-const QueryService = require('./QueryService');
-const ErrorService = require('./ErrorService');
-const EmailService = require('./EmailService');
+module.exports.isOrderAlreadySubmitted = async function(sessionId) {
+  try {
+      const result = await databaseService.query(queryService.SelectSessionIdExistsInBasket, [sessionId]);
+      return result[0].sessionIdExists === 0;
+  } catch (error) {
+      throw new errorService.newError('Function: isOrderAlreadySubmitted failed. Database query failed.', error);
+  }
+};
 
-module.exports.submitOrder = function(sessionId)  {
-    return new Promise((resolve, reject) => {
-        this.getBasketIdFromSession(sessionId)
-            .then(basketId => {
-                this.getDataForOrder(sessionId)
-                    .then(orderData => {
-                        this.insertOrder(orderData.customer_id, orderData.address_id, sessionId)
-                            .then(orderId => {
-                                this.getOrderItemsFromSession(sessionId)
-                                    .then(orderItems => {
-                                        let promises = [];
+module.exports.submitOrder = async function(sessionId)  {
+    const basketId = await this.getBasketIdFromSession(sessionId);
+    const orderData = await this.getDataForOrder(sessionId);
+    const orderId = await this.insertOrder(orderData.customer_id, orderData.address_id, sessionId);
+    const orderItems = await this.getOrderItemsFromSession(sessionId);
 
-                                        orderItems.forEach(orderItem => {
-                                            promises.push(this.insertOrderItem(orderId, orderItem.painting_id))
-                                        });
+    for (const orderItem of orderItems) {
+        await this.insertOrderItem(orderId, orderItem.painting_id);
+    }
 
-                                        Promise.all(promises)
-                                            .then(() => {
-                                                BasketService.clearBasketFromItems(basketId)
-                                                    .then(() => {
-                                                        BasketService.updateBasketWithSession(basketId, null)
-                                                            .then(() => {
-                                                                resolve();
-                                                            })
-                                                            .catch(err => { reject(err); });
-                                                    })
-                                                    .catch(err => { reject(err); });
-                                            })
-                                            .catch(err => { reject(err); });
-                                    })
-                                    .catch(err => { reject(err); });
-                            })
-                            .catch(err => { reject(err); });
-                    })
-                    .catch(err => { reject(err); });
-            })
-            .catch(err => { reject(err); });
-    });
+    await basketService.clearBasketFromItems(basketId);
+    await basketService.updateBasketWithSession(basketId, null);
 };
-module.exports.getBasketIdFromSession = function(sessionId)  {
-    return new Promise((resolve, reject) => {
-        DatabaseService.query(QueryService.SelectBasketIdFromStripeSessionId, [sessionId])
-            .then((output) => {
-                const basketId = output[0] === undefined ? null : output[0];
-                resolve(basketId.id);
-            })
-            .catch((err) => {
-                reject(new ErrorService.Error('Getting basket id from session id failed.', err));
-            });
-    });
+module.exports.getBasketIdFromSession = async function(sessionId)  {
+    const result = await databaseService.query(queryService.SelectBasketIdFromStripeSessionId, [sessionId]);
+    return result[0] === undefined ? null : result[0].id;
 };
-module.exports.getDataForOrder = function(sessionId)  {
-    return new Promise((resolve, reject) => {
-        DatabaseService.query(QueryService.SelectDataForOrder, [sessionId])
-            .then((output) => {
-                const orderData = output[0] === undefined ? null : output[0];
-                resolve(orderData);
-            })
-            .catch((err) => {
-                reject(new ErrorService.Error('Getting data for order failed.', err));
-            });
-    });
+module.exports.getDataForOrder = async function(sessionId)  {
+    const result = await databaseService.query(queryService.SelectDataForOrder, [sessionId]);
+    return result[0] === undefined ? null : result[0];
 };
-module.exports.getOrderItemsFromSession = function(sessionId)  {
-    return new Promise((resolve, reject) => {
-        DatabaseService.query(QueryService.SelectOrderItemsFromStripeSessionId, [sessionId])
-            .then((output) => {
-                const orderItems = output[0] === undefined ? [] : output;
-                resolve(orderItems);
-            })
-            .catch((err) => {
-                reject(new ErrorService.Error('Getting order items from session id failed.', err));
-            });
-    });
+module.exports.getOrderItemsFromSession = async function(sessionId)  {
+    const result = await databaseService.query(queryService.SelectOrderItemsFromStripeSessionId, [sessionId]);
+    return result[0] === undefined ? [] : result;
 };
-module.exports.insertOrder = function(customerId, address_id, sessionId)  {
-    return new Promise((resolve, reject) => {
-        DatabaseService.query(QueryService.InsertOrder,[customerId, new Date(), address_id, address_id, sessionId])
-            .then((output) => {
-                resolve(output.insertId);
-            })
-            .catch((err) => {
-                reject(new ErrorService.Error('Insert order failed.', err));
-            });
-    });
+module.exports.insertOrder = async function(customerId, address_id, sessionId)  {
+    const result = await databaseService.query(queryService.InsertOrder,[customerId, new Date(), address_id, address_id, sessionId]);
+    return result.insertId;
 };
-module.exports.insertOrderItem = function(orderId, paintingId)  {
-    return new Promise((resolve, reject) => {
-        DatabaseService.query(QueryService.InsertOrderItem, [orderId, paintingId])
-            .then((output) => {
-                resolve(output.insertId);
-            })
-            .catch((err) => {
-                reject(new ErrorService.Error('Insert order item failed.', err));
-            });
-    });
+module.exports.insertOrderItem = async function(orderId, paintingId)  {
+    const result = await databaseService.query(queryService.InsertOrderItem, [orderId, paintingId]);
+    return result.insertId;
 };
 module.exports.sendMailsForOrder = async function(sessionId)  {
-    let orderInfo = await DatabaseService.query(QueryService.SelectOrderInfo, [sessionId]);
-    let orderPositions = await DatabaseService.query(QueryService.SelectOrderPositions, [sessionId]);
+    let orderInfo = await databaseService.query(queryService.SelectOrderInfo, [sessionId]);
+    let orderPositions = await databaseService.query(queryService.SelectOrderPositions, [sessionId]);
 
     await this.sendCustomerMail(orderInfo[0], orderPositions);
 
-    let employees = await DatabaseService.query(QueryService.SelectEmployees, null);
+    let employees = await databaseService.query(queryService.SelectEmployees, null);
 
     for (const employee of employees) {
         await this.sendEmployeeMail(employee, orderInfo[0], orderPositions);
@@ -131,8 +75,8 @@ module.exports.sendCustomerMail = async function(orderInfo, orderPositions) {
                     'Freundliche Grüsse' + newLine +
                     'ichbinich.ch'
 
-    let mailOption = EmailService.createEmailOptions(orderInfo.email, header, text);
-    await EmailService.sendEmail(mailOption);
+    let mailOption = emailService.createEmailOptions(orderInfo.email, header, text);
+    await emailService.sendEmail(mailOption);
 }
 module.exports.sendEmployeeMail = async function(employee, orderInfo, orderPositions) {
     let newLine = '\n';
@@ -145,6 +89,6 @@ module.exports.sendEmployeeMail = async function(employee, orderInfo, orderPosit
         text += position.name + ' - CHF ' + position.price + '.-' + newLine;
     });
 
-    let mailOption = EmailService.createEmailOptions(employee.email, header, text);
-    await EmailService.sendEmail(mailOption);
+    let mailOption = emailService.createEmailOptions(employee.email, header, text);
+    await emailService.sendEmail(mailOption);
 }

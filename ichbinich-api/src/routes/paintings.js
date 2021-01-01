@@ -1,15 +1,79 @@
 const express = require('express');
-const PaintingService = require('../services/PaintingService');
-let router = express.Router();
+const paintingService = require('../services/PaintingService');
+const responseController = require('../controllers/ResponseController');
+const router = express.Router();
 
-// return json object with all paintings
 router.post('/',async function(request,response, next){
     const ids = request.body.ids;
+
     const params = ids !== undefined && ids.length > 0 ? ids : null;
 
-    const paintings = await PaintingService.getPaintings(params);
+    try {
+        // get all paintings depending on params
+        const paintings = await paintingService.getPaintings(params);
 
-    response.send(paintings);
+        return responseController.ok(response, paintings);
+    } catch (error) {
+        return responseController.fail(response, error);
+    }
+});
+
+router.post('/painting',async function(request,response, next){
+    const id = request.body.id;
+
+    try {
+        // get specific painting
+        const painting = await paintingService.getPainting(id);
+
+        return responseController.ok(response, painting);
+    } catch(error) {
+        return responseController.fail(response, error);
+    }
+});
+
+router.get('/styles',async function(request,response){
+
+    try {
+        // get all available styles of paintings
+        const styles = await paintingService.getStyles();
+
+        return responseController.ok(response, styles);
+    } catch(error) {
+        return responseController.fail(response, error);
+    }
+});
+
+router.get('/techniques',async function(request,response){
+    try {
+        // get all available techniques of paintings
+        const techniques = await paintingService.getTechniques();
+
+        return responseController.ok(response, techniques);
+    } catch(error) {
+        return responseController.fail(response, error);
+    }
+});
+
+router.get('/undergrounds',async function(request,response){
+    try {
+        // get all available undergrounds of paintings
+        const undergrounds = await paintingService.getUndergrounds();
+
+        return responseController.ok(response, undergrounds);
+    } catch(error) {
+        return responseController.fail(response, error);
+    }
+});
+
+router.get('/collections',async function(request,response){
+    try {
+        // get all available collections of paintings
+        const collections = await paintingService.getCollections();
+
+        return responseController.ok(response, collections);
+    } catch(error) {
+        return responseController.fail(response, error);
+    }
 });
 
 module.exports = router;

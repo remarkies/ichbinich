@@ -12,7 +12,7 @@ module.exports.SelectGetPaintings = `SELECT P.ID 'id', P.name, P.style_id, S.des
                              join underground u on P.underground_id = u.id
                              LEFT JOIN collection C ON P.collection_id = C.id
                              LEFT JOIN series SE ON P.series_id = SE.id;`;
-module.exports.SelectGetPathsForPainting = `SELECT I.path FROM painting_image PI
+module.exports.SelectGetPathsForPainting = `SELECT I.id, I.path FROM painting_image PI
                                     JOIN IMAGE I ON PI.image_id = I.id
                                     WHERE PI.painting_id = ?;`;
 module.exports.SelectGetPainting = `SELECT P.ID 'id',
@@ -41,6 +41,10 @@ module.exports.SelectGetPainting = `SELECT P.ID 'id',
                                      LEFT JOIN collection C ON P.collection_id = C.id
                                      LEFT JOIN series SE ON P.series_id = SE.id
                             WHERE P.ID = ?;`;
+module.exports.SelectStyles = `select * from style;`;
+module.exports.SelectTechniques = `select * from technique;`;
+module.exports.SelectUndergrounds = `select * from underground;`;
+module.exports.SelectCollections = `select * from collection;`;
 
 // BasketService
 module.exports.SelectBasketExists = `select count(*) 'basketFound' from basket b where b.id = ?;`;
@@ -70,6 +74,7 @@ module.exports.SelectOrderItemsFromStripeSessionId = `select bp.painting_id from
 module.exports.InsertOrder = `insert into \`order\` (customer_id, orderDateTime, orderAddress_id, billingAddress_id, orderState_id, employee_id, changeDateTime, stripe_session_id)
                                 VALUES (?, ?, ?, ?, 1, null, null, ?);`;
 module.exports.InsertOrderItem = `insert into order_painting (order_id, painting_id) VALUES (?, ?);`;
+module.exports.SelectSessionIdExistsInBasket = `select count(*) 'sessionIdExists' from basket b where b.stripe_session_id = ?;`;
 
 // AddressService
 module.exports.SelectAddressForBasketId = `select a.*, c.email, c.phone, t.description 'title', c2.name 'country' from basket b
@@ -91,6 +96,8 @@ module.exports.SelectAddressIdForBasketId = `select b.address_id from basket b w
 module.exports.SelectCustomerIdForBasketId = `select b.customer_id from basket b where b.id = ?;`;
 module.exports.UpdateLinkAddressToBasket = `update basket set address_id = ? where id = ?;`;
 module.exports.UpdateLinkCustomerToBasket = `update basket set customer_id = ? where id = ?;`;
+module.exports.SelectTitles = `SELECT t.id, t.description FROM title t;`;
+module.exports.SelectCountries = `SELECT c.id, c.name FROM country c;`;
 
 module.exports.SelectOrderPositions = `select p.name, p.price from order_painting op
 join \`order\` o on op.order_id = o.id
@@ -170,3 +177,7 @@ module.exports.SelectEmployeeOrderItems = `select p.id, p.name, p.price from ord
 join painting p on op.painting_id = p.id
 where op.order_id = ?;`;
 module.exports.UpdateMarkOrderAsSent = `update \`order\` set orderState_id = 2 where id = ?;`;
+
+// ImageService
+module.exports.DeleteImageToPaintingLink = `delete from painting_image where image_id = ?;`;
+module.exports.DeleteImage = `delete from image where id = ?;`;

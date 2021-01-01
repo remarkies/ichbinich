@@ -23,6 +23,9 @@ export class PaymentService {
   public submitOrder(sessionId: string) {
     return this.apiService.submitOrder(sessionId);
   }
+  public isOrderSubmitted(sessionId: string) {
+    return this.apiService.isOrderSubmitted(sessionId);
+  }
 
 
 }

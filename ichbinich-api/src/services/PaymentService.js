@@ -2,18 +2,10 @@ const DatabaseService = require('./DatabaseService');
 const QueryService = require('./QueryService');
 const ErrorService = require('./ErrorService');
 
-module.exports.requestCheckOutItems = function(basketId)  {
-    return new Promise((resolve, reject) => {
-        DatabaseService.query(QueryService.SelectCheckoutItems, [basketId])
-            .then((output) => {
-                let items = output[0] === undefined ? [] : output;
-                resolve(items);
-            })
-            .catch((err) => {
-                reject(new ErrorService.Error('Request checkout items failed.', err));
-            });
-    });
+module.exports.requestCheckOutItems = async function(basketId)  {
+    return await DatabaseService.query(QueryService.SelectCheckoutItems, [basketId])
 };
+
 module.exports.buildParamsForItems = function(basketId, items)  {
     let params = {
         payment_method_types: ['card'],

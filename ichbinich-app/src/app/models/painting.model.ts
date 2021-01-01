@@ -1,6 +1,6 @@
 import {PathModel} from './path.model';
 
-export interface PaintingModel {
+export class PaintingModel {
   id: number;
   name: string;
   style_id: number;
@@ -19,5 +19,6 @@ export interface PaintingModel {
   series_id: number;
   series: string;
   sold: number;
+  selected = false;
   paths: PathModel[];
 }

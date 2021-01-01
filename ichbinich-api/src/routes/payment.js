@@ -2,78 +2,58 @@ const express = require('express');
 const stripe = require('../services/StripeService');
 const basketService = require('../services/BasketService');
 const paymentService = require('../services/PaymentService');
-const errorService = require('../services/ErrorService');
+const responseController = require('../controllers/ResponseController');
 
-let router = express.Router();
+const router = express.Router();
+
 router.post('/create-session', async (request,response) => {
-    const basketCookie = request.body.basketCookie;
+    try {
+        const basketCookie = request.body.basketCookie;
 
-    // check if user has already basket
-    if(basketCookie !== null) {
-        // there should be a basket
-        basketService.basketExists(basketCookie.id)
-            .then(exists => {
-                if(exists) {
-                    // basket actually exists
-                    paymentService.requestCheckOutItems(basketCookie.id)
-                        .then(items => {
-                            const params = paymentService.buildParamsForItems(basketCookie.id, items);
+        // check if user has already basket
+        if (basketCookie !== null) {
+            // there should be a basket
+            const exists = await basketService.basketExists(basketCookie.id);
 
-                            stripe.createSession(params).then(session => {
-                                basketService.updateBasketWithSession(basketCookie.id, session.id)
-                                    .then(() => {
-                                        response.send({ id: session.id});
-                                    })
-                                    .catch(err => {
-                                        // basket id not valid
-                                        const message = '/create-session -> could not update basket with session.';
-                                        errorService.newError(message, err);
-                                        response.send(message)
-                                    });
+            if (exists) {
+                // basket actually exists
+                const items = await paymentService.requestCheckOutItems(basketCookie.id);
 
-                            }).catch(err => {
-                                // basket id not valid
-                                const message = '/create-session -> could not create stripe session.';
-                                errorService.newError(message, err);
-                                response.send(message)
-                            });
-                        })
-                        .catch(err => {
-                            const message = '/create-session -> requestCheckOutItems failed.';
-                            errorService.newError(message, err);
-                            response.send(message)
-                        });
+                const params = paymentService.buildParamsForItems(basketCookie.id, items);
 
+                const session = await stripe.createSession(params);
+                await basketService.updateBasketWithSession(basketCookie.id, session.id);
 
-                } else {
-                    // basket id not valid
-                    const message = '/create-session -> basket id not valid.';
-                    errorService.newError(message, err);
-                    response.send(message)
-                }
-            });
-    } else {
-        // no cookie available
-        const message = '/create-session -> no cookie available.';
-        errorService.newError(message, err);
-        response.send(message)
+                return responseController.ok(response, {id: session.id});
+            } else {
+                // basket id not valid
+                const message = '/create-session -> basket id not valid.';
+                return responseController.fail(response, message);
+            }
+        } else {
+            // no cookie available
+            const message = '/create-session -> no cookie available.';
+            return responseController.fail(response, message);
+        }
+    } catch(error) {
+        return responseController.fail(response, error);
     }
 });
-router.post('/confirm', async (request,response) => {
-    const sessionId = request.body.stripe_session_id; //"cs_test_a1AYCOw8FHCFFefPuTMbdzCvqnD3ypuexJv1wDaUUerGDgHu3JWe6YZeJ7";
 
-    stripe.getSession(sessionId)
-        .then(result => {
-            let responseObject = {
-                payment_status: result.payment_status
-            };
-            response.send(responseObject);
-        })
-        .catch(err => {
-            const message = '/confirm -> could not get stripe session.';
-            errorService.newError(message, err);
-            response.send(message)
-        });
+router.post('/confirm', async (request,response) => {
+    try {
+        const sessionId = request.body.stripe_session_id;
+
+        const result = await stripe.getSession(sessionId);
+
+        let responseObject = {
+            payment_status: result.payment_status
+        };
+
+        return responseController.ok(response, responseObject);
+    } catch(error) {
+        return responseController.fail(response, error);
+    }
 });
 
 module.exports = router;

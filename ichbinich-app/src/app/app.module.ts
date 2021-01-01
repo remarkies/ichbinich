@@ -36,6 +36,8 @@ import { FooterComponent } from './components/custom-elements/footer/footer.comp
 import { OrdersComponent } from './components/admin/orders/orders.component';
 import { EmployeePaintingsComponent } from './components/admin/employee-paintings/employee-paintings.component';
 import { OrderComponent } from './components/admin/order/order.component';
+import { EmployeePaintingComponent } from './components/admin/employee-painting/employee-painting.component';
+import { NewImageComponent } from './components/admin/new-image/new-image.component';
 
 
 @NgModule({
@@ -69,7 +71,9 @@ import { OrderComponent } from './components/admin/order/order.component';
     FooterComponent,
     OrdersComponent,
     EmployeePaintingsComponent,
-    OrderComponent
+    OrderComponent,
+    EmployeePaintingComponent,
+    NewImageComponent
   ],
   imports: [
     BrowserModule,

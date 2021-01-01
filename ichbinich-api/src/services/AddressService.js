@@ -1,189 +1,164 @@
-const DatabaseService = require('./DatabaseService');
-const QueryService = require('./QueryService');
-const ErrorService = require('./ErrorService');
+const databaseService = require('./DatabaseService');
+const queryService = require('./QueryService');
+const errorService = require('./ErrorService');
 
-module.exports.requestAddressForBasket = function(basketId)  {
-    return new Promise((resolve, reject) => {
-        DatabaseService.query(QueryService.SelectAddressForBasketId, [basketId])
-            .then((output) => {
-                let address = output[0];
-                if(address !== undefined) {
-                    resolve(address);
-                } else {
-                    resolve(null);
-                }
-            })
-            .catch((err) => {
-                reject(new ErrorService.Error('Requesting address for basket id failed.', err));
-            });
-    });
+module.exports.requestAddressForBasket = async function(basketId)  {
+    try {
+        const results = await databaseService.query(queryService.SelectAddressForBasketId, [basketId])
+        return results[0] === undefined ? null : results[0];
+    } catch(error) {
+        throw new errorService.newError('Function: requestAddressForBasket. Database query failed.', error);
+    }
 };
-module.exports.requestUserForAddress = function(addressId)  {
-    return new Promise((resolve, reject) => {
-        DatabaseService.query(QueryService.SelectUserForBasketId, [addressId])
-            .then((output) => {
-                const user = output[0] === undefined? null : output[0];
-                resolve(user);
-            })
-            .catch((err) => {
-                reject(new ErrorService.Error('Requesting user for address id failed.', err));
-            });
-    });
+
+module.exports.requestUserForAddress = async function(addressId)  {
+    try {
+        const result = await databaseService.query(queryService.SelectUserForBasketId, [addressId]);
+        return result[0] === undefined ? null : result[0];
+    } catch(error) {
+        throw new errorService.newError('Function: requestUserForAddress. Database query failed.', error);
+    }
 };
-module.exports.upsertAddress = function(address, basketCookie) {
-    return new Promise(((resolve, reject) => {
-        this.addressIdForBasket(basketCookie.id)
-            .then(addressId => {
-                if(addressId !== null) {
-                    address.id = addressId;
-                    this.updateAddress(address)
-                        .then(() => {
-                            resolve();
-                        })
-                        .catch(err => {
-                            reject(err);
-                        });
-                } else {
-                    this.insertAddress(address)
-                        .then(newAddressId => {
-                            this.linkAddressToBasket(newAddressId, basketCookie.id)
-                                .then(() => {
-                                    resolve();
-                                })
-                                .catch(err => {
-                                    reject(err);
-                                });
-                        })
-                        .catch(err => {
-                            reject(err);
-                        });
-                }
-            })
-            .catch(err => {
-                reject(err);
-            });
-    }));
+
+module.exports.upsertAddress = async function(address, basketCookie) {
+    try {
+        const addressId = await this.addressIdForBasket(basketCookie.id);
+
+        if (addressId !== null) {
+            address.id = addressId;
+            await this.updateAddress(address);
+        } else {
+            const newAddressId = await this.insertAddress(address);
+            await this.linkAddressToBasket(newAddressId, basketCookie.id);
+        }
+    } catch(error) {
+        throw new errorService.newError('Function: upsertAddress failed.', error);
+    }
 };
-module.exports.upsertCustomerFromAddress = function(address, basketCookie) {
-    return new Promise(((resolve, reject) => {
-        this.customerIdForBasket(basketCookie.id)
-            .then(customerId => {
-                if(customerId !== null) {
-                    this.updateCustomerFromAddress(address, customerId)
-                        .then(() => {
-                            resolve();
-                        })
-                        .catch(err => {
-                            reject(err);
-                        });
-                } else {
-                    this.insertCustomerFromAddress(address)
-                        .then(newCustomerId => {
-                            this.linkCustomerToBasket(newCustomerId, basketCookie.id)
-                                .then(() => {
-                                    resolve();
-                                })
-                                .catch(err => {
-                                    reject(err);
-                                });
-                        })
-                        .catch(err => {
-                            reject(err);
-                        });
-                }
-            })
-            .catch(err => {
-                reject(err);
-            });
-    }));
+
+module.exports.upsertCustomerFromAddress = async function(address, basketCookie) {
+    try {
+        const customerId = await this.customerIdForBasket(basketCookie.id);
+
+        if (customerId !== null) {
+            await this.updateCustomerFromAddress(address, customerId);
+        } else {
+            const newCustomerId = await this.insertCustomerFromAddress(address);
+            await this.linkCustomerToBasket(newCustomerId, basketCookie.id);
+        }
+    } catch(error) {
+        throw new errorService.newError('Function: upsertCustomerFromAddress failed.', error);
+    }
 };
-module.exports.insertAddress = function(address)  {
-    return new Promise((resolve, reject) => {
-        DatabaseService.query(QueryService.InsertAddress, [address.addressType_id, address.title_id, address.firstName, address.lastName, address.street, address.postalCode, address.city, address.country_id, address.company])
-            .then((output) => {
-                resolve(output.insertId);
-            })
-            .catch((err) => {
-                reject(new ErrorService.Error('Inserting address failed.', err));
-            });
-    });
+
+module.exports.insertAddress = async function(address)  {
+    try {
+        const result = await databaseService.query(queryService.InsertAddress, [
+            address.addressType_id,
+            address.title_id,
+            address.firstName,
+            address.lastName,
+            address.street,
+            address.postalCode,
+            address.city,
+            address.country_id,
+            address.company]);
+
+        return result.insertId;
+    } catch (error) {
+        throw new errorService.newError('Function: insertAddress failed.', error);
+    }
 };
-module.exports.updateAddress = function(address)  {
-    return new Promise((resolve, reject) => {
-        DatabaseService.query(QueryService.UpdateAddress, [address.addressType_id, address.title_id, address.firstName, address.lastName, address.street, address.postalCode, address.city, address.country_id, address.company, address.id])
-            .then((output) => {
-                resolve();
-            })
-            .catch((err) => {
-                reject(new ErrorService.Error('Updating address failed.', err));
-            });
-    });
+
+module.exports.updateAddress = async function(address)  {
+    try {
+        await databaseService.query(queryService.UpdateAddress, [
+            address.addressType_id,
+            address.title_id,
+            address.firstName,
+            address.lastName,
+            address.street,
+            address.postalCode,
+            address.city,
+            address.country_id,
+            address.company,
+            address.id]);
+    } catch (error) {
+        throw new errorService.newError('Function: updateAddress failed.', error);
+    }
 };
-module.exports.insertCustomerFromAddress = function(address)  {
-    return new Promise((resolve, reject) => {
-        DatabaseService.query(QueryService.InsertCustomerFromAddress, [address.email, address.phone])
-            .then((output) => {
-                resolve(output.insertId);
-            })
-            .catch((err) => {
-                reject(new ErrorService.Error('Inserting customer from address failed.', err));
-            });
-    });
+
+module.exports.insertCustomerFromAddress = async function(address)  {
+    try {
+        const result = await databaseService.query(queryService.InsertCustomerFromAddress, [address.email, address.phone]);
+        return result.insertId;
+    } catch (error) {
+        throw new errorService.newError('Function: insertCustomerFromAddress failed.', error);
+    }
 };
-module.exports.updateCustomerFromAddress = function(address, customer_id)  {
-    return new Promise((resolve, reject) => {
-        DatabaseService.query(QueryService.UpdateCustomerFromAddress, [address.email, address.phone, customer_id])
-            .then((output) => {
-                resolve();
-            })
-            .catch((err) => {
-                reject(new ErrorService.Error('Updating customer from address failed.', err));
-            });
-    });
+
+module.exports.updateCustomerFromAddress = async function(address, customer_id)  {
+    try {
+        await databaseService.query(queryService.UpdateCustomerFromAddress, [address.email, address.phone, customer_id]);
+    } catch(error) {
+        throw new errorService.newError('Function: updateCustomerFromAddress failed.', error);
+    }
 };
-module.exports.addressIdForBasket = function(basketId)  {
-    return new Promise((resolve, reject) => {
-        DatabaseService.query(QueryService.SelectAddressIdForBasketId, [basketId])
-            .then((output) => {
-                const addressId = output[0] === undefined ? null : output[0].address_id;
-                resolve(addressId);
-            })
-            .catch((err) => {
-                reject(new ErrorService.Error('Getting address id for basket id failed.', err));
-            });
-    });
+
+module.exports.addressIdForBasket = async function(basketId)  {
+    try {
+        const results = await databaseService.query(queryService.SelectAddressIdForBasketId, [basketId]);
+        return results[0] === undefined ? null : results[0].address_id;
+    } catch(error) {
+        throw new errorService.newError('Function: addressIdForBasket failed.', error);
+    }
 };
-module.exports.customerIdForBasket = function(basketId)  {
-    return new Promise((resolve, reject) => {
-        DatabaseService.query(QueryService.SelectCustomerIdForBasketId, [basketId])
-            .then((output) => {
-                const customerId = output[0] === undefined ? null : output[0].customer_id;
-                resolve(customerId);
-            })
-            .catch((err) => {
-                reject(new ErrorService.Error('Getting customer id for basket id failed.', err));
-            });
-    });
+
+module.exports.customerIdForBasket = async function(basketId)  {
+    try {
+        const results = await databaseService.query(queryService.SelectCustomerIdForBasketId, [basketId]);
+        return results[0] === undefined ? null : results[0].customer_id;
+    } catch(error) {
+        throw new errorService.newError('Function: customerIdForBasket failed.', error);
+    }
 };
-module.exports.linkAddressToBasket = function(addressId, basketId)  {
-    return new Promise((resolve, reject) => {
-        DatabaseService.query(QueryService.UpdateLinkAddressToBasket, [addressId, basketId])
-            .then((output) => {
-                resolve();
-            })
-            .catch((err) => {
-                reject(new ErrorService.Error('Linking address to basket failed.', err));
-            });
-    });
+
+module.exports.linkAddressToBasket = async function(addressId, basketId)  {
+    try {
+        await databaseService.query(queryService.UpdateLinkAddressToBasket, [addressId, basketId]);
+    } catch(error) {
+        throw new errorService.newError('Function: linkAddressToBasket failed.', error);
+    }
 };
-module.exports.linkCustomerToBasket = function(customerId, basketId)  {
-    return new Promise((resolve, reject) => {
-        DatabaseService.query(QueryService.UpdateLinkCustomerToBasket, [customerId, basketId])
-            .then((output) => {
-                resolve();
-            })
-            .catch((err) => {
-                reject(new ErrorService.Error('Linking customer to basket failed.', err));
-            });
-    });
+
+module.exports.linkCustomerToBasket = async function(customerId, basketId)  {
+    try {
+        await databaseService.query(queryService.UpdateLinkCustomerToBasket, [customerId, basketId]);
+    } catch(error) {
+        throw new errorService.newError('Function: linkCustomerToBasket failed.', error);
+    }
+};
+
+module.exports.getTitles = async function() {
+    let titles;
+
+    try {
+        titles = await databaseService.query(queryService.SelectTitles, null);
+    } catch(error) {
+        throw new errorService.newError('Function: getTitles. Database query failed.', error);
+    }
+
+    return titles;
+};
+
+module.exports.getCountries = async function() {
+    let countries;
+
+    try {
+        countries = await databaseService.query(queryService.SelectCountries, null);
+    } catch(error) {
+        throw new errorService.newError('Function: getCountries. Database query failed.', error);
+    }
+
+    return countries;
 };

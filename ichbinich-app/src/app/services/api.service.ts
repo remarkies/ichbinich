@@ -10,10 +10,9 @@ import {RequestBasketRequestModel} from '../models/requestBasketRequest.model';
 import {RequestBasketResponseModel} from '../models/requestBasketResponse.model';
 import {BasketItemRequestModel} from '../models/basketItemRequest.model';
 import {RequestAddressForBasketResponseModel} from '../models/requestAddressForBasketResponse.model';
-import {NewAddressForBasketRequestModel} from '../models/newAddressForBasketRequest.model';
 import {CheckPaymentOfSessionResponseModel} from '../models/checkPaymentOfSessionResponse.model';
-import {OrderStateModel} from '../models/orderState.model';
-import {Observable} from 'rxjs';
+import {BasketCookieModel} from '../models/basketCookie.model';
+import {AddressModel} from '../models/address.model';
 
 @Injectable({
   providedIn: 'root'
@@ -43,15 +42,20 @@ export class ApiService {
     return this.http.post<any>(environment.apiUrl + '/basket/itemExists', { basketId, paintingId });
   }
 
-  public newAddressForBasket(model: NewAddressForBasketRequestModel) {
-    return this.http.post(environment.apiUrl + '/address/new', model);
+  public newAddressForBasket(basketCookie: BasketCookieModel, address: AddressModel): any {
+    return this.http.post<any>(environment.apiUrl + '/address/new', { basketCookie, address});
   }
 
   public checkPaymentOfSession(sessionId: string) {
     return this.http.post<CheckPaymentOfSessionResponseModel>(environment.apiUrl + '/payment/confirm', { stripe_session_id: sessionId });
   }
-  public submitOrder(sessionId: string) {
-    return this.http.post(environment.apiUrl + '/order/submit', { stripe_session_id: sessionId});
+
+  public isOrderSubmitted(sessionId: string): any {
+    return this.http.post<any>(environment.apiUrl + '/order/isOrderSubmitted', { stripe_session_id: sessionId });
+  }
+
+  public submitOrder(sessionId: string): any {
+    return this.http.post<any>(environment.apiUrl + '/order/submit', { stripe_session_id: sessionId});
   }
 
   public getPaintingsForCookieBasket(basket: number[]) {
@@ -59,10 +63,10 @@ export class ApiService {
   }
 
   public getTitles() {
-    return this.http.get<TitleModel[]>(environment.apiUrl + '/infos/titles');
+    return this.http.get<TitleModel[]>(environment.apiUrl + '/address/titles');
   }
   public getCountries() {
-    return this.http.get<CountryModel[]>(environment.apiUrl + '/infos/countries');
+    return this.http.get<CountryModel[]>(environment.apiUrl + '/address/countries');
   }
 
   public createPaymentSession(requestModel: CreatePaymentSessionRequestModel) {
@@ -83,5 +87,33 @@ export class ApiService {
 
   public markOrderAsSent(token: string, id: number, email: string): any {
     return this.http.post<any>(environment.apiUrl + '/orders/markAsSent', {token, id, email});
+  }
+
+  public getPainting(id: number): any {
+    return this.http.post<any>(environment.apiUrl + '/paintings/painting', {id});
+  }
+
+  public getStyles(): any {
+    return this.http.get<any>(environment.apiUrl + '/paintings/styles');
+  }
+
+  public getTechniques(): any {
+    return this.http.get<any>(environment.apiUrl + '/paintings/techniques');
+  }
+
+  public getUndergrounds(): any {
+    return this.http.get<any>(environment.apiUrl + '/paintings/undergrounds');
+  }
+
+  public getCollections(): any {
+    return this.http.get<any>(environment.apiUrl + '/paintings/collections');
+  }
+
+  public deleteImage(token: string, id: number): any {
+    return this.http.post<any>(environment.apiUrl + '/images/delete', {token, id});
+  }
+
+  public uploadImage(token: string, id: number, file: File): any {
+    return this.http.post<any>(environment.apiUrl + '/images/upload', {token, id, file});
   }
 }

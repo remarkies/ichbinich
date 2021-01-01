@@ -1,1 +1,40 @@
-<p>employee-paintings works!</p>
+<div class="paintings">
+  <table>
+    <thead>
+    <tr>
+      <th>#Id</th>
+      <th>Bild</th>
+      <th>Name</th>
+      <th>Höhe</th>
+      <th>Breite</th>
+      <th>Jahr</th>
+      <th>Preis</th>
+      <th>Aktion</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="table-row" *ngFor="let painting of paintings">
+      <td><p>#{{painting.id}}</p></td>
+      <td><div class="image"><img src="{{getImage(painting)}}"/></div></td>
+      <td><p>{{painting.name}}</p></td>
+      <td><p>{{painting.height}}cm</p></td>
+      <td><p>{{painting.width}}cm</p></td>
+      <td><p>{{painting.year}}</p></td>
+      <td><p>{{painting.price | currency: 'CHF ': 'code'}}</p></td>
+      <td>
+        <div class="actions">
+          <div class="action">
+            <app-icon-button [iconSize]="'xs'" [iconName]="'settings'" (onClick)="selectPainting(painting)" ></app-icon-button>
+            <div class="options" *ngIf="painting.selected">
+              <div class="option">
+                <p (click)="editPainting(painting)">Bearbeiten</p>
+                <p style="color: lightgray">Löschen</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>

@@ -19,9 +19,6 @@ database.connect().then(function () {
 const paintings = require('./src/routes/paintings');
 ichbinichApp.use('/paintings', paintings);
 
-const infos = require('./src/routes/infos');
-ichbinichApp.use('/infos', infos);
-
 const basket = require('./src/routes/basket');
 ichbinichApp.use('/basket', basket);
 
@@ -39,6 +36,9 @@ ichbinichApp.use('/employees', employees);
 
 const orders = require('./src/routes/orders');
 ichbinichApp.use('/orders', orders);
+
+const images = require('./src/routes/images');
+ichbinichApp.use('/images', images);
 
 ichbinichApp.use('/public', express.static('./public'))
 

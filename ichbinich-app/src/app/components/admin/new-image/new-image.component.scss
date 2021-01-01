@@ -1,0 +1,12 @@
+@import "../../../../styles";
+
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group input {
+  background: white !important;
+  border: none;
+}

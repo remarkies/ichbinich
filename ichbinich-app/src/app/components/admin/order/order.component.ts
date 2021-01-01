@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {OrderService} from '../../../services/order.service';
-import {PaintingModel} from '../../../models/painting.model';
 import {Subscription} from 'rxjs';
 import {EmployeeOrderModel} from '../../../models/employeeOrder.model';
 

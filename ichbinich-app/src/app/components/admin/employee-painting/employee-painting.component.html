@@ -1,0 +1,136 @@
+<div class="container" *ngIf="painting !== null">
+  <app-view-title [title]="'Gemälde #' + painting.id"></app-view-title>
+  <div class="content">
+    <h3>Bilder</h3>
+    <div class="horizontal">
+      <div class="panel">
+        <table>
+          <thead>
+          <tr>
+            <th>Id</th>
+            <th>Pfad</th>
+            <th>Aktion</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr class="table-row" *ngFor="let path of painting.paths">
+            <td><p>{{path.id}}</p></td>
+            <td><p>{{path.path}}</p></td>
+            <td>
+              <div class="actions">
+                <div class="action">
+                  <app-icon-button [iconSize]="'xs'" [iconName]="'settings'" (onClick)="selectPath(path)" ></app-icon-button>
+                  <div class="options" *ngIf="path.selected">
+                    <div class="option">
+                      <p (click)="deleteImage(path)">Löschen</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+        <app-button [label]="'Bild hinzufügen'" (onClick)="openNewImage()"></app-button>
+        <app-new-image *ngIf="newImageViewEnabled" [painting]="painting" (onUploaded)="onUploaded($event)"></app-new-image>
+      </div>
+    </div>
+    <h3>Eigenschaften</h3>
+    <form [formGroup]="paintingForm" (ngSubmit)="save()" >
+      <div class="horizontal">
+        <div class="panel">
+          <div class="text-input">
+            <label>Name*</label>
+            <input type="text" formControlName="name" class="form-control" [ngClass]="{ 'is-invalid' : saved && f.name.errors }" />
+            <div class="validator-space">
+              <app-validator-info *ngIf="saved && f.name.errors" [validationMessage]="'Name is required'"></app-validator-info>
+            </div>
+          </div>
+          <div class="text-input">
+            <label>Beschreibung*</label>
+            <input type="text" formControlName="description" class="form-control" [ngClass]="{ 'is-invalid' : saved && f.description.errors }" />
+            <div class="validator-space">
+              <app-validator-info *ngIf="saved && f.description.errors" [validationMessage]="'Description is required'"></app-validator-info>
+            </div>
+          </div>
+          <div class="horizontal">
+            <div class="text-input">
+              <label>Höhe*</label>
+              <input type="text" formControlName="height" class="form-control" [ngClass]="{ 'is-invalid' : saved && f.height.errors }" />
+              <div class="validator-space">
+                <app-validator-info *ngIf="saved && f.height.errors" [validationMessage]="'Height is required'"></app-validator-info>
+              </div>
+            </div>
+            <div class="text-input">
+            <label>Breite*</label>
+            <input type="text" formControlName="width" class="form-control" [ngClass]="{ 'is-invalid' : saved && f.width.errors }" />
+            <div class="validator-space">
+              <app-validator-info *ngIf="saved && f.width.errors" [validationMessage]="'Width is required'"></app-validator-info>
+            </div>
+          </div>
+          </div>
+          <div class="text-input">
+            <label>Preis*</label>
+            <input type="text" formControlName="price" class="form-control" [ngClass]="{ 'is-invalid' : saved && f.price.errors }" />
+            <div class="validator-space">
+              <app-validator-info *ngIf="saved && f.price.errors" [validationMessage]="'Price is required'"></app-validator-info>
+            </div>
+          </div>
+          <div class="text-input">
+            <label>Jahr*</label>
+            <input type="text" formControlName="year" class="form-control" [ngClass]="{ 'is-invalid' : saved && f.year.errors }" />
+            <div class="validator-space">
+              <app-validator-info *ngIf="saved && f.year.errors" [validationMessage]="'Year is required'"></app-validator-info>
+            </div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="text-input">
+            <label>Art*</label>
+            <select formControlName="style_id" class="form-control" [ngClass]="{ 'is-invalid': saved && f.style_id.errors }">
+              <option value=""></option>
+              <option [value]="style.id" *ngFor="let style of styles">{{style.description}}</option>
+            </select>
+            <div class="validator-space">
+              <app-validator-info *ngIf="saved && f.title_id.errors" [validationMessage]="'Style is required'"></app-validator-info>
+            </div>
+          </div>
+          <div class="text-input">
+            <label>Technik*</label>
+            <select formControlName="technique_id" class="form-control" [ngClass]="{ 'is-invalid': saved && f.technique_id.errors }">
+              <option value=""></option>
+              <option [value]="technique.id" *ngFor="let technique of techniques">{{technique.description}}</option>
+            </select>
+            <div class="validator-space">
+              <app-validator-info *ngIf="saved && f.technique_id.errors" [validationMessage]="'Technique is required'"></app-validator-info>
+            </div>
+          </div>
+          <div class="text-input">
+            <label>Untergrund*</label>
+            <select formControlName="underground_id" class="form-control" [ngClass]="{ 'is-invalid': saved && f.underground_id.errors }">
+              <option value=""></option>
+              <option [value]="underground.id" *ngFor="let underground of undergrounds">{{underground.description}}</option>
+            </select>
+            <div class="validator-space">
+              <app-validator-info *ngIf="saved && f.underground_id.errors" [validationMessage]="'Underground is required'"></app-validator-info>
+            </div>
+          </div>
+          <div class="text-input">
+            <label>Kollektion*</label>
+            <select formControlName="collection_id" class="form-control" [ngClass]="{ 'is-invalid': saved && f.collection_id.errors }">
+              <option value=""></option>
+              <option [value]="collection.id" *ngFor="let collection of collections">{{collection.name}}</option>
+            </select>
+            <div class="validator-space">
+              <app-validator-info *ngIf="saved && f.collection_id.errors" [validationMessage]="'Collection is required'"></app-validator-info>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="actions button-align-right">
+        <div class="next-button"><app-button [type]="'button'" [label]="'Verwerfen'" (onClick)="cancel()"></app-button></div>
+        <div class="next-button"><app-button [type]="'submit'" [label]="'Speichern'"></app-button></div>
+      </div>
+    </form>
+  </div>
+</div>

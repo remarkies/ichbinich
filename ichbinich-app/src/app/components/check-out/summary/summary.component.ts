@@ -41,9 +41,17 @@ export class SummaryComponent implements OnInit {
           this.paymentService.checkPaymentStatus(basket.stripe_session_id)
             .subscribe(status => {
               if (status.payment_status === 'paid') {
-                this.paymentService.submitOrder(basket.stripe_session_id)
+                this.paymentService.isOrderSubmitted(basket.stripe_session_id)
                   .subscribe(response => {
-                    this.dataService.requestBasket();
+                    console.log(response);
+                    if (!response.submitted) {
+                      this.paymentService.submitOrder(basket.stripe_session_id)
+                        .subscribe(() => {
+                          this.dataService.requestBasket();
+                        });
+                    } else {
+                      this.router.navigate(['/']);
+                    }
                   });
               } else if (status.payment_status === 'unpaid') {
                 console.log('oh no not paid yet');
@@ -67,7 +75,6 @@ export class SummaryComponent implements OnInit {
         this.dataService.requestBasket();
       }
     });
-
   }
 
   pay(): void {

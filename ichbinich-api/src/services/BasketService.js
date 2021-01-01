@@ -1,162 +1,120 @@
-const DatabaseService = require('./DatabaseService');
-const QueryService = require('./QueryService');
-const ErrorService = require('./ErrorService');
-const PaintingService = require('./PaintingService');
+const databaseService = require('./DatabaseService');
+const queryService = require('./QueryService');
+const paintingService = require('./PaintingService');
+const errorService = require('./ErrorService');
 
-module.exports.basketExists = function(id)  {
-    return new Promise((resolve, reject) => {
-        DatabaseService.query(QueryService.SelectBasketExists, [id])
-            .then((output) => {
-                const basketFound = output[0].basketFound === 0 ? false : true;
-                resolve(basketFound);
-            })
-            .catch((err) => {
-                reject(new ErrorService.Error('Check if basket ' + id + ' exists failed.', err));
-            });
-    });
+module.exports.basketExists = async function(id)  {
+    try {
+        const results = await databaseService.query(queryService.SelectBasketExists, [id]);
+
+        return results[0].basketFound !== 0;
+    } catch (error) {
+        throw new errorService.newError('Function: basketExists. Database query failed');
+    }
 };
-module.exports.requestOldBasket = function(id)  {
-    return new Promise((resolve, reject) => {
-        let resultObject = {
-            id: id,
+
+module.exports.requestOldBasket = async function(id)  {
+
+    let resultObject = {
+        id: id,
+        items: []
+    };
+
+    try {
+        resultObject.stripe_session_id = await this.getStripeSessionIdFromBasket(id);
+    } catch (error) {
+        throw new errorService.newError('Function: requestOldBasket. Could not get stripe session id from basket');
+    }
+
+    let results;
+
+    try {
+        results = await databaseService.query(queryService.SelectBasketItems, [id]);
+    } catch (error) {
+        throw new errorService.newError('Function: requestOldBasket. Could not get old basket items.');
+    }
+
+    if(results.length > 0) {
+        const ids = results.map(row => row.id );
+
+        try {
+            resultObject.items = await paintingService.getPaintings(ids);
+        } catch (error) {
+            throw new errorService.newError('Function: requestOldBasket. Could not get paintings for old basket items.');
+        }
+    }
+
+    return resultObject;
+};
+
+module.exports.requestNewBasket = async function()  {
+    try {
+        const result = await databaseService.query(queryService.InsertNewBasket, null);
+
+        return {
+            id: result.insertId,
+            stripe_session_id: null,
             items: []
         };
+    } catch (error) {
+        throw new errorService.newError('Function: requestNewBasket. Database query failed');
+    }
+};
 
-        this.getStripeSessionIdFromBasket(id)
-            .then(stripeSessionId => {
-                resultObject.stripe_session_id = stripeSessionId;
+module.exports.getStripeSessionIdFromBasket = async function(id)  {
+    try {
+        const result = await databaseService.query(queryService.SelectStripeSessionIdFromBasket, [id]);
+        return result[0] === undefined ? null : result[0].stripe_session_id;
+    } catch (error) {
+        throw new errorService.newError('Function: getStripeSessionIdFromBasket. Database query failed');
+    }
+};
 
-                DatabaseService.query(QueryService.SelectBasketItems, [id])
-                    .then(result => {
-                        let hasValues = result[0] === undefined ? false : true;
+module.exports.addPaintingToBasket = async function(basketId, paintingId)  {
+    try {
+        const exists = await this.paintingExistsInBasket(basketId, paintingId);
 
-                        if(hasValues) {
-                            const ids = result.map(row => row.id );
-                            PaintingService.getPaintings(ids)
-                                .then(paintings => {
-                                    resultObject.items = paintings;
-                                    resolve(resultObject);
-                                })
-                                .catch(err => {
-                                    reject(new ErrorService.Error('Could not request old basket. Load paintings failed.', err));
-                                });
-                        } else {
-                            resolve(resultObject);
-                        }
+        if (!exists) {
+            await databaseService.query(queryService.InsertPaintingToBasket, [basketId, paintingId])
+        }
+    } catch (error) {
+        throw new errorService.newError('Function: addPaintingToBasket. Database query failed');
+    }
+};
 
-                    })
-                    .catch(err => {
-                        reject(new ErrorService.Error('Could not request old basket. Check if basket item failed.', err));
-                    });
-            })
-            .catch(err => {
-                reject(new ErrorService.Error('Could not request old basket. Loading stripe session id from basket failed.', err));
-            });
+module.exports.removePaintingFromBasket = async function(basketId, paintingId)  {
+    try {
+        const exists = await this.paintingExistsInBasket(basketId, paintingId);
 
-    });
+        if (exists) {
+            await databaseService.query(queryService.DeleteBasketItem, [basketId, paintingId]);
+        }
+    } catch (error) {
+        throw new errorService.newError('Function: removePaintingFromBasket. Database query failed');
+    }
 };
-module.exports.requestNewBasket = function()  {
-    return new Promise((resolve, reject) => {
-        DatabaseService.query(QueryService.InsertNewBasket, null)
-            .then((output) => {
-                let resultObject = {
-                    id: output.insertId,
-                    stripe_session_id: null,
-                    items: []
-                };
-                resolve(resultObject);
-            })
-            .catch((err) => {
-                reject(new ErrorService.Error('Could not request new basket.', err));
-            });
-    });
-};
-module.exports.getStripeSessionIdFromBasket = function(id)  {
-    return new Promise((resolve, reject) => {
-        DatabaseService.query(QueryService.SelectStripeSessionIdFromBasket, [id])
-            .then(result => {
-                const stripeSessionId = result[0] === undefined ? null : result[0].stripe_session_id;
-                resolve(stripeSessionId);
-            })
-            .catch(err => {
-                reject(new ErrorService.Error('Could not get stripe session id from basket.', err));
-            });
-    });
-};
-module.exports.addPaintingToBasket = function(basketId, paintingId)  {
-    return new Promise((resolve, reject) => {
-        this.paintingExistsInBasket(basketId, paintingId)
-            .then(exists => {
-                if(!exists) {
-                    DatabaseService.query(QueryService.InsertPaintingToBasket, [basketId, paintingId])
-                        .then((output) => {
-                            resolve();
-                        })
-                        .catch((err) => {
-                            reject(new ErrorService.Error('Could not insert painting to basket.', err));
-                        });
-                } else {
-                    reject(new ErrorService.Error('Painting already exists in basket.', ''));
-                }
-            })
-            .catch(err => {
-                reject(new ErrorService.Error('Could check if painting exists in basket.', err));
-            });
 
-    });
+module.exports.paintingExistsInBasket = async function(basketId, paintingId)  {
+    try {
+        const results = await databaseService.query(queryService.SelectBasketItemExists, [basketId, paintingId]);
+        return results[0].paintingFound !== 0;
+    } catch(error) {
+        throw new errorService.newError('Function: paintingExistsInBasket. Database query failed');
+    }
 };
-module.exports.removePaintingFromBasket = function(basketId, paintingId)  {
-    return new Promise((resolve, reject) => {
-        this.paintingExistsInBasket(basketId, paintingId)
-            .then(exists => {
-                if(exists) {
-                    DatabaseService.query(QueryService.DeleteBasketItem, [basketId, paintingId])
-                        .then((output) => {
-                            resolve();
-                        })
-                        .catch((err) => {
-                            reject(err);
-                        });
-                } else {
-                    reject(new ErrorService.Error('There is no painting to remove.', {}));
-                }
-            })
-            .catch(err => {
-                reject(new ErrorService.Error('Could not remove painting from basket.', err));
-            });
-    });
+
+module.exports.updateBasketWithSession = async function(basketId, sessionId)  {
+    try {
+        await databaseService.query(queryService.UpdateStripeSessionIdInBasket, [sessionId, basketId]);
+    } catch(error) {
+        throw new errorService.newError('Function: updateBasketWithSession. Database query failed');
+    }
 };
-module.exports.paintingExistsInBasket = function(basketId, paintingId)  {
-    return new Promise((resolve, reject) => {
-        DatabaseService.query(QueryService.SelectBasketItemExists, [basketId, paintingId])
-            .then((output) => {
-                const exists = output[0].paintingFound === 0 ? false : true;
-                resolve(exists);
-            })
-            .catch((err) => {
-                reject(new ErrorService.Error('Check if painting exists in basket failed.', err));
-            });
-    });
-};
-module.exports.updateBasketWithSession = function(basketId, sessionId)  {
-    return new Promise((resolve, reject) => {
-        DatabaseService.query(QueryService.UpdateStripeSessionIdInBasket, [sessionId, basketId])
-            .then((output) => {
-                resolve();
-            })
-            .catch((err) => {
-                reject(new ErrorService.Error('Could not update basket with session.', err));
-            });
-    });
-};
-module.exports.clearBasketFromItems = function(basketId)  {
-    return new Promise((resolve, reject) => {
-        DatabaseService.query(QueryService.DeleteBasketItems, [basketId])
-            .then((output) => {
-                resolve();
-            })
-            .catch((err) => {
-                reject(new ErrorService.Error('Could not basket items.', err));
-            });
-    });
+
+module.exports.clearBasketFromItems = async function(basketId)  {
+    try {
+        await databaseService.query(queryService.DeleteBasketItems, [basketId]);
+    } catch (error) {
+        throw new errorService.newError('Function: clearBasketFromItems. Database query failed');
+    }
 };
