@@ -1,46 +1,59 @@
 // PaintingService
-module.exports.SelectGetPaintings = `SELECT P.ID 'id', P.name, P.style_id, S.description 'style', p.technique_id, t.description 'technique',
-                                    P.underground_id, U.description 'underground', P.height, P.width, 
-                                   P.description,
-                                   P.year, P.price, P.collection_id,
-                                    C.name 'collection', P.series_id, SE.name 'series', 
-                                   (select count(*) from order_painting op
-                                                    where op.painting_id = p.id) 'sold'
-                            FROM PAINTING P
-                             JOIN style S ON P.style_id = S.id
-                             JOIN technique t on P.technique_id = t.id
-                             join underground u on P.underground_id = u.id
-                             LEFT JOIN collection C ON P.collection_id = C.id
-                             LEFT JOIN series SE ON P.series_id = SE.id;`;
-module.exports.SelectGetPathsForPainting = `SELECT I.id, I.path FROM painting_image PI
-                                    JOIN IMAGE I ON PI.image_id = I.id
-                                    WHERE PI.painting_id = ?;`;
-module.exports.SelectGetPainting = `SELECT P.ID 'id',
-                                   P.name,
-                                   P.style_id,
-                                   S.description 'style',
+module.exports.SelectGetPaintings = `SELECT p.ID                          'id',
+       p.name,
+       p.style_id,
+       s.description                 'style',
+       p.technique_id,
+       t.description                 'technique',
+       p.underground_id,
+       u.description                 'underground',
+       p.height,
+       p.width,
+       p.description,
+       p.year,
+       p.price,
+       p.collection_id,
+       c.name                        'collection',
+       p.series_id,
+       se.name                       'series',
+       (select count(*)
+        from order_painting op
+        where op.painting_id = p.id) 'sold'
+FROM painting p
+         JOIN style s ON p.style_id = s.id
+         JOIN technique t on p.technique_id = t.id
+         join underground u on p.underground_id = u.id
+         LEFT JOIN collection c ON p.collection_id = c.id
+         LEFT JOIN series se ON p.series_id = se.id;`;
+module.exports.SelectGetPathsForPainting = `SELECT i.id, i.path FROM painting_image pi
+                                    JOIN image i ON pi.image_id = i.id
+                                    WHERE pi.painting_id = ?;`;
+module.exports.SelectGetPainting = `SELECT p.ID 'id',
+                                   p.name,
+                                   p.style_id,
+                                   s.description 'style',
                                    p.technique_id,
                                    t.description 'technique',
-                                   P.underground_id,
-                                   U.description 'underground',
-                                   P.height,
-                                   P.width,
-                                   P.description,
-                                   P.year,
-                                   P.price,
-                                   P.collection_id,
-                                   C.name        'collection',
-                                   P.series_id,
-                                   SE.name       'series', 
+                                   p.underground_id,
+                                   u.description 'underground',
+                                   p.height,
+                                   p.width,
+                                   p.description,
+                                   p.year,
+                                   p.price,
+                                   p.collection_id,
+                                   c.name        'collection',
+                                   p.series_id,
+                                   se.name       'series', 
                                    (select count(*) from order_painting op
                                                     where op.painting_id = p.id) 'sold'
-                            FROM PAINTING P
-                                     JOIN style S ON P.style_id = S.id
-                                     JOIN technique t on P.technique_id = t.id
-                                     join underground u on P.underground_id = u.id
-                                     LEFT JOIN collection C ON P.collection_id = C.id
-                                     LEFT JOIN series SE ON P.series_id = SE.id
-                            WHERE P.ID = ?;`;
+                            FROM painting p
+                                     JOIN style s ON p.style_id = s.id
+                                     JOIN technique t on p.technique_id = t.id
+                                     join underground u on p.underground_id = u.id
+                                     LEFT JOIN collection c ON p.collection_id = c.id
+                                     LEFT JOIN series se ON p.series_id = se.id
+                            WHERE p.id = ?;`;
 module.exports.SelectStyles = `select * from style;`;
 module.exports.SelectTechniques = `select * from technique;`;
 module.exports.SelectUndergrounds = `select * from underground;`;
@@ -149,7 +162,7 @@ from \`order\` o
 join address a on o.orderAddress_id = a.id
 join title t on a.title_id = t.id
 join country c on a.country_id = c.id
-join orderstate o2 on o.orderState_id = o2.id
+join orderState o2 on o.orderState_id = o2.id
 join customer c2 on o.customer_id = c2.id;`;
 module.exports.SelectEmployeeOrder = `select o.id,
        o.orderDateTime,
@@ -174,7 +187,7 @@ from \`order\` o
 join address a on o.orderAddress_id = a.id
 join title t on a.title_id = t.id
 join country c on a.country_id = c.id
-join orderstate o2 on o.orderState_id = o2.id
+join orderState o2 on o.orderState_id = o2.id
 join customer c2 on o.customer_id = c2.id
 where o.id = ?;`;
 module.exports.SelectEmployeeOrderItems = `select p.id, p.name, p.price from order_painting op
