@@ -7,5 +7,5 @@
     <div class="tag" *ngFor="let tag of tags">{{tag}}</div>
   </div>
   <p class="description">{{painting.description}}</p>
-  <app-button *ngIf="!isSold" [label]="'in den warenkorb'" (onClick)="addItemToBasket(painting)" class="btn" [isDisabled]="isPaintingInBasket"></app-button>
+  <app-button [iconLeft]="true" icon="basket" [iconSize]="'xs'" *ngIf="!isSold" [label]="'in den warenkorb'" (onClick)="addItemToBasket(painting)" class="btn" [isDisabled]="isPaintingInBasket"></app-button>
 </div>

@@ -46,7 +46,7 @@
             <p class="price-value">{{basketTotal | currency: 'CHF ':'code'}}</p>
           </div>
           <div class="button-align-right">
-            <app-button [label]="'Bezahlen'" (onClick)="pay()"></app-button>
+            <app-button [iconLeft]="true" icon="pay" [iconSize]="'xs'" [label]="'Bezahlen'" (onClick)="pay()"></app-button>
           </div>
         </div>
       </div>

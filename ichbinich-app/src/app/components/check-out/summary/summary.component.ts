@@ -50,6 +50,7 @@ export class SummaryComponent implements OnInit {
                           this.dataService.requestBasket();
                         });
                     } else {
+                      this.dataService.loadPaintings();
                       this.router.navigate(['/']);
                     }
                   });

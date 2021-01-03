@@ -31,7 +31,7 @@
           </tr>
           </tbody>
         </table>
-        <app-button [label]="'Bild hinzufügen'" (onClick)="openNewImage()"></app-button>
+        <app-button [iconLeft]="true" [iconSize]="'xs'" icon="add" [label]="'Bild hinzufügen'" (onClick)="openNewImage()"></app-button>
         <app-new-image *ngIf="newImageViewEnabled" [painting]="painting" (onUploaded)="onUploaded($event)"></app-new-image>
       </div>
     </div>
@@ -128,7 +128,7 @@
         </div>
       </div>
       <div class="actions button-align-right">
-        <app-button [type]="'submit'" (onClick)="back()" [isDisabled]="false" [label]="'Zurück'"></app-button>
+        <app-button [iconLeft]="true" [iconSize]="'xs'" icon="arrow-left" [type]="'submit'" (onClick)="back()" [isDisabled]="false" [label]="'Zurück'"></app-button>
         <div class="next-button" *ngIf="dataChanged"><app-button [type]="'button'" [label]="'Verwerfen'" (onClick)="cancel()"></app-button></div>
         <div class="next-button" *ngIf="dataChanged"><app-button [type]="'submit'" [label]="'Speichern'"></app-button></div>
       </div>

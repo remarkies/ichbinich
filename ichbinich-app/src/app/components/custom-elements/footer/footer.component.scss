@@ -1,13 +1,21 @@
 @import "../../../../styles";
 
+@media screen and (min-width: 601px) {
+  .footer {
+    margin: 0 64px 32px 64px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .footer {
+    margin: 0 32px 32px 32px;
+  }
+}
+
 :host {
   position: fixed;
   bottom: 0;
   width: 100vw;
-}
-
-.footer {
-  margin: 0 32px 32px 32px;
 }
 
 .image-nav {

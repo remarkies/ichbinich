@@ -5,21 +5,21 @@
     <div class="customer">
       <div class="panel">
         <div class="customer-item">
-          <app-icon [size]="'xs'" [name]="'user'"></app-icon>
+          <app-icon [size]="'x'" [name]="'user'"></app-icon>
           <p>{{order.firstName}} {{order.lastName}}</p>
         </div>
         <div class="customer-item">
-          <app-icon [size]="'xs'" [name]="'phone'"></app-icon>
+          <app-icon [size]="'x'" [name]="'phone'"></app-icon>
           <p>{{order.phone}}</p>
         </div>
         <div class="customer-item">
-          <app-icon [size]="'xs'" [name]="'email'"></app-icon>
+          <app-icon [size]="'x'" [name]="'email'"></app-icon>
           <p>{{order.email}}</p>
         </div>
       </div>
       <div class="panel">
         <div class="customer-item">
-          <app-icon [size]="'xs'" [name]="'home'"></app-icon>
+          <app-icon [size]="'x'" [name]="'home'"></app-icon>
           <div class="address">
             <p>{{order.street}}</p>
             <p>{{order.postalCode}}, {{order.city}}</p>
@@ -27,8 +27,8 @@
           </div>
         </div>
         <div class="customer-item">
-          <app-icon [size]="'xs'" [name]="'status'"></app-icon>
-          <p [ngClass]="order.orderStateId === 1? 'warning' : 'success'">{{order.orderState}}</p>
+          <app-icon [size]="'x'" [name]="'status'"></app-icon>
+          <p>{{order.orderState}}</p>
         </div>
       </div>
     </div>
@@ -52,5 +52,5 @@
       </tbody>
     </table>
   </div>
-  <app-button [type]="'submit'" (onClick)="back()" [isDisabled]="false" [label]="'Zurück'"></app-button>
+  <app-button [iconLeft]="true" icon="arrow-left" [iconSize]="'xs'" [type]="'submit'" (onClick)="back()" [isDisabled]="false" [label]="'Zurück'"></app-button>
 </div>

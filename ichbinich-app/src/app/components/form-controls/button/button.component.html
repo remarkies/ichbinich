@@ -1,4 +1,4 @@
-<button type="{{type}}" [ngClass]="isDisabled? '': 'enabled'" class="btn" (click)="onClickButton($event)" [disabled]="isDisabled">
+<button type="{{type}}" [ngClass]="isDisabled? '': disableBorders? 'enabled no-border' : 'enabled'" class="btn" (click)="onClickButton($event)" [disabled]="isDisabled">
     <app-icon *ngIf="iconLeft" class="iconLeft" [name]="icon" [size]="iconSize"></app-icon>
     {{label}}
     <app-icon *ngIf="iconRight" class="iconRight" [name]="icon" [size]="iconSize"></app-icon>

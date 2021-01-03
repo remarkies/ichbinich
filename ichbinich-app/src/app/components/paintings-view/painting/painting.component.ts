@@ -9,8 +9,16 @@ import {PaintingModel} from '../../../models/painting.model';
 })
 export class PaintingComponent implements OnInit {
 
+  private _painting;
+
+  get painting(): PaintingModel {
+    return this._painting;
+  }
+
   @Input()
-  public painting: PaintingModel;
+  set painting(val: PaintingModel) {
+    this._painting = val;
+  }
 
   constructor() { }
 

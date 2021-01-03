@@ -3,13 +3,15 @@
     <app-button [label]="'Vorheriges'"
                 [iconLeft]="true"
                 icon="arrow-left"
-                [iconSize]="'x'"
+                [iconSize]="'xs'"
+                [disableBorders]="true"
                 (onClick)="dataService.previousPainting()"></app-button>
     <div class="spacer"></div>
     <app-button [label]="'Nächstes'"
                 [iconRight]="true"
                 icon="arrow-right"
-                [iconSize]="'x'"
+                [iconSize]="'xs'"
+                [disableBorders]="true"
                 (onClick)="dataService.nextPainting()"></app-button>
   </div>
 </div>

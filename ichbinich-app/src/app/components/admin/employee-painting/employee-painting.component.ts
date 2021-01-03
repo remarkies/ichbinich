@@ -10,6 +10,7 @@ import {UndergroundModel} from '../../../models/underground.model';
 import {CollectionModel} from '../../../models/collection.model';
 import {PathModel} from '../../../models/path.model';
 import {ImageService} from '../../../services/image.service';
+import {DataService} from '../../../services/data.service';
 
 @Component({
   selector: 'app-employee-painting',
@@ -37,7 +38,7 @@ export class EmployeePaintingComponent implements OnInit {
   public collections: CollectionModel[] = [];
   private collectionsSubscription: Subscription;
 
-  constructor(private imageService: ImageService, private router: Router, private formBuilder: FormBuilder, private route: ActivatedRoute, private paintingService: PaintingService) {
+  constructor(private dataService: DataService, private imageService: ImageService, private router: Router, private formBuilder: FormBuilder, private route: ActivatedRoute, private paintingService: PaintingService) {
     this.route.params.subscribe( params => {
       this.paintingService.loadPainting(params.id);
     });
@@ -102,6 +103,7 @@ export class EmployeePaintingComponent implements OnInit {
   deleteImage(path: PathModel): void {
     this.imageService.deleteImage(path.id);
     this.paintingService.loadPainting(this.painting.id);
+    this.dataService.loadPaintings();
   }
 
   openNewImage(): void {
@@ -123,6 +125,10 @@ export class EmployeePaintingComponent implements OnInit {
 
   onUploaded(uploaded: boolean): void {
     this.newImageViewEnabled = false;
+
+    if (uploaded) {
+      this.paintingService.loadPainting(this.painting.id);
+    }
   }
 
   back(): void {

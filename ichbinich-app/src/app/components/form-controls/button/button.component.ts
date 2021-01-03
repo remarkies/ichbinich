@@ -13,6 +13,7 @@ export class ButtonComponent implements OnInit {
   @Input() iconRight = false;
   @Input() icon = '';
   @Input() iconSize = 'xs';
+  @Input() disableBorders = false;
 
   @Output() onClick = new EventEmitter<any>();
 

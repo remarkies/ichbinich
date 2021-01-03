@@ -6,5 +6,5 @@
   </div>
   <app-orders *ngIf="isOrdersViewVisibile"></app-orders>
   <app-employee-paintings *ngIf="isPaintingsViewVisible"></app-employee-paintings>
-  <app-button [type]="'submit'" (onClick)="logout()" [isDisabled]="false" [label]="'Logout'"></app-button>
+  <app-button [iconLeft]="true" icon="lock" iconSize="xs" [type]="'submit'" (onClick)="logout()" [isDisabled]="false" [label]="'Logout'"></app-button>
 </div>

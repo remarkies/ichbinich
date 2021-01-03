@@ -7,7 +7,7 @@
 button {
   display: flex;
   align-items: center;
-  border: none;
+  border: solid 2px $hightlight1;
   outline: none !important;
   box-shadow: none !important;
   text-transform: uppercase;
@@ -24,7 +24,8 @@ button {
   cursor: pointer;
 
   border-radius: 4px;
-  padding:  12px 24px;
+  //padding:  12px 24px;
+  padding: 8px 16px;
 }
 
 button:hover {
@@ -43,4 +44,8 @@ button:disabled {
 
 .iconRight {
   margin-left: 16px;
+}
+
+.no-border {
+  border: solid 2px transparent !important;
 }
