@@ -12,7 +12,11 @@ export class ImageService {
   constructor(private apiService: ApiService, private authenticationService: AuthenticationService) { }
 
   public getFullPath(pathModel: PathModel): string {
-    return environment.apiUrl + '/public/images/' + pathModel.path;
+    if (pathModel?.path) {
+      return environment.apiUrl + '/public/images/' + pathModel.path;
+    } else {
+      return '';
+    }
   }
 
   public deleteImage(id: number): void {
