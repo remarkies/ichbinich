@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {PaintingModel} from '../../../models/painting.model';
+import {animate, state, style, transition, trigger} from '@angular/animations';
 
 
 @Component({
@@ -9,16 +10,8 @@ import {PaintingModel} from '../../../models/painting.model';
 })
 export class PaintingComponent implements OnInit {
 
-  private _painting;
-
-  get painting(): PaintingModel {
-    return this._painting;
-  }
-
   @Input()
-  set painting(val: PaintingModel) {
-    this._painting = val;
-  }
+  public painting: PaintingModel;
 
   constructor() { }
 

@@ -6,9 +6,10 @@ import {DataService} from '../../services/data.service';
 @Component({
   selector: 'app-paintings',
   templateUrl: './paintings.component.html',
-  styleUrls: ['./paintings.component.scss']
+  styleUrls: ['./paintings.component.scss'],
 })
 export class PaintingsComponent implements OnInit {
+
   public selectedPainting: PaintingModel;
   private selectedPaintingSubscription: Subscription;
 

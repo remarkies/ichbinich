@@ -39,6 +39,7 @@ import { OrderComponent } from './components/admin/order/order.component';
 import { EmployeePaintingComponent } from './components/admin/employee-painting/employee-painting.component';
 import { NewImageComponent } from './components/admin/new-image/new-image.component';
 import { NewPaintingComponent } from './components/admin/new-painting/new-painting.component';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 
 @NgModule({
@@ -78,6 +79,7 @@ import { NewPaintingComponent } from './components/admin/new-painting/new-painti
     NewPaintingComponent
   ],
   imports: [
+    BrowserAnimationsModule,
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
