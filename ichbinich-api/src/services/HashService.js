@@ -1,7 +1,7 @@
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcrypt-nodejs');
 
 module.exports.hash = async function (password) {
-    return await bcrypt.hash(password, 10);
+    return bcrypt.hash(password, 10);
 }
 
 module.exports.compare = async function (password, hash) {
