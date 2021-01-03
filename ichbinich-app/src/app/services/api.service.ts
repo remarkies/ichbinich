@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpRequest} from '@angular/common/http';
 import {environment} from '../../environments/environment';
 import {PaintingModel} from '../models/painting.model';
 import {TitleModel} from '../models/title.model';
@@ -109,11 +109,21 @@ export class ApiService {
     return this.http.get<any>(environment.apiUrl + '/paintings/collections');
   }
 
+  public updatePainting(token: string, painting: PaintingModel): any {
+    return this.http.post<any>(environment.apiUrl + '/paintings/update', { token, painting });
+  }
+
   public deleteImage(token: string, id: number): any {
     return this.http.post<any>(environment.apiUrl + '/images/delete', {token, id});
   }
 
   public uploadImage(token: string, id: number, file: File): any {
-    return this.http.post<any>(environment.apiUrl + '/images/upload', {token, id, file});
+    const formData: FormData = new FormData();
+    formData.append('file', file);
+    formData.append('fileName', file.name);
+    formData.append('token', token);
+    formData.append('id', id.toString());
+
+    return this.http.post<any>(environment.apiUrl + '/images/upload', formData);
   }
 }

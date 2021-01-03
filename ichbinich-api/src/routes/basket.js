@@ -43,6 +43,7 @@ router.post('/add', async (request,response, next) => {
         return responseController.fail(response, error);
     }
 });
+
 router.post('/remove', async (request,response, next) => {
     try {
         const basketId = request.body.basketId;
@@ -67,6 +68,5 @@ router.post('/itemExists', async (request,response, next) => {
         return responseController.fail(response, error);
     }
 });
-
 
 module.exports = router;

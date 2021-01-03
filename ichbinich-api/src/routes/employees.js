@@ -3,9 +3,9 @@ const EmployeeService = require('../services/EmployeeService');
 const HashService = require('../services/HashService');
 const TokenService = require('../services/TokenService');
 const responseController = require('../controllers/ResponseController');
-let router = express.Router();
 
-// return json object with all paintings
+const router = express.Router();
+
 router.post('/authenticate',async function(request,response, next){
     const username = request.body.username;
     const password = request.body.password;
@@ -32,4 +32,5 @@ router.post('/isTokenValid',async function(request,response, next){
 
     return responseController.ok(response, { valid: result });
 });
+
 module.exports = router;

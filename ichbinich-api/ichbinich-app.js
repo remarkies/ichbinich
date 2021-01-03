@@ -7,9 +7,8 @@ const cors = require('cors');
 ichbinichApp.use(cors());
 
 const bodyParser = require('body-parser')
-ichbinichApp.use(bodyParser.urlencoded({ extended: true }));
+ichbinichApp.use(bodyParser.urlencoded({ extended: false }));
 ichbinichApp.use(bodyParser.json());
-ichbinichApp.use(bodyParser.raw());
 
 const database = require('./src/services/DatabaseService');
 database.connect().then(function () {

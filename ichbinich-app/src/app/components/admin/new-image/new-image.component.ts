@@ -28,9 +28,9 @@ export class NewImageComponent implements OnInit {
   }
 
   uploadFile(): void {
+
     this.imageService.uploadImage(this.fileToUpload, this.painting.id)
       .subscribe((response) => {
-        console.log(response);
         this.errorMessage = '';
         this.onUploaded.emit(true);
       }, err => {

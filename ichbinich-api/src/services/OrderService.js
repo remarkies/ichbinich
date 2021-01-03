@@ -10,7 +10,7 @@ module.exports.isOrderAlreadySubmitted = async function(sessionId) {
       const result = await databaseService.query(queryService.SelectSessionIdExistsInBasket, [sessionId]);
       return result[0].sessionIdExists === 0;
   } catch (error) {
-      throw new errorService.newError('Function: isOrderAlreadySubmitted failed. Database query failed.', error);
+      throw new errorService.newError('Function: isOrderAlreadySubmitted. Database query failed.', error);
   }
 };
 
@@ -27,33 +27,59 @@ module.exports.submitOrder = async function(sessionId)  {
     await basketService.clearBasketFromItems(basketId);
     await basketService.updateBasketWithSession(basketId, null);
 };
+
 module.exports.getBasketIdFromSession = async function(sessionId)  {
-    const result = await databaseService.query(queryService.SelectBasketIdFromStripeSessionId, [sessionId]);
-    return result[0] === undefined ? null : result[0].id;
+    try {
+        const result = await databaseService.query(queryService.SelectBasketIdFromStripeSessionId, [sessionId]);
+        return result[0] === undefined ? null : result[0].id;
+    } catch (error) {
+        throw new errorService.newError('Function: getBasketIdFromSession. Database query failed.', error);
+    }
 };
+
 module.exports.getDataForOrder = async function(sessionId)  {
-    const result = await databaseService.query(queryService.SelectDataForOrder, [sessionId]);
-    return result[0] === undefined ? null : result[0];
+    try {
+        const result = await databaseService.query(queryService.SelectDataForOrder, [sessionId]);
+        return result[0] === undefined ? null : result[0];
+    } catch(error) {
+        throw new errorService.newError('Function: getDataForOrder. Database query failed.', error);
+    }
 };
+
 module.exports.getOrderItemsFromSession = async function(sessionId)  {
-    const result = await databaseService.query(queryService.SelectOrderItemsFromStripeSessionId, [sessionId]);
-    return result[0] === undefined ? [] : result;
+    try {
+        const result = await databaseService.query(queryService.SelectOrderItemsFromStripeSessionId, [sessionId]);
+        return result[0] === undefined ? [] : result;
+    } catch(error) {
+        throw new errorService.newError('Function: getOrderItemsFromSession. Database query failed.', error);
+    }
 };
+
 module.exports.insertOrder = async function(customerId, address_id, sessionId)  {
-    const result = await databaseService.query(queryService.InsertOrder,[customerId, new Date(), address_id, address_id, sessionId]);
-    return result.insertId;
+    try {
+        const result = await databaseService.query(queryService.InsertOrder,[customerId, new Date(), address_id, address_id, sessionId]);
+        return result.insertId;
+    } catch(error) {
+        throw new errorService.newError('Function: insertOrder. Database query failed.', error);
+    }
 };
+
 module.exports.insertOrderItem = async function(orderId, paintingId)  {
-    const result = await databaseService.query(queryService.InsertOrderItem, [orderId, paintingId]);
-    return result.insertId;
+    try {
+        const result = await databaseService.query(queryService.InsertOrderItem, [orderId, paintingId]);
+        return result.insertId
+    } catch(error) {
+        throw new errorService.newError('Function: insertOrderItem. Database query failed.', error);
+    }
 };
+
 module.exports.sendMailsForOrder = async function(sessionId)  {
-    let orderInfo = await databaseService.query(queryService.SelectOrderInfo, [sessionId]);
-    let orderPositions = await databaseService.query(queryService.SelectOrderPositions, [sessionId]);
+    const orderInfo = await databaseService.query(queryService.SelectOrderInfo, [sessionId]);
+    const orderPositions = await databaseService.query(queryService.SelectOrderPositions, [sessionId]);
 
     await this.sendCustomerMail(orderInfo[0], orderPositions);
 
-    let employees = await databaseService.query(queryService.SelectEmployees, null);
+    const employees = await databaseService.query(queryService.SelectEmployees, null);
 
     for (const employee of employees) {
         await this.sendEmployeeMail(employee, orderInfo[0], orderPositions);
@@ -78,6 +104,7 @@ module.exports.sendCustomerMail = async function(orderInfo, orderPositions) {
     let mailOption = emailService.createEmailOptions(orderInfo.email, header, text);
     await emailService.sendEmail(mailOption);
 }
+
 module.exports.sendEmployeeMail = async function(employee, orderInfo, orderPositions) {
     let newLine = '\n';
     let header = 'Bestellung: ' + orderInfo.id;

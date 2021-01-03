@@ -123,3 +123,24 @@ module.exports.getCollections = async function() {
 
     return collections;
 };
+
+module.exports.updatePainting = async function(painting) {
+  try {
+      //update painting set name = ?, style_id = ?, height = ?, width = ?, technique_id = ?, underground_id = ?, price = ?, description = ?, collection_id = ?
+      // where id = ?;
+      await databaseService.query(queryService.UpdatePainting, [
+          painting.name,
+          painting.style_id,
+          painting.height,
+          painting.width,
+          painting.technique_id,
+          painting.underground_id,
+          painting.price,
+          painting.description,
+          painting.collection_id,
+          painting.id
+      ]);
+  } catch(error) {
+      throw new errorService.newError('Function: updatePainting.', error);
+  }
+};

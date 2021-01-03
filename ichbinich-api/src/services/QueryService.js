@@ -45,6 +45,8 @@ module.exports.SelectStyles = `select * from style;`;
 module.exports.SelectTechniques = `select * from technique;`;
 module.exports.SelectUndergrounds = `select * from underground;`;
 module.exports.SelectCollections = `select * from collection;`;
+module.exports.UpdatePainting = `update painting set name = ?, style_id = ?, height = ?, width = ?, technique_id = ?, underground_id = ?, price = ?, description = ?, collection_id = ?
+where id = ?;`;
 
 // BasketService
 module.exports.SelectBasketExists = `select count(*) 'basketFound' from basket b where b.id = ?;`;
@@ -181,3 +183,6 @@ module.exports.UpdateMarkOrderAsSent = `update \`order\` set orderState_id = 2 w
 // ImageService
 module.exports.DeleteImageToPaintingLink = `delete from painting_image where image_id = ?;`;
 module.exports.DeleteImage = `delete from image where id = ?;`;
+module.exports.SelectLastImageId = `select id from image ORDER BY id DESC LIMIT 0, 1;`;
+module.exports.InsertImage = `insert into image (path) values(?);`;
+module.exports.InsertPaintingImage = `insert into painting_image (painting_id, image_id) values(?, ?);`;

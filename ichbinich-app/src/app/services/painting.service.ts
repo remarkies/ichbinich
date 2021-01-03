@@ -7,6 +7,7 @@ import {StyleModel} from '../models/style.model';
 import {TechniqueModel} from '../models/technique.model';
 import {UndergroundModel} from '../models/underground.model';
 import {CollectionModel} from '../models/collection.model';
+import {DataService} from './data.service';
 
 @Injectable({
   providedIn: 'root'
@@ -53,7 +54,7 @@ export class PaintingService {
   }
   private _painting: BehaviorSubject<PaintingModel> = new BehaviorSubject<PaintingModel>(null);
 
-  constructor(private apiService: ApiService, private authenticationService: AuthenticationService) {
+  constructor(private apiService: ApiService, private authenticationService: AuthenticationService, private dataService: DataService) {
     this.loadStyles();
     this.loadTechniques();
     this.loadUndergrounds();
@@ -87,6 +88,15 @@ export class PaintingService {
   public loadCollections(): void {
     this.apiService.getCollections().subscribe(collections => {
       this._collections.next(collections);
+    });
+  }
+
+  public updatePainting(painting): void {
+    const token = this.authenticationService.currentEmployeeValue.token;
+
+    this.apiService.updatePainting(token, painting).subscribe(() => {
+      this.loadPainting(painting.id);
+      this.dataService.loadPaintings();
     });
   }
 }

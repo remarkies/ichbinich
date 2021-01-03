@@ -92,7 +92,7 @@
               <option [value]="style.id" *ngFor="let style of styles">{{style.description}}</option>
             </select>
             <div class="validator-space">
-              <app-validator-info *ngIf="saved && f.title_id.errors" [validationMessage]="'Style is required'"></app-validator-info>
+              <app-validator-info *ngIf="saved && f.style_id.errors" [validationMessage]="'Style is required'"></app-validator-info>
             </div>
           </div>
           <div class="text-input">
@@ -127,7 +127,7 @@
           </div>
         </div>
       </div>
-      <div class="actions button-align-right">
+      <div class="actions button-align-right" *ngIf="dataChanged">
         <div class="next-button"><app-button [type]="'button'" [label]="'Verwerfen'" (onClick)="cancel()"></app-button></div>
         <div class="next-button"><app-button [type]="'submit'" [label]="'Speichern'"></app-button></div>
       </div>

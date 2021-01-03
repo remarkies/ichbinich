@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {PaintingModel} from '../../../models/painting.model';
 import {PaintingService} from '../../../services/painting.service';
@@ -20,6 +20,7 @@ export class EmployeePaintingComponent implements OnInit {
   paintingForm: FormGroup;
   saved = false;
   newImageViewEnabled = false;
+  public dataChanged = false;
 
   public painting: PaintingModel;
   private paintingSubscription: Subscription;
@@ -61,8 +62,10 @@ export class EmployeePaintingComponent implements OnInit {
 
     this.paintingSubscription = this.paintingService.painting$.subscribe(painting => {
       this.painting = painting;
+      this.dataChanged = false;
 
       this.paintingForm = this.formBuilder.group({
+        id: [painting !== null ? painting.id : 0],
         name: [painting !== null ? painting.name : '', [Validators.required]],
         style_id: [painting !== null ? painting.style_id : '', [Validators.required]],
         height: [painting !== null ? painting.height : '', [Validators.required]],
@@ -72,10 +75,15 @@ export class EmployeePaintingComponent implements OnInit {
         price: [painting !== null ? painting.price : '', [Validators.required]],
         description: [painting !== null ? painting.description : '', [Validators.required]],
         year: [painting !== null ? painting.year : '', [Validators.required]],
-        series_id: [painting !== null ? painting.series_id : '', [Validators.required]],
         collection_id: [painting !== null ? painting.collection_id : '', [Validators.required]]
       });
+
+      this.paintingForm.valueChanges.subscribe(data => {
+        this.dataChanged = true;
+      });
     });
+
+
   }
 
   // convenience getter for easy access to form fields
@@ -103,11 +111,15 @@ export class EmployeePaintingComponent implements OnInit {
 
   save(): void {
     this.saved = true;
-    if (this.paintingForm.invalid) { return; }
+    if (this.paintingForm.invalid) {
+      return;
+    }
+
+    this.paintingService.updatePainting(this.paintingForm.value);
   }
 
   cancel(): void {
-
+    this.paintingService.loadPainting(this.painting.id);
   }
 
   onUploaded(uploaded: boolean): void {

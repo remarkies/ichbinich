@@ -1,5 +1,6 @@
 const express = require('express');
 const paintingService = require('../services/PaintingService');
+const employeeService = require('../services/EmployeeService');
 const responseController = require('../controllers/ResponseController');
 const router = express.Router();
 
@@ -75,5 +76,24 @@ router.get('/collections',async function(request,response){
         return responseController.fail(response, error);
     }
 });
+
+router.post('/update',async function(request,response){
+    try {
+        const token = request.body.token;
+        const painting = request.body.painting;
+
+        const valid = await employeeService.isTokenValid(token);
+
+        if (valid) {
+            await paintingService.updatePainting(painting);
+            return responseController.ok(response, {});
+        } else {
+            return responseController.fail(response, { message: 'Invalid token.' });
+        }
+    } catch(error) {
+        return responseController.fail(response, error);
+    }
+});
+
 
 module.exports = router;

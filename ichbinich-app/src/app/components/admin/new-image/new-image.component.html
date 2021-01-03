@@ -5,7 +5,7 @@
       <label for="file">Wähle das Bild aus</label>
       <input type="file"
              id="file"
-             (change)="handleFileInput($event.target.files)">
+             (change)="handleFileInput($event.target.files)" accept=".jpg">
     </div>
     <p>{{errorMessage}}</p>
     <div class="actions">

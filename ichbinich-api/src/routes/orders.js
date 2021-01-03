@@ -1,16 +1,14 @@
 const express = require('express');
-const EmployeeService = require('../services/EmployeeService');
-const HashService = require('../services/HashService');
-const TokenService = require('../services/TokenService');
+const employeeService = require('../services/EmployeeService');
 const responseController = require('../controllers/ResponseController');
-let router = express.Router();
+const router = express.Router();
 
 router.post('/get',async function(request,response, next){
     const token = request.body.token;
 
-    const valid = await EmployeeService.isTokenValid(token);
+    const valid = await employeeService.isTokenValid(token);
     if (valid) {
-        const orders = await EmployeeService.getOrders();
+        const orders = await employeeService.getOrders();
         return responseController.ok(response, orders);
     } else {
         return responseController.fail(response, 'Not authorized!');
@@ -21,9 +19,9 @@ router.post('/order',async function(request,response, next){
     const token = request.body.token;
     const id = request.body.id;
 
-    const valid = await EmployeeService.isTokenValid(token);
+    const valid = await employeeService.isTokenValid(token);
     if (valid) {
-        const order = await EmployeeService.getOrder(id);
+        const order = await employeeService.getOrder(id);
         return responseController.ok(response, order);
     } else {
         return responseController.fail(response, 'Not authorized!');
@@ -35,10 +33,10 @@ router.post('/markAsSent',async function(request,response, next){
     const id = request.body.id;
     const email = request.body.email;
 
-    const valid = await EmployeeService.isTokenValid(token);
+    const valid = await employeeService.isTokenValid(token);
     if (valid) {
-        await EmployeeService.markOrderAsSent(id);
-        await EmployeeService.sendCustomerOrderSentMail(email);
+        await employeeService.markOrderAsSent(id);
+        await employeeService.sendCustomerOrderSentMail(email);
         return responseController.ok(response);
     } else {
         return responseController.fail(response, 'Not authorized!');
