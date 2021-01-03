@@ -1,38 +1,46 @@
 @import "../../../../styles";
 
 :host {
-  display: block;
+  display: flex;
 }
 
 button {
+  display: flex;
+  align-items: center;
   border: none;
   outline: none !important;
   box-shadow: none !important;
-
   text-transform: uppercase;
-  background: $accent2;
-  color: $hightlight1;
 
-  padding: 10px 20px;
-  font-size: 12px;
+  background: transparent;
+  color: $text;
+
+  font-size: 0.8em;
   font-weight: bold;
+  font-family: $fontfamily;
 
   -webkit-user-select: none;
   user-select: none;
   cursor: pointer;
 
-  opacity: 0.8;
-  transition: opacity .25s;
-
   border-radius: 4px;
+  padding:  12px 24px;
 }
 
 button:hover {
-  opacity: 1;
+  background-color: $hightlight1;
 }
 
 button:disabled {
   background-color: $hightlight1;
   color: $text;
+  text-decoration: line-through;
 }
 
+.iconLeft {
+  margin-right: 16px;
+}
+
+.iconRight {
+  margin-left: 16px;
+}

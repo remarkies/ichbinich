@@ -1,42 +1,7 @@
-<div class="container" *ngIf="painting !== null">
-  <app-view-title [title]="'Gemälde #' + painting.id"></app-view-title>
-  <div class="content">
-    <h3>Bilder</h3>
-    <div class="horizontal">
-      <div class="panel">
-        <table>
-          <thead>
-          <tr>
-            <th>Id</th>
-            <th>Pfad</th>
-            <th>Aktion</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr class="table-row" *ngFor="let path of painting.paths">
-            <td><p>{{path.id}}</p></td>
-            <td><p>{{path.path}}</p></td>
-            <td>
-              <div class="actions">
-                <div class="action">
-                  <app-icon-button [iconSize]="'xs'" [iconName]="'settings'" (onClick)="selectPath(path)" ></app-icon-button>
-                  <div class="options" *ngIf="path.selected">
-                    <div class="option">
-                      <p (click)="deleteImage(path)">Löschen</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </td>
-          </tr>
-          </tbody>
-        </table>
-        <app-button [label]="'Bild hinzufügen'" (onClick)="openNewImage()"></app-button>
-        <app-new-image *ngIf="newImageViewEnabled" [painting]="painting" (onUploaded)="onUploaded($event)"></app-new-image>
-      </div>
-    </div>
-    <h3>Eigenschaften</h3>
-    <form [formGroup]="paintingForm" (ngSubmit)="save()" >
+<div class="pop-up">
+  <div class="pop-up-content">
+    <h3>Gemälde hinzufügen</h3>
+    <form class="form-group" [formGroup]="paintingForm" (ngSubmit)="add()" >
       <div class="horizontal">
         <div class="panel">
           <div class="text-input">
@@ -62,12 +27,12 @@
               </div>
             </div>
             <div class="text-input">
-            <label>Breite*</label>
-            <input type="text" formControlName="width" class="form-control" [ngClass]="{ 'is-invalid' : saved && f.width.errors }" />
-            <div class="validator-space">
-              <app-validator-info *ngIf="saved && f.width.errors" [validationMessage]="'Width is required'"></app-validator-info>
+              <label>Breite*</label>
+              <input type="text" formControlName="width" class="form-control" [ngClass]="{ 'is-invalid' : saved && f.width.errors }" />
+              <div class="validator-space">
+                <app-validator-info *ngIf="saved && f.width.errors" [validationMessage]="'Width is required'"></app-validator-info>
+              </div>
             </div>
-          </div>
           </div>
           <div class="text-input">
             <label>Preis*</label>
@@ -127,10 +92,13 @@
           </div>
         </div>
       </div>
-      <div class="actions button-align-right">
-        <app-button [type]="'submit'" (onClick)="back()" [isDisabled]="false" [label]="'Zurück'"></app-button>
-        <div class="next-button" *ngIf="dataChanged"><app-button [type]="'button'" [label]="'Verwerfen'" (onClick)="cancel()"></app-button></div>
-        <div class="next-button" *ngIf="dataChanged"><app-button [type]="'submit'" [label]="'Speichern'"></app-button></div>
+      <div class="actions">
+        <div class="action">
+          <app-button [label]="'Abbrechen'" (onClick)="cancel()"></app-button>
+        </div>
+        <div class="action">
+          <app-button [label]="'Hinzufügen'" type="submit"></app-button>
+        </div>
       </div>
     </form>
   </div>

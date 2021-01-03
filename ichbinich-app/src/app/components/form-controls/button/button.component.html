@@ -1,3 +1,5 @@
 <button type="{{type}}" [ngClass]="isDisabled? '': 'enabled'" class="btn" (click)="onClickButton($event)" [disabled]="isDisabled">
-  {{ label }}
+    <app-icon *ngIf="iconLeft" class="iconLeft" [name]="icon" [size]="iconSize"></app-icon>
+    {{label}}
+    <app-icon *ngIf="iconRight" class="iconRight" [name]="icon" [size]="iconSize"></app-icon>
 </button>

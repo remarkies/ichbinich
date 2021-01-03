@@ -8,21 +8,14 @@
 
 button {
   border: none !important;
-  padding: 4px;
   background: inherit;
   outline: none !important;
   box-shadow: none !important;
+  padding: 8px;
 }
 
 button:hover {
   cursor: pointer;
   background: $hightlight1;
-  border-radius: 3px;
+  border-radius: 4px;
 }
-
-.btn:disabled {
-  border: 1px solid #cccccc;
-  background-color: #cccccc;
-  color: #666666;
-}
-

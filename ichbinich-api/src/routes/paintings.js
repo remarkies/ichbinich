@@ -95,5 +95,23 @@ router.post('/update',async function(request,response){
     }
 });
 
+router.post('/add',async function(request,response){
+    try {
+        const token = request.body.token;
+        const painting = request.body.painting;
+
+        const valid = await employeeService.isTokenValid(token);
+
+        if (valid) {
+            await paintingService.insertPainting(painting);
+            return responseController.ok(response, {});
+        } else {
+            return responseController.fail(response, { message: 'Invalid token.' });
+        }
+    } catch(error) {
+        return responseController.fail(response, error);
+    }
+});
+
 
 module.exports = router;

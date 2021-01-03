@@ -47,6 +47,8 @@ module.exports.SelectUndergrounds = `select * from underground;`;
 module.exports.SelectCollections = `select * from collection;`;
 module.exports.UpdatePainting = `update painting set name = ?, style_id = ?, height = ?, width = ?, technique_id = ?, underground_id = ?, price = ?, description = ?, collection_id = ?
 where id = ?;`;
+module.exports.InsertPainting = `insert into painting (name, style_id, height, width, technique_id, underground_id, price, description, year, series_id, collection_id) 
+values (?, ?, ?, ?, ?, ?, ?, ?, ?, null, ?);`
 
 // BasketService
 module.exports.SelectBasketExists = `select count(*) 'basketFound' from basket b where b.id = ?;`;

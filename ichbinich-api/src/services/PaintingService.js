@@ -126,8 +126,6 @@ module.exports.getCollections = async function() {
 
 module.exports.updatePainting = async function(painting) {
   try {
-      //update painting set name = ?, style_id = ?, height = ?, width = ?, technique_id = ?, underground_id = ?, price = ?, description = ?, collection_id = ?
-      // where id = ?;
       await databaseService.query(queryService.UpdatePainting, [
           painting.name,
           painting.style_id,
@@ -142,5 +140,26 @@ module.exports.updatePainting = async function(painting) {
       ]);
   } catch(error) {
       throw new errorService.newError('Function: updatePainting.', error);
+  }
+};
+
+module.exports.insertPainting = async function(painting) {
+  try {
+      const result = await databaseService.query(queryService.InsertPainting, [
+          painting.name,
+          painting.style_id,
+          painting.height,
+          painting.width,
+          painting.technique_id,
+          painting.underground_id,
+          painting.price,
+          painting.description,
+          painting.year,
+          painting.collection_id
+      ]);
+
+      return result.insertId;
+  } catch (error) {
+      throw new errorService.newError('Function: insertPainting.', error);
   }
 };

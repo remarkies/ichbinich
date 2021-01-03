@@ -113,6 +113,10 @@ export class ApiService {
     return this.http.post<any>(environment.apiUrl + '/paintings/update', { token, painting });
   }
 
+  public addPainting(token: string, painting: PaintingModel): any {
+    return this.http.post<any>(environment.apiUrl + '/paintings/add', { token, painting });
+  }
+
   public deleteImage(token: string, id: number): any {
     return this.http.post<any>(environment.apiUrl + '/images/delete', {token, id});
   }

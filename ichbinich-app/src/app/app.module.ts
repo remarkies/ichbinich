@@ -38,6 +38,7 @@ import { EmployeePaintingsComponent } from './components/admin/employee-painting
 import { OrderComponent } from './components/admin/order/order.component';
 import { EmployeePaintingComponent } from './components/admin/employee-painting/employee-painting.component';
 import { NewImageComponent } from './components/admin/new-image/new-image.component';
+import { NewPaintingComponent } from './components/admin/new-painting/new-painting.component';
 
 
 @NgModule({
@@ -73,7 +74,8 @@ import { NewImageComponent } from './components/admin/new-image/new-image.compon
     EmployeePaintingsComponent,
     OrderComponent,
     EmployeePaintingComponent,
-    NewImageComponent
+    NewImageComponent,
+    NewPaintingComponent
   ],
   imports: [
     BrowserModule,

@@ -12,6 +12,8 @@ import {ImageService} from '../../../services/image.service';
 })
 export class EmployeePaintingsComponent implements OnInit {
 
+  public isNewPaintingViewVisible = false;
+
   public paintings: PaintingModel[] = [];
   private paintingsSubscription: Subscription;
 
@@ -44,6 +46,14 @@ export class EmployeePaintingsComponent implements OnInit {
 
   editPainting(painting: PaintingModel): void {
     this.router.navigate(['/user/painting', painting.id]);
+  }
+
+  addPainting(): void {
+    this.isNewPaintingViewVisible = true;
+  }
+
+  closeNewPaintingView(): void {
+    this.isNewPaintingViewVisible = false;
   }
 
 }

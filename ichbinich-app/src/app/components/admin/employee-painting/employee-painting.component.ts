@@ -37,7 +37,7 @@ export class EmployeePaintingComponent implements OnInit {
   public collections: CollectionModel[] = [];
   private collectionsSubscription: Subscription;
 
-  constructor(private imageService: ImageService, private formBuilder: FormBuilder, private route: ActivatedRoute, private paintingService: PaintingService) {
+  constructor(private imageService: ImageService, private router: Router, private formBuilder: FormBuilder, private route: ActivatedRoute, private paintingService: PaintingService) {
     this.route.params.subscribe( params => {
       this.paintingService.loadPainting(params.id);
     });
@@ -83,7 +83,6 @@ export class EmployeePaintingComponent implements OnInit {
       });
     });
 
-
   }
 
   // convenience getter for easy access to form fields
@@ -124,5 +123,9 @@ export class EmployeePaintingComponent implements OnInit {
 
   onUploaded(uploaded: boolean): void {
     this.newImageViewEnabled = false;
+  }
+
+  back(): void {
+    this.router.navigate(['/user/']);
   }
 }

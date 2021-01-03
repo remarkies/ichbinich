@@ -37,4 +37,10 @@
     </tr>
     </tbody>
   </table>
+  <div class="actions">
+    <div class="action">
+      <app-button [label]="'Add painting'" (onClick)="addPainting()"></app-button>
+    </div>
+  </div>
+  <app-new-painting *ngIf="isNewPaintingViewVisible" (onAdded)="closeNewPaintingView()"></app-new-painting>
 </div>

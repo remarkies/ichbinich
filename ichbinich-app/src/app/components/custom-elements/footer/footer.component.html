@@ -1,13 +1,15 @@
 <div class="footer">
   <div class="image-nav">
-    <div class="nav-item" (click)="dataService.previousPainting()">
-      <app-icon [name]="'arrow-left'" [size]="'xs'"></app-icon>
-      <p>Vorheriges</p>
-    </div>
+    <app-button [label]="'Vorheriges'"
+                [iconLeft]="true"
+                icon="arrow-left"
+                [iconSize]="'x'"
+                (onClick)="dataService.previousPainting()"></app-button>
     <div class="spacer"></div>
-    <div class="nav-item" (click)="dataService.nextPainting()">
-      <p>Nächstes</p>
-      <app-icon [name]="'arrow-right'" [size]="'xs'"></app-icon>
-    </div>
+    <app-button [label]="'Nächstes'"
+                [iconRight]="true"
+                icon="arrow-right"
+                [iconSize]="'x'"
+                (onClick)="dataService.nextPainting()"></app-button>
   </div>
 </div>

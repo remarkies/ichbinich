@@ -99,4 +99,13 @@ export class PaintingService {
       this.dataService.loadPaintings();
     });
   }
+
+  public addPainting(painting): void {
+    const token = this.authenticationService.currentEmployeeValue.token;
+
+    this.apiService.addPainting(token, painting).subscribe(() => {
+      this.dataService.loadPaintings();
+    });
+  }
+
 }

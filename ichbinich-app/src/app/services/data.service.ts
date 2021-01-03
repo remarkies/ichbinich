@@ -216,23 +216,17 @@ export class DataService {
 
   // employee related
   public loadOrders(): void {
-    const currentEmployee = this.authenticationService.currentEmployeeValue;
-    if (currentEmployee !== null) {
-      this.apiService.getOrders(currentEmployee.token).subscribe(orders => {
-        this._orders.next(orders);
-      });
-    } else {
-      console.log('Current employee not loaded.');
-    }
+    const token = this.authenticationService.currentEmployeeValue.token;
+
+    this.apiService.getOrders(token).subscribe(orders => {
+      this._orders.next(orders);
+    });
   }
   public markOrderAsSent(order: EmployeeOrderModel): void {
-    const currentEmployee = this.authenticationService.currentEmployeeValue;
-    if (currentEmployee !== null) {
-      this.apiService.markOrderAsSent(currentEmployee.token, order.id, order.email).subscribe(() => {
-        this.loadOrders();
-      });
-    } else {
-      console.log('Current employee not loaded.');
-    }
+    const token = this.authenticationService.currentEmployeeValue.token;
+
+    this.apiService.markOrderAsSent(token, order.id, order.email).subscribe(() => {
+      this.loadOrders();
+    });
   }
 }
