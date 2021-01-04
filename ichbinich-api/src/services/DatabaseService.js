@@ -8,7 +8,7 @@ module.exports.connect = function() {
             user: process.env.DB_USER,
             password: process.env.DB_PASS,
             database: "ichbinich",
-            connectionLimit: 5
+            connectionLimit: 100
         };
 
         const pool = mariadb.createPool(config);

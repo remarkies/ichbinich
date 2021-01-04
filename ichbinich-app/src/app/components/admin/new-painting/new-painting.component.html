@@ -12,7 +12,7 @@
             </div>
           </div>
           <div class="text-input">
-            <label>Beschreibung*</label>
+            <label>Beschreibung</label>
             <input type="text" formControlName="description" class="form-control" [ngClass]="{ 'is-invalid' : saved && f.description.errors }" />
             <div class="validator-space">
               <app-validator-info *ngIf="saved && f.description.errors" [validationMessage]="'Description is required'"></app-validator-info>

@@ -64,7 +64,7 @@ export class NewPaintingComponent implements OnInit {
       technique_id: [this.painting !== null ? this.painting.technique_id : '', [Validators.required]],
       underground_id: [this.painting !== null ? this.painting.underground_id : '', [Validators.required]],
       price: [this.painting !== null ? this.painting.price : '', [Validators.required]],
-      description: [this.painting !== null ? this.painting.description : '', [Validators.required]],
+      description: [this.painting !== null ? this.painting.description : '', []],
       year: [this.painting !== null ? this.painting.year : '', [Validators.required]],
       collection_id: [this.painting !== null ? this.painting.collection_id : '', [Validators.required]]
     });

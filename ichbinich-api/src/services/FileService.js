@@ -7,7 +7,11 @@ const fs = require('fs');
 module.exports.getNewImageName = async function() {
     try {
         const results = await databaseService.query(queryService.SelectLastImageId, null);
-        let newImageName = (results[0].id + 1).toString();
+
+        let newImageName = '1';
+        if (results.length > 0) {
+            newImageName = (results[0].id + 1).toString();
+        }
 
         while(newImageName.length < 4) {
             newImageName = '0' + newImageName;

@@ -74,7 +74,7 @@ export class EmployeePaintingComponent implements OnInit {
         technique_id: [painting !== null ? painting.technique_id : '', [Validators.required]],
         underground_id: [painting !== null ? painting.underground_id : '', [Validators.required]],
         price: [painting !== null ? painting.price : '', [Validators.required]],
-        description: [painting !== null ? painting.description : '', [Validators.required]],
+        description: [painting !== null ? painting.description : '', []],
         year: [painting !== null ? painting.year : '', [Validators.required]],
         collection_id: [painting !== null ? painting.collection_id : '', [Validators.required]]
       });
