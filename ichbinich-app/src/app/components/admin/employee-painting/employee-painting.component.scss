@@ -44,4 +44,18 @@
 
 .next-button {
   margin-left: 16px;
+  flex-grow: 0;
+}
+
+.actions {
+  display: flex;
+}
+
+.back-button {
+  flex-grow: 0;
+  margin-right: 16px;
+}
+
+.spacer {
+  flex-grow: 1;
 }

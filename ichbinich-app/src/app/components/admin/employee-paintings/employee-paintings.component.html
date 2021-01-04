@@ -39,7 +39,7 @@
   </table>
   <div class="actions">
     <div class="action">
-      <app-button [iconLeft]="true" [iconSize]="'xs'" icon="add" [label]="'Add painting'" (onClick)="addPainting()"></app-button>
+      <app-button [iconLeft]="true" [iconSize]="'xs'" icon="add" [label]="'Gemälde hinzufügen'" (onClick)="addPainting()"></app-button>
     </div>
   </div>
   <app-new-painting *ngIf="isNewPaintingViewVisible" (onAdded)="closeNewPaintingView()"></app-new-painting>

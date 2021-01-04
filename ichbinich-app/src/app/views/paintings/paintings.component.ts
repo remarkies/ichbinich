@@ -16,12 +16,17 @@ export class PaintingsComponent implements OnInit {
   public paintings: PaintingModel[] = [];
   private paintingSubscription: Subscription;
 
+  public paintingsCount: number = 0;
+  public selectedPaintingPos: number = 0;
+
   constructor(private dataService: DataService) { }
 
   ngOnInit(): void {
     this.paintingSubscription = this.dataService.paintings$.subscribe(paintings => {
       if (paintings !== null) {
         this.paintings = paintings;
+        this.paintingsCount = paintings.length;
+
         if (paintings.length > 0) {
           this.dataService.selectPainting(paintings[0]);
         }
@@ -30,6 +35,7 @@ export class PaintingsComponent implements OnInit {
 
     this.selectedPaintingSubscription = this.dataService.selectedPainting$.subscribe(painting => {
       this.selectedPainting = painting;
+      this.selectedPaintingPos = this.paintings.indexOf(this.selectedPainting);
     });
   }
 

@@ -32,7 +32,7 @@ const routes: Routes = [
       { path: 'summary', component: SummaryComponent},
     ]
   },
-  { path: '**', component: PageNotFoundComponent }
+  { path: '**', redirectTo: '' }
 ];
 
 @NgModule({

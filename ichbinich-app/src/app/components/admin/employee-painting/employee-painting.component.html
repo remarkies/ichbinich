@@ -128,7 +128,8 @@
         </div>
       </div>
       <div class="actions button-align-right">
-        <app-button [iconLeft]="true" [iconSize]="'xs'" icon="arrow-left" [type]="'submit'" (onClick)="back()" [isDisabled]="false" [label]="'Zurück'"></app-button>
+        <div class="back-button"><app-button [iconLeft]="true" [iconSize]="'xs'" icon="arrow-left" [type]="'submit'" (onClick)="back()" [isDisabled]="false" [label]="'Zurück'"></app-button></div>
+        <div class="spacer"></div>
         <div class="next-button" *ngIf="dataChanged"><app-button [type]="'button'" [label]="'Verwerfen'" (onClick)="cancel()"></app-button></div>
         <div class="next-button" *ngIf="dataChanged"><app-button [type]="'submit'" [label]="'Speichern'"></app-button></div>
       </div>

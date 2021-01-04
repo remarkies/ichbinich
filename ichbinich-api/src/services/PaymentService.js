@@ -22,7 +22,7 @@ module.exports.buildParamsForItems = function(basketId, items)  {
                 currency: 'chf',
                 product_data: {
                     name: item.name,
-                    images: ['https://i.imgur.com/EHyR2nP.png']
+                    images: ['https://api.ichbinich.ch/public/images/' + item.path]
                 },
                 unit_amount_decimal: (item.price * 100),
             },
