@@ -14,7 +14,7 @@ import {OrderComponent} from './components/admin/order/order.component';
 import {EmployeePaintingComponent} from './components/admin/employee-painting/employee-painting.component';
 
 const routes: Routes = [
-  { path: 'paintings', component: PaintingsComponent},
+  { path: '', component: PaintingsComponent},
   { path: 'basket', component: BasketComponent},
   { path: 'user', component: UserComponent,
     children: [
@@ -32,7 +32,6 @@ const routes: Routes = [
       { path: 'summary', component: SummaryComponent},
     ]
   },
-  { path: '',   redirectTo: '/paintings', pathMatch: 'full' },
   { path: '**', component: PageNotFoundComponent }
 ];
 
