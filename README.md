@@ -41,5 +41,4 @@ Since the database model is designed to be capable of much more, following featu
 14. ~~Users can see their orders.~~
 15. ~~Users can modify their personal data.~~
 
-
 The database is able to handle multiple languagues which will not be implemented in the front end during this module.
