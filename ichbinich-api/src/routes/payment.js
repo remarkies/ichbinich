@@ -36,7 +36,7 @@ router.post('/create-session', async (request,response) => {
             return responseController.fail(response, message);
         }
     } catch(error) {
-        return responseController.fail(response, error);
+        return responseController.fail(response, error.message);
     }
 });
 
@@ -52,7 +52,7 @@ router.post('/confirm', async (request,response) => {
 
         return responseController.ok(response, responseObject);
     } catch(error) {
-        return responseController.fail(response, error);
+        return responseController.fail(response, error.message);
     }
 });
 

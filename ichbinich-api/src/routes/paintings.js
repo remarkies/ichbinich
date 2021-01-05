@@ -15,7 +15,7 @@ router.post('/',async function(request,response, next){
 
         return responseController.ok(response, paintings);
     } catch (error) {
-        return responseController.fail(response, error);
+        return responseController.fail(response, error.message);
     }
 });
 
@@ -28,7 +28,7 @@ router.post('/painting',async function(request,response, next){
 
         return responseController.ok(response, painting);
     } catch(error) {
-        return responseController.fail(response, error);
+        return responseController.fail(response, error.message);
     }
 });
 
@@ -40,7 +40,7 @@ router.get('/styles',async function(request,response){
 
         return responseController.ok(response, styles);
     } catch(error) {
-        return responseController.fail(response, error);
+        return responseController.fail(response, error.message);
     }
 });
 
@@ -51,7 +51,7 @@ router.get('/techniques',async function(request,response){
 
         return responseController.ok(response, techniques);
     } catch(error) {
-        return responseController.fail(response, error);
+        return responseController.fail(response, error.message);
     }
 });
 
@@ -62,7 +62,7 @@ router.get('/undergrounds',async function(request,response){
 
         return responseController.ok(response, undergrounds);
     } catch(error) {
-        return responseController.fail(response, error);
+        return responseController.fail(response, error.message);
     }
 });
 
@@ -73,7 +73,7 @@ router.get('/collections',async function(request,response){
 
         return responseController.ok(response, collections);
     } catch(error) {
-        return responseController.fail(response, error);
+        return responseController.fail(response, error.message);
     }
 });
 
@@ -91,7 +91,7 @@ router.post('/update',async function(request,response){
             return responseController.fail(response, { message: 'Invalid token.' });
         }
     } catch(error) {
-        return responseController.fail(response, error);
+        return responseController.fail(response, error.message);
     }
 });
 
@@ -109,7 +109,7 @@ router.post('/add',async function(request,response){
             return responseController.fail(response, { message: 'Invalid token.' });
         }
     } catch(error) {
-        return responseController.fail(response, error);
+        return responseController.fail(response, error.message);
     }
 });
 

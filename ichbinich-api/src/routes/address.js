@@ -27,7 +27,7 @@ router.post('/request', async (request,response) => {
             return responseController.fail(response, {address: null, status: 0, message: ""});
         }
     } catch(error) {
-        return responseController.fail(response, error);
+        return responseController.fail(response, error.message);
     }
 });
 
@@ -58,7 +58,7 @@ router.post('/new', async (request,response) => {
             return responseController.fail(response, message);
         }
     } catch(error) {
-        return responseController.fail(response, error);
+        return responseController.fail(response, error.message);
     }
 });
 
@@ -69,7 +69,7 @@ router.get('/countries',async function(request,response){
 
         return responseController.ok(response, countries);
     } catch(error) {
-        return responseController.fail(response, error);
+        return responseController.fail(response, error.message);
     }
 });
 
@@ -80,7 +80,7 @@ router.get('/titles',async function(request,response){
 
         return responseController.ok(response, titles);
     } catch(error) {
-        return responseController.fail(response, error);
+        return responseController.fail(response, error.message);
     }
 });
 

@@ -13,6 +13,6 @@ module.exports.insertImage = async function(imageName, paintingId) {
 
         await databaseService.query(queryService.InsertPaintingImage, [paintingId, results.insertId]);
     } catch (error) {
-        throw new errorService.newError('Function: insertImage', error);
+        throw new errorService.Error('Function: insertImage', error);
     }
 }

@@ -1,9 +1,8 @@
-const DatabaseService = require('./DatabaseService');
-const QueryService = require('./QueryService');
-const ErrorService = require('./ErrorService');
+const databaseService = require('./DatabaseService');
+const queryService = require('./QueryService');
 
 module.exports.requestCheckOutItems = async function(basketId)  {
-    return await DatabaseService.query(QueryService.SelectCheckoutItems, [basketId])
+    return databaseService.query(queryService.SelectCheckoutItems, [basketId]);
 };
 
 module.exports.buildParamsForItems = function(basketId, items)  {

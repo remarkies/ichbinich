@@ -7,7 +7,7 @@ module.exports.requestAddressForBasket = async function(basketId)  {
         const results = await databaseService.query(queryService.SelectAddressForBasketId, [basketId])
         return results[0] === undefined ? null : results[0];
     } catch(error) {
-        throw new errorService.newError('Function: requestAddressForBasket. Database query failed.', error);
+        throw new errorService.Error('Function: requestAddressForBasket. Database query failed.', error);
     }
 };
 
@@ -16,7 +16,7 @@ module.exports.requestUserForAddress = async function(addressId)  {
         const result = await databaseService.query(queryService.SelectUserForBasketId, [addressId]);
         return result[0] === undefined ? null : result[0];
     } catch(error) {
-        throw new errorService.newError('Function: requestUserForAddress. Database query failed.', error);
+        throw new errorService.Error('Function: requestUserForAddress. Database query failed.', error);
     }
 };
 
@@ -32,7 +32,7 @@ module.exports.upsertAddress = async function(address, basketCookie) {
             await this.linkAddressToBasket(newAddressId, basketCookie.id);
         }
     } catch(error) {
-        throw new errorService.newError('Function: upsertAddress failed.', error);
+        throw new errorService.Error('Function: upsertAddress failed.', error);
     }
 };
 
@@ -47,7 +47,7 @@ module.exports.upsertCustomerFromAddress = async function(address, basketCookie)
             await this.linkCustomerToBasket(newCustomerId, basketCookie.id);
         }
     } catch(error) {
-        throw new errorService.newError('Function: upsertCustomerFromAddress failed.', error);
+        throw new errorService.Error('Function: upsertCustomerFromAddress failed.', error);
     }
 };
 
@@ -66,7 +66,7 @@ module.exports.insertAddress = async function(address)  {
 
         return result.insertId;
     } catch (error) {
-        throw new errorService.newError('Function: insertAddress failed.', error);
+        throw new errorService.Error('Function: insertAddress failed.', error);
     }
 };
 
@@ -84,7 +84,7 @@ module.exports.updateAddress = async function(address)  {
             address.company,
             address.id]);
     } catch (error) {
-        throw new errorService.newError('Function: updateAddress failed.', error);
+        throw new errorService.Error('Function: updateAddress failed.', error);
     }
 };
 
@@ -93,7 +93,7 @@ module.exports.insertCustomerFromAddress = async function(address)  {
         const result = await databaseService.query(queryService.InsertCustomerFromAddress, [address.email, address.phone]);
         return result.insertId;
     } catch (error) {
-        throw new errorService.newError('Function: insertCustomerFromAddress failed.', error);
+        throw new errorService.Error('Function: insertCustomerFromAddress failed.', error);
     }
 };
 
@@ -101,7 +101,7 @@ module.exports.updateCustomerFromAddress = async function(address, customer_id) 
     try {
         await databaseService.query(queryService.UpdateCustomerFromAddress, [address.email, address.phone, customer_id]);
     } catch(error) {
-        throw new errorService.newError('Function: updateCustomerFromAddress failed.', error);
+        throw new errorService.Error('Function: updateCustomerFromAddress failed.', error);
     }
 };
 
@@ -110,7 +110,7 @@ module.exports.addressIdForBasket = async function(basketId)  {
         const results = await databaseService.query(queryService.SelectAddressIdForBasketId, [basketId]);
         return results[0] === undefined ? null : results[0].address_id;
     } catch(error) {
-        throw new errorService.newError('Function: addressIdForBasket failed.', error);
+        throw new errorService.Error('Function: addressIdForBasket failed.', error);
     }
 };
 
@@ -119,7 +119,7 @@ module.exports.customerIdForBasket = async function(basketId)  {
         const results = await databaseService.query(queryService.SelectCustomerIdForBasketId, [basketId]);
         return results[0] === undefined ? null : results[0].customer_id;
     } catch(error) {
-        throw new errorService.newError('Function: customerIdForBasket failed.', error);
+        throw new errorService.Error('Function: customerIdForBasket failed.', error);
     }
 };
 
@@ -127,7 +127,7 @@ module.exports.linkAddressToBasket = async function(addressId, basketId)  {
     try {
         await databaseService.query(queryService.UpdateLinkAddressToBasket, [addressId, basketId]);
     } catch(error) {
-        throw new errorService.newError('Function: linkAddressToBasket failed.', error);
+        throw new errorService.Error('Function: linkAddressToBasket failed.', error);
     }
 };
 
@@ -135,7 +135,7 @@ module.exports.linkCustomerToBasket = async function(customerId, basketId)  {
     try {
         await databaseService.query(queryService.UpdateLinkCustomerToBasket, [customerId, basketId]);
     } catch(error) {
-        throw new errorService.newError('Function: linkCustomerToBasket failed.', error);
+        throw new errorService.Error('Function: linkCustomerToBasket failed.', error);
     }
 };
 
@@ -145,7 +145,7 @@ module.exports.getTitles = async function() {
     try {
         titles = await databaseService.query(queryService.SelectTitles, null);
     } catch(error) {
-        throw new errorService.newError('Function: getTitles. Database query failed.', error);
+        throw new errorService.Error('Function: getTitles. Database query failed.', error);
     }
 
     return titles;
@@ -157,7 +157,7 @@ module.exports.getCountries = async function() {
     try {
         countries = await databaseService.query(queryService.SelectCountries, null);
     } catch(error) {
-        throw new errorService.newError('Function: getCountries. Database query failed.', error);
+        throw new errorService.Error('Function: getCountries. Database query failed.', error);
     }
 
     return countries;

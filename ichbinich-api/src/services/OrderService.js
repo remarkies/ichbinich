@@ -10,7 +10,7 @@ module.exports.isOrderAlreadySubmitted = async function(sessionId) {
       const result = await databaseService.query(queryService.SelectSessionIdExistsInBasket, [sessionId]);
       return result[0].sessionIdExists === 0;
   } catch (error) {
-      throw new errorService.newError('Function: isOrderAlreadySubmitted. Database query failed.', error);
+      throw new errorService.Error('Function: isOrderAlreadySubmitted. Database query failed.', error);
   }
 };
 
@@ -33,7 +33,7 @@ module.exports.getBasketIdFromSession = async function(sessionId)  {
         const result = await databaseService.query(queryService.SelectBasketIdFromStripeSessionId, [sessionId]);
         return result[0] === undefined ? null : result[0].id;
     } catch (error) {
-        throw new errorService.newError('Function: getBasketIdFromSession. Database query failed.', error);
+        throw new errorService.Error('Function: getBasketIdFromSession. Database query failed.', error);
     }
 };
 
@@ -42,7 +42,7 @@ module.exports.getDataForOrder = async function(sessionId)  {
         const result = await databaseService.query(queryService.SelectDataForOrder, [sessionId]);
         return result[0] === undefined ? null : result[0];
     } catch(error) {
-        throw new errorService.newError('Function: getDataForOrder. Database query failed.', error);
+        throw new errorService.Error('Function: getDataForOrder. Database query failed.', error);
     }
 };
 
@@ -51,7 +51,7 @@ module.exports.getOrderItemsFromSession = async function(sessionId)  {
         const result = await databaseService.query(queryService.SelectOrderItemsFromStripeSessionId, [sessionId]);
         return result[0] === undefined ? [] : result;
     } catch(error) {
-        throw new errorService.newError('Function: getOrderItemsFromSession. Database query failed.', error);
+        throw new errorService.Error('Function: getOrderItemsFromSession. Database query failed.', error);
     }
 };
 
@@ -60,7 +60,7 @@ module.exports.insertOrder = async function(customerId, address_id, sessionId)  
         const result = await databaseService.query(queryService.InsertOrder,[customerId, new Date(), address_id, address_id, sessionId]);
         return result.insertId;
     } catch(error) {
-        throw new errorService.newError('Function: insertOrder. Database query failed.', error);
+        throw new errorService.Error('Function: insertOrder. Database query failed.', error);
     }
 };
 
@@ -69,7 +69,7 @@ module.exports.insertOrderItem = async function(orderId, paintingId)  {
         const result = await databaseService.query(queryService.InsertOrderItem, [orderId, paintingId]);
         return result.insertId
     } catch(error) {
-        throw new errorService.newError('Function: insertOrderItem. Database query failed.', error);
+        throw new errorService.Error('Function: insertOrderItem. Database query failed.', error);
     }
 };
 

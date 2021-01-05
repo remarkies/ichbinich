@@ -19,7 +19,7 @@ module.exports.getNewImageName = async function() {
 
         return 'image_' + newImageName + '.jpg';
     } catch(error) {
-        throw new errorService.newError('Function: getNewImageName', error);
+        throw new errorService.Error('Function: getNewImageName', error);
     }
 };
 
@@ -27,7 +27,7 @@ module.exports.moveFile = async function(oldFile, newFile)  {
     try {
         await fs.rename(oldFile, newFile, () => {});
     } catch(error) {
-        throw new errorService.newError('Function: moveFile', error);
+        throw new errorService.Error('Function: moveFile', error);
     }
 };
 
@@ -35,6 +35,6 @@ module.exports.fileExists = function(path) {
     try {
         return fs.existsSync(path);
     } catch(error) {
-        throw new errorService.newError('Function: fileExists', error);
+        throw new errorService.Error('Function: fileExists', error);
     }
 };

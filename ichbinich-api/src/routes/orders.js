@@ -14,7 +14,7 @@ router.post('/get',async function(request,response, next){
             return responseController.fail(response, 'Not authorized!');
         }
     } catch(error) {
-        return responseController.fail(response, error);
+        return responseController.fail(response, error.message);
     }
 });
 
@@ -31,7 +31,7 @@ router.post('/order',async function(request,response, next){
             return responseController.fail(response, 'Not authorized!');
         }
     } catch(error) {
-        return responseController.fail(response, error);
+        return responseController.fail(response, error.message);
     }
 });
 
@@ -50,7 +50,7 @@ router.post('/markAsSent',async function(request,response, next){
             return responseController.fail(response, 'Not authorized!');
         }
     } catch(error) {
-        return responseController.fail(response, error);
+        return responseController.fail(response, error.message);
     }
 });
 

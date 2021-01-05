@@ -27,7 +27,7 @@ router.post('/request', async (request,response, next) => {
         return responseController.ok(response, newBasket);
 
     } catch (error) {
-        return responseController.fail(response, error);
+        return responseController.fail(response, error.message);
     }
 });
 
@@ -40,7 +40,7 @@ router.post('/add', async (request,response, next) => {
 
         return responseController.ok(response, result);
     } catch(error) {
-        return responseController.fail(response, error);
+        return responseController.fail(response, error.message);
     }
 });
 
@@ -52,7 +52,7 @@ router.post('/remove', async (request,response, next) => {
         const result = await basketService.removePaintingFromBasket(basketId, paintingId);
         return responseController.ok(response, result);
     } catch (error) {
-        return responseController.fail(response, error);
+        return responseController.fail(response, error.message);
     }
 });
 
@@ -65,7 +65,7 @@ router.post('/itemExists', async (request,response, next) => {
 
         return responseController.ok(response, exists);
     } catch (error) {
-        return responseController.fail(response, error);
+        return responseController.fail(response, error.message);
     }
 });
 

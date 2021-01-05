@@ -9,7 +9,7 @@ module.exports.basketExists = async function(id)  {
 
         return results[0].basketFound !== 0;
     } catch (error) {
-        throw new errorService.newError('Function: basketExists. Database query failed');
+        throw new errorService.Error('Function: basketExists. Database query failed');
     }
 };
 
@@ -23,7 +23,7 @@ module.exports.requestOldBasket = async function(id)  {
     try {
         resultObject.stripe_session_id = await this.getStripeSessionIdFromBasket(id);
     } catch (error) {
-        throw new errorService.newError('Function: requestOldBasket. Could not get stripe session id from basket');
+        throw new errorService.Error('Function: requestOldBasket. Could not get stripe session id from basket');
     }
 
     let results;
@@ -31,7 +31,7 @@ module.exports.requestOldBasket = async function(id)  {
     try {
         results = await databaseService.query(queryService.SelectBasketItems, [id]);
     } catch (error) {
-        throw new errorService.newError('Function: requestOldBasket. Could not get old basket items.');
+        throw new errorService.Error('Function: requestOldBasket. Could not get old basket items.');
     }
 
     if(results.length > 0) {
@@ -40,7 +40,7 @@ module.exports.requestOldBasket = async function(id)  {
         try {
             resultObject.items = await paintingService.getPaintings(ids);
         } catch (error) {
-            throw new errorService.newError('Function: requestOldBasket. Could not get paintings for old basket items.');
+            throw new errorService.Error('Function: requestOldBasket. Could not get paintings for old basket items.');
         }
     }
 
@@ -57,7 +57,7 @@ module.exports.requestNewBasket = async function()  {
             items: []
         };
     } catch (error) {
-        throw new errorService.newError('Function: requestNewBasket. Database query failed');
+        throw new errorService.Error('Function: requestNewBasket. Database query failed');
     }
 };
 
@@ -66,7 +66,7 @@ module.exports.getStripeSessionIdFromBasket = async function(id)  {
         const result = await databaseService.query(queryService.SelectStripeSessionIdFromBasket, [id]);
         return result[0] === undefined ? null : result[0].stripe_session_id;
     } catch (error) {
-        throw new errorService.newError('Function: getStripeSessionIdFromBasket. Database query failed');
+        throw new errorService.Error('Function: getStripeSessionIdFromBasket. Database query failed');
     }
 };
 
@@ -78,7 +78,7 @@ module.exports.addPaintingToBasket = async function(basketId, paintingId)  {
             await databaseService.query(queryService.InsertPaintingToBasket, [basketId, paintingId])
         }
     } catch (error) {
-        throw new errorService.newError('Function: addPaintingToBasket. Database query failed');
+        throw new errorService.Error('Function: addPaintingToBasket. Database query failed');
     }
 };
 
@@ -90,7 +90,7 @@ module.exports.removePaintingFromBasket = async function(basketId, paintingId)  
             await databaseService.query(queryService.DeleteBasketItem, [basketId, paintingId]);
         }
     } catch (error) {
-        throw new errorService.newError('Function: removePaintingFromBasket. Database query failed');
+        throw new errorService.Error('Function: removePaintingFromBasket. Database query failed');
     }
 };
 
@@ -99,7 +99,7 @@ module.exports.paintingExistsInBasket = async function(basketId, paintingId)  {
         const results = await databaseService.query(queryService.SelectBasketItemExists, [basketId, paintingId]);
         return results[0].paintingFound !== 0;
     } catch(error) {
-        throw new errorService.newError('Function: paintingExistsInBasket. Database query failed');
+        throw new errorService.Error('Function: paintingExistsInBasket. Database query failed');
     }
 };
 
@@ -107,7 +107,7 @@ module.exports.updateBasketWithSession = async function(basketId, sessionId)  {
     try {
         await databaseService.query(queryService.UpdateStripeSessionIdInBasket, [sessionId, basketId]);
     } catch(error) {
-        throw new errorService.newError('Function: updateBasketWithSession. Database query failed');
+        throw new errorService.Error('Function: updateBasketWithSession. Database query failed');
     }
 };
 
@@ -115,6 +115,6 @@ module.exports.clearBasketFromItems = async function(basketId)  {
     try {
         await databaseService.query(queryService.DeleteBasketItems, [basketId]);
     } catch (error) {
-        throw new errorService.newError('Function: clearBasketFromItems. Database query failed');
+        throw new errorService.Error('Function: clearBasketFromItems. Database query failed');
     }
 };
