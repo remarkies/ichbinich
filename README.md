@@ -35,10 +35,11 @@ Since the database model is designed to be capable of much more, following featu
 8. Employees can see open orders.
 9. Employees can change the order state.
 10. Users get a mail notification on an order change.
-~~11. Users can register.~~
-~~12. Users can sign in.~~
-~~13. Users can reset password.~~
-~~14. Users can see their orders.~~
-~~15. Users can modify their personal data.~~
+11. ~~Users can register.~~
+12. ~~Users can sign in.~~
+13. ~~Users can reset password.~~
+14. ~~Users can see their orders.~~
+15. ~~Users can modify their personal data.~~
+
 
 The database is able to handle multiple languagues which will not be implemented in the front end during this module.
