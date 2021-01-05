@@ -35,7 +35,7 @@ export class PaintingsComponent implements OnInit {
 
     this.selectedPaintingSubscription = this.dataService.selectedPainting$.subscribe(painting => {
       this.selectedPainting = painting;
-      this.selectedPaintingPos = this.paintings.indexOf(this.selectedPainting);
+      this.selectedPaintingPos = this.paintings.indexOf(this.selectedPainting) + 1;
     });
   }
 

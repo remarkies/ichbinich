@@ -5,7 +5,10 @@ const port = process.env.PORT;
 
 const cors = require('cors');
 
-ichbinichApp.options('https://ichbinich.ch/', cors({credentials: true, origin: true}));
+//ichbinichApp.options('https://ichbinich.ch/', cors({credentials: true, origin: true}));
+//ichbinichApp.use(cors({credentials: true, origin: true}));
+
+ichbinichApp.options(cors({credentials: true, origin: true}));
 ichbinichApp.use(cors({credentials: true, origin: true}));
 
 const bodyParser = require('body-parser')

@@ -19,6 +19,11 @@
     width: 50vw;
     height: calc(100vh - 75px);
   }
+
+  .info {
+    top: 148px;
+    right: 80px;
+  }
 }
 
 @media screen and (max-width: 600px) {
@@ -34,6 +39,10 @@
 
   .content {
     width: 100vw;
+  }
+
+  .info {
+    display: none !important;
   }
 }
 
@@ -52,4 +61,24 @@
   align-items: center;
   justify-content: center;
   margin-bottom: 75px;
+}
+
+.info {
+  position: fixed;
+  display: flex;
+  font-size: 0.8em;
+  font-weight: 700;
+}
+
+.info .info-pos {
+  margin-left: 1em;
+  color: $accent2;
+}
+
+.info .selected-pos {
+  color: $text !important;
+}
+
+.info p {
+  margin: 0;
 }
