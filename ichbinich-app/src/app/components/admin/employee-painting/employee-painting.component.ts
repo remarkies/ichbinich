@@ -101,9 +101,7 @@ export class EmployeePaintingComponent implements OnInit {
   }
 
   deleteImage(path: PathModel): void {
-    this.imageService.deleteImage(path.id);
-    this.paintingService.loadPainting(this.painting.id);
-    this.dataService.loadPaintings();
+    this.imageService.deleteImage(path.id, this.painting.id);
   }
 
   openNewImage(): void {

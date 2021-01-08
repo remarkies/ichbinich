@@ -7,8 +7,6 @@ createEmploye('luka.kramer@stud.hslu.ch', 'tropeluc', 'test123');
 
 async function createEmploye(email, username, password) {
 
-    await database.connect();
-
     // hash password
     let hashedPwd = await hashService.hash(password);
 

@@ -4,6 +4,7 @@ const basketService = require('./BasketService');
 const queryService = require('./QueryService');
 const emailService = require('./EmailService');
 const errorService = require('./ErrorService');
+const stripeService = require('./StripeService');
 
 module.exports.isOrderAlreadySubmitted = async function(sessionId) {
   try {
@@ -15,16 +16,29 @@ module.exports.isOrderAlreadySubmitted = async function(sessionId) {
 };
 
 module.exports.submitOrder = async function(sessionId)  {
-    const basketId = await this.getBasketIdFromSession(sessionId);
-    const orderData = await this.getDataForOrder(sessionId);
-    const orderId = await this.insertOrder(orderData.customer_id, orderData.address_id, sessionId);
-    const orderItems = await this.getOrderItemsFromSession(sessionId);
 
-    for (const orderItem of orderItems) {
-        await this.insertOrderItem(orderId, orderItem.painting_id);
+    // get basket with session id
+    const basketId = await this.getBasketIdFromSession(sessionId);
+
+    // get customer and address data with session id
+    const orderData = await this.getDataForOrder(sessionId);
+
+    // create new order in database (includes writing stripe session id to order table)
+    const orderId = await this.insertOrder(orderData.customer_id, orderData.address_id, sessionId);
+
+    // get order items from stripe payment
+    const paintingIds = await this.getOrderItemsFromStripe(sessionId);
+
+    for (const paintingId of paintingIds) {
+        // create new order item in database
+        // connect order item to order
+        await this.insertOrderItem(orderId, paintingId);
     }
 
+    // remove items from basket
     await basketService.clearBasketFromItems(basketId);
+
+    // remove stripe session id from basket
     await basketService.updateBasketWithSession(basketId, null);
 };
 
@@ -54,6 +68,16 @@ module.exports.getOrderItemsFromSession = async function(sessionId)  {
         throw new errorService.Error('Function: getOrderItemsFromSession. Database query failed.', error);
     }
 };
+
+module.exports.getOrderItemsFromStripe = async function(sessionId) {
+    try {
+        const session = await stripeService.getSession(sessionId);
+
+        return session.metadata.paintings.split(',').map(painting => parseInt(painting));
+    } catch(error) {
+        throw new errorService.Error('Function: getOrderItemsFromStripe failed.', error);
+    }
+}
 
 module.exports.insertOrder = async function(customerId, address_id, sessionId)  {
     try {

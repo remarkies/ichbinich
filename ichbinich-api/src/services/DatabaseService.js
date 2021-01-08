@@ -1,35 +1,40 @@
 const mariadb = require('mariadb');
+const errorService = require('./ErrorService');
 let connection = null;
 
-module.exports.connect = function() {
-    return new Promise(function (resolve, reject) {
+module.exports.connect = async function() {
+    console.log('connect');
+    try {
         let config  = {
             host: process.env.DB_HOST,
             user: process.env.DB_USER,
             password: process.env.DB_PASS,
             database: "ichbinich",
-            connectionLimit: 100
+            connectionLimit: 150
         };
 
-        const pool = mariadb.createPool(config);
-        pool.getConnection().then(conn => {
-            connection = conn;
-            resolve();
-        }).catch(err => {
-            reject(err);
-        });
-    });
+        connection = await mariadb.createPool(config).getConnection();
+    } catch(error) {
+        throw new errorService.Error('Function: connect. Could not connect to database.', error);
+    }
 };
 
-module.exports.query = function(query, param) {
-    return new Promise(function (resolve, reject) {
-        if(connection == null) {
-            reject("No connection to database!");
+module.exports.query = async function(query, param) {
+    try {
+        if (connection === null) {
+            console.log('New mariadb connection');
+            await this.connect();
         }
-        connection.query(query, param).then((res) => {
-            resolve(res);
-        }).catch((err) => {
-            reject(err);
-        });
-    });
+        let res = connection.query(query, param);
+
+        connection.release();
+
+        return await res;
+    } catch (error) {
+        throw error;
+    } finally {
+        if (connection !== null) {
+            connection.release();
+        }
+    }
 };

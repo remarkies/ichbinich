@@ -19,7 +19,9 @@ router.post('/create-session', async (request,response) => {
                 // basket actually exists
                 const items = await paymentService.requestCheckOutItems(basketCookie.id);
 
-                const params = paymentService.buildParamsForItems(basketCookie.id, items);
+                const email = await paymentService.getEmailFromBasketId(basketCookie.id);
+
+                const params = paymentService.buildParamsForItems(email, basketCookie.id, items);
 
                 const session = await stripe.createSession(params);
                 await basketService.updateBasketWithSession(basketCookie.id, session.id);

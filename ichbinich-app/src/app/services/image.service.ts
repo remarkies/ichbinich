@@ -3,13 +3,15 @@ import {PathModel} from '../models/path.model';
 import {environment} from '../../environments/environment';
 import {ApiService} from './api.service';
 import {AuthenticationService} from './authentication.service';
+import {PaintingService} from './painting.service';
+import {DataService} from './data.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ImageService {
 
-  constructor(private apiService: ApiService, private authenticationService: AuthenticationService) { }
+  constructor(private apiService: ApiService, private paintingService: PaintingService, private dataService: DataService, private authenticationService: AuthenticationService) { }
 
   public getFullPath(pathModel: PathModel): string {
     if (pathModel?.path) {
@@ -19,11 +21,12 @@ export class ImageService {
     }
   }
 
-  public deleteImage(id: number): void {
+  public deleteImage(imageId: number, paintingId: number): void {
     const currentEmployee = this.authenticationService.currentEmployeeValue;
     if (currentEmployee !== null) {
-      this.apiService.deleteImage(currentEmployee.token, id).subscribe(() => {
-        console.log('image deleted');
+      this.apiService.deleteImage(currentEmployee.token, imageId).subscribe(() => {
+        this.paintingService.loadPainting(paintingId);
+        this.dataService.loadPaintings();
       });
     } else {
       console.log('Current employee not loaded.');

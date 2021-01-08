@@ -81,6 +81,9 @@ module.exports.SelectCheckoutItems = `select p.id, p.name, p.price, (select i.pa
                                 join basket_painting bp on b.id = bp.basket_id
                                 join painting p on bp.painting_id = p.id
                                 where bp.basket_id = ?;`
+module.exports.SelectEmailFromBasketId = `select c.email from basket b 
+join customer c on b.customer_id = c.id
+where b.id = ?;`;
 
 // OrderService
 module.exports.SelectBasketIdFromStripeSessionId = `select b.id from basket b where b.stripe_session_id = ?;`

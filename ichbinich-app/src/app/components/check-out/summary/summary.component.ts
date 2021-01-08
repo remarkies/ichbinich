@@ -43,7 +43,6 @@ export class SummaryComponent implements OnInit {
               if (status.payment_status === 'paid') {
                 this.paymentService.isOrderSubmitted(basket.stripe_session_id)
                   .subscribe(response => {
-                    console.log(response);
                     if (!response.submitted) {
                       this.paymentService.submitOrder(basket.stripe_session_id)
                         .subscribe(() => {
