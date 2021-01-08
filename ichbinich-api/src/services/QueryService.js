@@ -94,7 +94,7 @@ module.exports.SelectOrderItemsFromStripeSessionId = `select bp.painting_id from
 module.exports.InsertOrder = `insert into \`order\` (customer_id, orderDateTime, orderAddress_id, billingAddress_id, orderState_id, employee_id, changeDateTime, stripe_session_id)
                                 VALUES (?, ?, ?, ?, 1, null, null, ?);`;
 module.exports.InsertOrderItem = `insert into order_painting (order_id, painting_id) VALUES (?, ?);`;
-module.exports.SelectSessionIdExistsInBasket = `select count(*) 'sessionIdExists' from basket b where b.stripe_session_id = ?;`;
+module.exports.SelectSessionIdExistsInOrder = `select count(*) 'sessionIdExists' from \`order\` o where o.stripe_session_id = ?;`;
 
 // AddressService
 module.exports.SelectAddressForBasketId = `select a.*, c.email, c.phone, t.description 'title', c2.name 'country' from basket b

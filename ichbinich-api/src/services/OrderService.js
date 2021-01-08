@@ -8,8 +8,9 @@ const stripeService = require('./StripeService');
 
 module.exports.isOrderAlreadySubmitted = async function(sessionId) {
   try {
-      const result = await databaseService.query(queryService.SelectSessionIdExistsInBasket, [sessionId]);
-      return result[0].sessionIdExists === 0;
+      const result = await databaseService.query(queryService.SelectSessionIdExistsInOrder, [sessionId]);
+
+      return result[0].sessionIdExists > 0;
   } catch (error) {
       throw new errorService.Error('Function: isOrderAlreadySubmitted. Database query failed.', error);
   }
@@ -17,25 +18,29 @@ module.exports.isOrderAlreadySubmitted = async function(sessionId) {
 
 module.exports.submitOrder = async function(sessionId)  {
 
-    // get basket with session id
+    // get basket from session id
     const basketId = await this.getBasketIdFromSession(sessionId);
 
-    // get customer and address data with session id
+    // get customer and address data from session id
     const orderData = await this.getDataForOrder(sessionId);
 
     // create new order in database (includes writing stripe session id to order table)
     const orderId = await this.insertOrder(orderData.customer_id, orderData.address_id, sessionId);
 
     // get order items from stripe payment
+    // resolves issue where user could change basket while paying
     const paintingIds = await this.getOrderItemsFromStripe(sessionId);
 
     for (const paintingId of paintingIds) {
-        // create new order item in database
-        // connect order item to order
+        // create new order position in database
+        // connect order position to order
         await this.insertOrderItem(orderId, paintingId);
     }
 
     // remove items from basket
+    // user will be using same basket
+    // nice because user wont need to reenter customer data on next purchase
+    // user data is saved to basket
     await basketService.clearBasketFromItems(basketId);
 
     // remove stripe session id from basket

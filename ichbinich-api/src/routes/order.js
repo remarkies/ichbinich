@@ -6,7 +6,10 @@ const router = express.Router();
 
 router.post('/submit', async (request,response) => {
     const sessionId = request.body.stripe_session_id;
+
     try {
+        // avoid submitting order twice
+        // may happen on direct api call
         const alreadySubmitted = await orderService.isOrderAlreadySubmitted(sessionId);
 
         if (!alreadySubmitted) {
@@ -30,7 +33,6 @@ router.post('/isOrderSubmitted', async (request,response) => {
 
     try {
         const alreadySubmitted = await orderService.isOrderAlreadySubmitted(sessionId);
-
         return responseController.ok(response, { submitted: alreadySubmitted });
     } catch (err) {
         return responseController.fail(response, "Check if order is submitted failed: " + err);

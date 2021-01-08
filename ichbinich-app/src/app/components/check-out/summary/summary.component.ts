@@ -33,30 +33,43 @@ export class SummaryComponent implements OnInit {
 
   ngOnInit(): void {
     this.basketSubscription = this.dataService.basket$.subscribe((basket) => {
+
       if (basket !== null) {
         this.basketItems = basket.items;
+
+        // recalculate basket total on change
         this.basketTotal = this.dataService.calcBasketTotal(basket.items);
 
+        // check if user has pressed pay button before
         if (basket.stripe_session_id !== null) {
+          // manual reload or redirect from stripe session happend
+
+          // check if redirect from stripe session
           this.paymentService.checkPaymentStatus(basket.stripe_session_id)
             .subscribe(status => {
+
+              // possible payment status: paid or unpaid
               if (status.payment_status === 'paid') {
+
+                // server call to check if order is submitted
                 this.paymentService.isOrderSubmitted(basket.stripe_session_id)
                   .subscribe(response => {
+
+                    // avoid submitting order twice
                     if (!response.submitted) {
+
+                      // submit order depending on checked stripe session
                       this.paymentService.submitOrder(basket.stripe_session_id)
                         .subscribe(() => {
+                          // request new empty basket
                           this.dataService.requestBasket();
+                          // reload paintings on main page
+                          this.dataService.loadPaintings();
+                          // navigate to main page
+                          this.router.navigate(['/']);
                         });
-                    } else {
-                      this.dataService.loadPaintings();
-                      this.router.navigate(['/']);
                     }
                   });
-              } else if (status.payment_status === 'unpaid') {
-                console.log('oh no not paid yet');
-              } else {
-                console.log('dont know this payment status:', status.payment_status);
               }
             });
         }
@@ -70,20 +83,22 @@ export class SummaryComponent implements OnInit {
     this.activatedRoute.queryParams.subscribe(params => {
       const success = params.success;
 
+      // if url contains success = true param
       if (success !== undefined && success) {
-        this.router.navigate(['/']);
+        // request basket results in update of basket subscription
+        // order check happens
         this.dataService.requestBasket();
       }
     });
   }
 
   pay(): void {
+    // every time user presses pay a new session with basket items get created
     this.paymentService.createPaymentSession(this.dataService.getBasketCookie())
       .subscribe(response => {
+        // redirect to newly created stripe session
         this.paymentService.redirectToCheckout(response.id)
-          .subscribe(result => {
-            console.log(result);
-          });
+          .subscribe(() => {});
     });
   }
 }
