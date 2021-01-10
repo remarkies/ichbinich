@@ -8,14 +8,14 @@
           <thead>
           <tr>
             <th>Id</th>
-            <th>Pfad</th>
+            <th>Bild</th>
             <th>Aktion</th>
           </tr>
           </thead>
           <tbody>
           <tr class="table-row" *ngFor="let path of painting.paths">
             <td><p>{{path.id}}</p></td>
-            <td><p>{{path.path}}</p></td>
+            <td><div class="image"><img src="{{getImage(path.path)}}"/></div></td>
             <td>
               <div class="actions">
                 <div class="action">

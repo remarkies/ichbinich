@@ -24,7 +24,6 @@ export class OrderService {
     const currentEmployee = this.authenticationService.currentEmployeeValue;
     if (currentEmployee !== null) {
       this.apiService.getOrder(currentEmployee.token, id).subscribe(order => {
-        console.log(order);
         this._order.next(order);
       });
     } else {

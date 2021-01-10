@@ -100,6 +100,10 @@ export class EmployeePaintingComponent implements OnInit {
     }
   }
 
+  public getImage(path: string): string {
+    return this.imageService.getImageWithPath(path);
+  }
+
   deleteImage(path: PathModel): void {
     this.imageService.deleteImage(path.id, this.painting.id);
   }
