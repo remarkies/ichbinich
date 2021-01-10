@@ -8,7 +8,7 @@
           <app-icon [size]="'x'" [name]="'user'"></app-icon>
           <p>{{order.firstName}} {{order.lastName}}</p>
         </div>
-        <div class="customer-item">
+        <div *ngIf="order.phone.length > 0"  class="customer-item">
           <app-icon [size]="'x'" [name]="'phone'"></app-icon>
           <p>{{order.phone}}</p>
         </div>
@@ -39,13 +39,15 @@
       <thead>
       <tr>
         <th>#Id</th>
-        <th>Gemälde</th>
+        <th>Bild</th>
+        <th>Name</th>
         <th>Preis</th>
       </tr>
       </thead>
       <tbody>
       <tr class="table-row" *ngFor="let item of order.items">
         <td><p>#{{item.id}}</p></td>
+        <td><div class="image"><img src="{{getImage(item.path)}}"/></div></td>
         <td><p>{{item.name}}</p></td>
         <td><p>{{item.price | currency: 'CHF ': 'code'}}</p></td>
       </tr>

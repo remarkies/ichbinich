@@ -21,6 +21,10 @@ export class ImageService {
     }
   }
 
+  public getImageWithPath(path: string): string {
+    return environment.apiUrl + '/public/images/' + path;
+  }
+
   public deleteImage(imageId: number, paintingId: number): void {
     const currentEmployee = this.authenticationService.currentEmployeeValue;
     if (currentEmployee !== null) {

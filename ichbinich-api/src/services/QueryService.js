@@ -193,7 +193,12 @@ join country c on a.country_id = c.id
 join orderState o2 on o.orderState_id = o2.id
 join customer c2 on o.customer_id = c2.id
 where o.id = ?;`;
-module.exports.SelectEmployeeOrderItems = `select p.id, p.name, p.price from order_painting op
+module.exports.SelectEmployeeOrderItems = `select p.id, p.name, p.price, (
+    select i.path from image i
+        join painting_image pi on i.id = pi.image_id
+        where pi.painting_id = op.painting_id
+        limit 1
+    ) 'path' from order_painting op
 join painting p on op.painting_id = p.id
 where op.order_id = ?;`;
 module.exports.UpdateMarkOrderAsSent = `update \`order\` set orderState_id = 2 where id = ?;`;

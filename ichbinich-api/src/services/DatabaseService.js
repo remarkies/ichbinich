@@ -10,7 +10,7 @@ module.exports.connect = async function() {
             user: process.env.DB_USER,
             password: process.env.DB_PASS,
             database: "ichbinich",
-            connectionLimit: 150
+            connectionLimit: 5
         };
 
         connection = await mariadb.createPool(config).getConnection();

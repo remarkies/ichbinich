@@ -81,3 +81,11 @@ p {
 .success {
   color: $success;
 }
+
+img {
+  height: 36px;
+
+  -webkit-box-shadow: 2px 2px 2px 0 rgba(0,0,0,0.4);
+  -moz-box-shadow: 2px 2px 2px 0 rgba(0,0,0,0.4);
+  box-shadow: 2px 2px 2px 0 rgba(0,0,0,0.4);
+}
