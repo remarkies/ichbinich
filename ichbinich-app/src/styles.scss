@@ -65,6 +65,7 @@ select {
   font: $fontfamily;
   color: inherit;
   border-radius: 4px;
+  -webkit-appearance:none;
 }
 
 .validator-space {
