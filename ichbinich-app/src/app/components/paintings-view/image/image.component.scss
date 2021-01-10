@@ -1,9 +1,18 @@
-.image {
+@media screen and (min-width: 601px) {
+  img {
+    max-width: 38vw;
+    max-height: 48vh;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  img {
+    max-width: 60vw;
+    max-height: 48vh;
+  }
 }
 
 img {
-  max-width: 38vw;
-  max-height: 48vh;
 
   display: block;
   object-fit: contain;
