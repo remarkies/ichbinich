@@ -16,8 +16,8 @@ export class PaintingsComponent implements OnInit {
   public paintings: PaintingModel[] = [];
   private paintingSubscription: Subscription;
 
-  public paintingsCount: number = 0;
-  public selectedPaintingPos: number = 0;
+  public paintingsCount = 0;
+  public selectedPaintingPos = 0;
 
   constructor(private dataService: DataService) { }
 
