@@ -1,5 +1,5 @@
 const mariadb = require('mariadb');
-const errorService = require('./ErrorService');
+
 let pool = mariadb.createPool({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
