@@ -15,11 +15,12 @@ const bodyParser = require('body-parser')
 ichbinichApp.use(bodyParser.urlencoded({ extended: false }));
 ichbinichApp.use(bodyParser.json());
 
+/*
 const database = require('./src/services/DatabaseService');
 database.connect().then(function () {
     console.log('Connected to mariaDB');
 });
-
+*/
 const paintings = require('./src/routes/paintings');
 ichbinichApp.use('/paintings', paintings);
 

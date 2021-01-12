@@ -1,40 +1,31 @@
 const mariadb = require('mariadb');
 const errorService = require('./ErrorService');
-let connection = null;
-
-module.exports.connect = async function() {
-    console.log('connect');
-    try {
-        let config  = {
-            host: process.env.DB_HOST,
-            user: process.env.DB_USER,
-            password: process.env.DB_PASS,
-            database: "ichbinich",
-            connectionLimit: 5
-        };
-
-        connection = await mariadb.createPool(config).getConnection();
-    } catch(error) {
-        throw new errorService.Error('Function: connect. Could not connect to database.', error);
-    }
-};
+let pool = mariadb.createPool({
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASS,
+    database: "ichbinich",
+    connectionLimit: 5
+});
 
 module.exports.query = async function(query, param) {
+    let conn;
     try {
-        if (connection === null) {
-            console.log('New mariadb connection');
-            await this.connect();
-        }
-        let res = connection.query(query, param);
+        // get new connection from pool
+        conn = await pool.getConnection();
 
-        connection.release();
+        // set up query
+        const res = conn.query(query, param);
 
+        // release connection
+        await conn.release();
+
+        // await for query result and return
         return await res;
     } catch (error) {
         throw error;
     } finally {
-        if (connection !== null) {
-            connection.release();
-        }
+        // close connection
+        if (conn) await conn.end();
     }
 };

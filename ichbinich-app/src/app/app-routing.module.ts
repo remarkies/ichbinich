@@ -4,7 +4,6 @@ import {BasketComponent} from './views/basket/basket.component';
 import {PaintingsComponent} from './views/paintings/paintings.component';
 import {UserComponent} from './views/user/user.component';
 import {CheckOutComponent} from './views/check-out/check-out.component';
-import {PageNotFoundComponent} from './views/page-not-found/page-not-found.component';
 import {AddressFormComponent} from './components/check-out/address-form/address-form.component';
 import {SummaryComponent} from './components/check-out/summary/summary.component';
 import {EmployeeComponent} from './components/admin/employee/employee.component';
@@ -40,3 +39,13 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
+
+
+
+
+
+
+
+
+
+
