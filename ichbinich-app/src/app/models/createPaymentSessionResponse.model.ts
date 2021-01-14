@@ -1,3 +1,4 @@
 export interface CreatePaymentSessionResponseModel {
-  id: string
+  id: string,
+  error: string
 }

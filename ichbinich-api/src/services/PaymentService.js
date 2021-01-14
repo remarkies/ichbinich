@@ -16,6 +16,7 @@ module.exports.buildParamsForItems = function(email, basketId, items)  {
         success_url: `${process.env.STRIPE_SUCCESS_URL}?success=true`,
         cancel_url: `${process.env.STRIPE_CANCEL_URL}?canceled=true`,
         metadata: {
+            // include all painting ids for later payment check
             paintings: items.map(item => item.id).join().toString()
         }
     };

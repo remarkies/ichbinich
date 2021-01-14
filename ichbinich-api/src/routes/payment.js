@@ -17,28 +17,34 @@ router.post('/create-session', async (request,response) => {
 
             if (exists) {
                 // basket actually exists
+                // get basket items
                 const items = await paymentService.requestCheckOutItems(basketCookie.id);
 
+                // get previous entered email
                 const email = await paymentService.getEmailFromBasketId(basketCookie.id);
 
+                // create params object for creating new stripe session
                 const params = paymentService.buildParamsForItems(email, basketCookie.id, items);
 
+                // let stripe create new session with params
                 const session = await stripe.createSession(params);
+
+                // save stripe session id to basket for later usage
                 await basketService.updateBasketWithSession(basketCookie.id, session.id);
 
                 return responseController.ok(response, {id: session.id});
             } else {
                 // basket id not valid
-                const message = '/create-session -> basket id not valid.';
-                return responseController.fail(response, message);
+                const message = 'Basket id not valid.';
+                return responseController.fail(response, { error: message });
             }
         } else {
             // no cookie available
-            const message = '/create-session -> no cookie available.';
-            return responseController.fail(response, message);
+            const message = 'No cookie available.';
+            return responseController.fail(response, { error: message });
         }
     } catch(error) {
-        return responseController.fail(response, error.message);
+        return responseController.fail(response, { error: error.message });
     }
 });
 

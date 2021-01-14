@@ -4,7 +4,7 @@ const responseController = require('../controllers/ResponseController');
 
 const router = express.Router();
 
-router.post('/request', async (request,response, next) => {
+router.post('/request', async (request,response) => {
     try {
         const basketCookie = request.body.basketCookie;
 

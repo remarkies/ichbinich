@@ -18,6 +18,7 @@ export class SummaryComponent implements OnInit {
 
   basketItems: PaintingModel[] = [];
   basketTotal = 0;
+  error = '';
   private basketSubscription: Subscription;
 
   address: AddressModel;
@@ -42,7 +43,7 @@ export class SummaryComponent implements OnInit {
 
         // check if user has pressed pay button before
         if (basket.stripe_session_id !== null) {
-          // manual reload or redirect from stripe session happend
+          // manual reload or redirect from stripe session happened
 
           // check if redirect from stripe session
           this.paymentService.checkPaymentStatus(basket.stripe_session_id)
@@ -96,6 +97,13 @@ export class SummaryComponent implements OnInit {
     // every time user presses pay a new session with basket items get created
     this.paymentService.createPaymentSession(this.dataService.getBasketCookie())
       .subscribe(response => {
+
+        // check for error
+        if (response.error?.length > 0) {
+          this.error = response.error;
+          return;
+        }
+
         // redirect to newly created stripe session
         this.paymentService.redirectToCheckout(response.id)
           .subscribe(() => {});
