@@ -2,7 +2,7 @@
 Digital Ideation - Mentoring Project
 
 Goal of this project was to create a website, which displays paintings in an astethic way and offers the functionality to directly sell them. 
-The website contains a CMS for dynamically maintaining the content.
+The website contains a self created CMS for dynamically maintaining the content.
 
 ## Scheduling
 https://docs.google.com/spreadsheets/d/1VxBda2RsCYcu5nPVJz7ooNNhFUHOWbch1ScIpDf1E5A/edit#gid=0
